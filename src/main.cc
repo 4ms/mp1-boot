@@ -1,11 +1,11 @@
 #include "boot_media_loader.hh"
-#include "clocks.hh"
-#include "ddr/ram_tests.hh"
-#include "ddr/stm32mp1_ram.h"
 #include "delay.h"
+#include "drivers/clocks.hh"
+#include "drivers/ddr/ram_tests.hh"
+#include "drivers/ddr/stm32mp1_ram.h"
 #include "drivers/leds.hh"
+#include "drivers/pmic.hh"
 #include "drivers/uart.hh"
-#include "pmic.hh"
 #include "print.hh"
 #include "stm32mp157cxx_ca7.h"
 #include "systeminit.h"
@@ -14,8 +14,8 @@
 #include "stm32disco_conf.hh"
 
 // Uncomment one of these to select your board:
-namespace Board = OSD32BRK;
-// namespace Board = STM32MP1Disco;
+// namespace Board = OSD32BRK;
+namespace Board = STM32MP1Disco;
 
 void main()
 {

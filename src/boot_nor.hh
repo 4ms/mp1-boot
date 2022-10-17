@@ -1,8 +1,8 @@
 #pragma once
 #include "boot_image_def.hh"
 #include "boot_loader.hh"
+#include "drivers/norflash/qspi_norflash_read.h"
 #include "drivers/pinconf.hh"
-#include "norflash/qspi_norflash_read.h"
 #include "print_messages.hh"
 #include <cstdint>
 

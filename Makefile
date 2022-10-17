@@ -4,7 +4,6 @@ OPTFLAG = -O3
 
 SRCDIR = src
 EXTLIBDIR = third-party
-SHAREDDIR = ../../shared
 LINKSCR = linkscript.ld
 
 SD_DISK_DEV ?= /dev/disk4
@@ -20,13 +19,13 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_sd.c \
-		  $(SRCDIR)/ddr/stm32mp1_ddr.cc \
-		  $(SRCDIR)/ddr/stm32mp1_ram.cc \
-		  $(SRCDIR)/ddr/ram_tests.cc \
+		  $(SRCDIR)/drivers/ddr/stm32mp1_ddr.cc \
+		  $(SRCDIR)/drivers/ddr/stm32mp1_ram.cc \
+		  $(SRCDIR)/drivers/ddr/ram_tests.cc \
 		  $(SRCDIR)/uboot-port/common/memsize.c \
 		  $(SRCDIR)/uboot-port/lib/crc32.c \
-		  $(SRCDIR)/norflash/qspi_ll.c \
-		  $(SRCDIR)/norflash/qspi_norflash_read.c \
+		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
+		  $(SRCDIR)/drivers/norflash/qspi_norflash_read.c \
 		  $(SRCDIR)/gpt/gpt.cc \
 
 INCLUDES = -I. \
@@ -35,7 +34,7 @@ INCLUDES = -I. \
 		   -I$(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Inc \
 		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include \
-		   -I$(SRCDIR)/ddr/ \
+		   -I$(SRCDIR)/drivers/ddr/ \
 		   -I$(SRCDIR)/uboot-port/include \
 		   -I$(SRCDIR)/uboot-port/arch/arm/include \
 
