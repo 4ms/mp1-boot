@@ -1,45 +1,139 @@
 BINARYNAME = fsbl
-BUILDDIR = build
 
 OPTFLAG = -O3
 
-EXTLIBDIR = ../../third-party
+SRCDIR = src
+EXTLIBDIR = third-party
 SHAREDDIR = ../../shared
+LINKSCR = linkscript.ld
 
-SOURCES = startup.s \
-		  main.cc \
-		  systeminit.c \
-		  $(SHAREDDIR)/system/libc_stub.c \
-		  $(SHAREDDIR)/system/libcpp_stub.cc \
-		  $(SHAREDDIR)/print.cc \
+SD_DISK_DEV ?= /dev/disk4
+
+SOURCES = $(SRCDIR)/startup.s \
+		  $(SRCDIR)/main.cc \
+		  $(SRCDIR)/systeminit.c \
+		  $(SRCDIR)/libc_stub.c \
+		  $(SRCDIR)/libcpp_stub.cc \
+		  $(SRCDIR)/print.cc \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_usart.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_rcc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_sd.c \
-		  ddr/stm32mp1_ddr.cc \
-		  ddr/stm32mp1_ram.cc \
-		  ddr/ram_tests.cc \
-		  uboot-port/common/memsize.c \
-		  uboot-port/lib/crc32.c \
-		  norflash/qspi_ll.c \
-		  norflash/qspi_norflash_read.c \
-		  gpt/gpt.cc \
+		  $(SRCDIR)/ddr/stm32mp1_ddr.cc \
+		  $(SRCDIR)/ddr/stm32mp1_ram.cc \
+		  $(SRCDIR)/ddr/ram_tests.cc \
+		  $(SRCDIR)/uboot-port/common/memsize.c \
+		  $(SRCDIR)/uboot-port/lib/crc32.c \
+		  $(SRCDIR)/norflash/qspi_ll.c \
+		  $(SRCDIR)/norflash/qspi_norflash_read.c \
+		  $(SRCDIR)/gpt/gpt.cc \
 
 INCLUDES = -I. \
+		   -I$(SRCDIR) \
+		   -I$(SRCDIR)/board_conf \
 		   -I$(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Inc \
 		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include \
-		   -I$(SHAREDDIR) \
-		   -Iddr/ \
-		   -Iuboot-port/include \
-		   -Iuboot-port/arch/arm/include \
+		   -I$(SRCDIR)/ddr/ \
+		   -I$(SRCDIR)/uboot-port/include \
+		   -I$(SRCDIR)/uboot-port/arch/arm/include \
+
+MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-abi=hard
+ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
+			  -DSTM32MP157Cxx \
+			  -DSTM32MP1 \
+			  -DCORE_CA7 \
+			  $(EXTRA_ARCH_CFLAGS) \
+
+AFLAGS = $(MCU)
+
+CFLAGS = -g2 \
+		 -fno-common \
+		 $(ARCH_CFLAGS) \
+		 $(MCU) \
+		 $(INCLUDES) \
+		 -fdata-sections -ffunction-sections \
+		 -nostartfiles \
+		 -ffreestanding \
+		 $(EXTRACFLAGS)\
+
+CXXFLAGS = $(CFLAGS) \
+		-std=c++2a \
+		-fno-rtti \
+		-fno-exceptions \
+		-fno-unwind-tables \
+		-ffreestanding \
+		-fno-threadsafe-statics \
+		-mno-unaligned-access \
+		-Werror=return-type \
+		-Wdouble-promotion \
+		-Wno-register \
+		-Wno-volatile \
+		 $(EXTRACXXFLAGS) \
+
+LFLAGS = -Wl,--gc-sections \
+		 -Wl,-Map,$(BUILDDIR)/$(BINARYNAME).map,--cref \
+		 $(MCU)  \
+		 -T $(LINKSCR) \
+		 -nostdlib \
+		 -nostartfiles \
+		 -ffreestanding \
+		 $(EXTRALDFLAGS) \
+
+DEPFLAGS = -MMD -MP -MF $(OBJDIR)/$(basename $<).d
+
+ARCH 	= arm-none-eabi
+CC 		= $(ARCH)-gcc
+CXX 	= $(ARCH)-g++
+LD 		= $(ARCH)-g++
+AS 		= $(ARCH)-as
+OBJCPY 	= $(ARCH)-objcopy
+OBJDMP 	= $(ARCH)-objdump
+GDB 	= $(ARCH)-gdb
+SZ 		= $(ARCH)-size
+
+SZOPTS 	= -d
+
+ELF 	= $(BUILDDIR)/$(BINARYNAME).elf
+HEX 	= $(BUILDDIR)/$(BINARYNAME).hex
+BIN 	= $(BUILDDIR)/$(BINARYNAME).bin
+
+
+OBJECTS   = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(basename $(SOURCES))))
+DEPS   	  = $(addprefix $(OBJDIR)/, $(addsuffix .d, $(basename $(SOURCES))))
+BUILDDIR = build
+OBJDIR = $(BUILDDIR)/obj/obj
 
 all: image
+all: Makefile $(ELF) $(UIMAGENAME)
 
-include $(SHAREDDIR)/makefile-common.mk
 
-SD_DISK_DEV ?= /dev/disk4
+$(OBJDIR)/%.o: %.s
+	@mkdir -p $(dir $@)
+	$(info Building $< at $(OPTFLAG))
+	@$(AS) $(AFLAGS) $< -o $@ 
+
+$(OBJDIR)/%.o: %.c $(OBJDIR)/%.d
+	@mkdir -p $(dir $@)
+	$(info Building $< at $(OPTFLAG))
+	@$(CC) -c $(DEPFLAGS) $(OPTFLAG) $(CFLAGS) $< -o $@
+
+$(OBJDIR)/%.o: %.c[cp]* $(OBJDIR)/%.d
+	@mkdir -p $(dir $@)
+	$(info Building $< at $(OPTFLAG))
+	@$(CXX) -c $(DEPFLAGS) $(OPTFLAG) $(CXXFLAGS) $< -o $@
+
+$(ELF): $(OBJECTS) $(LINKSCR)
+	$(info Linking...)
+	@$(LD) $(LFLAGS) -o $@ $(OBJECTS) 
+
+$(BIN): $(ELF)
+	$(OBJCPY) -O binary $< $@
+
+$(HEX): $(ELF)
+	@$(OBJCPY) --output-target=ihex $< $@
+	@$(SZ) $(SZOPTS) $(ELF)
 
 image: $(BIN)
 	python3 fsbl_header.py $(BUILDDIR)/$(BINARYNAME).bin $(BUILDDIR)/$(BINARYNAME).stm32
@@ -52,4 +146,23 @@ load: image
 	sudo dd if=$(BUILDDIR)/$(BINARYNAME).stm32 of=$${DISK}s1 && \
 	sudo dd if=$(BUILDDIR)/$(BINARYNAME).stm32 of=$${DISK}s2 && \
 	diskutil unmountDisk $${DISK}
+
+%.d: ;
+
+clean:
+	rm -rf build
+
+ifneq "$(MAKECMDGOALS)" "clean"
+-include $(DEPS)
+endif
+
+.PRECIOUS: $(DEPS) $(OBJECTS) $(ELF)
+.PHONY: all clean 
+
+.PHONY: compile_commands
+compile_commands:
+	compiledb make
+	compdb -p ./ list > compile_commands.tmp 2>/dev/null
+	rm compile_commands.json
+	mv compile_commands.tmp compile_commands.json
 
