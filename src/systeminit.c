@@ -42,8 +42,11 @@ void security_init()
 	// Disable Trust Zone
 	RCC->TZCR = 0;
 
-	// Allow read/write for all securable peripherals (top 7 bits are reserved)
-	TZPC->DECPROT0 = 0x01FFFFFF;
+	// Allow read/write for all securable peripherals (top 6 bits are reserved)
+	TZPC->DECPROT0 = 0x03FFFFFF;
+
+	// Allow read/write for SYSRAM and RETRAM
+	// TZPC->DECPROT5 = TZPC->DECPROT5 | 0x3FF;
 
 	// Allow non-secure access to SYSRAM
 	TZPC->TZMA1_SIZE = 0;
