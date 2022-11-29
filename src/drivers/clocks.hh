@@ -3,7 +3,11 @@
 #include <stdint.h>
 
 struct SystemClocks {
-	static unsigned init_core_clocks(uint32_t HSE_Clock = 24000000, uint32_t MPU_MHz = 800)
+	enum class HSEClockSource { AnalogOsc, DigitalOsc, Resonator };
+
+	static unsigned init_core_clocks(uint32_t HSE_Clock = 24000000,
+									 uint32_t MPU_MHz = 800,
+									 HSEClockSource hse_clk_src = HSEClockSource::AnalogOsc)
 	{
 		constexpr uint32_t pll1m = 3;
 		const uint32_t pll1n = (MPU_MHz == 650 ? 81U : 100U);
@@ -30,9 +34,25 @@ struct SystemClocks {
 			while (HSEClockReady::read())
 				;
 
-			// Set Bypass Mode = analog oscillator
-			OscEnableDIGBYP::clear();
-			OscEnableHSEBYP::set();
+			// Can we detect it?
+			// Or read the type BOOTROM detected?
+			// Or try different types until one works?
+			switch (hse_clk_src) {
+				case HSEClockSource::AnalogOsc:
+					OscEnableDIGBYP::clear();
+					OscEnableHSEBYP::set();
+					break;
+
+				case HSEClockSource::DigitalOsc:
+					OscEnableDIGBYP::set();
+					OscEnableHSEBYP::set();
+					break;
+
+				case HSEClockSource::Resonator:
+					OscEnableDIGBYP::clear(); // doesn't matter
+					OscEnableHSEBYP::clear();
+					break;
+			}
 
 			OscEnableHSEON::set();
 			while (!HSEClockReady::read())
