@@ -10,14 +10,12 @@
 #include "stm32mp157cxx_ca7.h"
 #include "systeminit.h"
 
-// #include "osd32brk_conf.hh"
-// #include "stm32disco_conf.hh"
-#include "mmp10_conf.hh"
+#include "osd32brk_conf.hh"
+#include "stm32disco_conf.hh"
 
 // Uncomment one of these to select your board:
 // namespace Board = OSD32BRK;
-// namespace Board = STM32MP1Disco;
-namespace Board = MMp10;
+namespace Board = STM32MP1Disco;
 
 void main()
 {
@@ -63,7 +61,7 @@ void main()
 	// Should not reach here, but in case we do, blink LED rapidly
 	print("FAILED!\n");
 	constexpr uint32_t dlytime = 50000;
-	while (1) {
+	while (true) {
 		led.on();
 		udelay(dlytime);
 		led.off();

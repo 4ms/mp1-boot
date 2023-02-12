@@ -1,4 +1,5 @@
 #pragma once
+#include "drivers/clocks.hh"
 #include "drivers/i2c_conf.hh"
 #include "drivers/leds.hh"
 
@@ -36,4 +37,5 @@ constexpr I2C_Config I2C_config{
 
 constexpr uint32_t HSE_Clock_Hz = 24000000;
 constexpr uint32_t MPU_MHz = 650;
+constexpr auto ClockType = SystemClocks::HSEClockSource::AnalogOsc;
 } // namespace STM32MP1Disco
