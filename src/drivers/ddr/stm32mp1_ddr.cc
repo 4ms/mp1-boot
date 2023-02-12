@@ -280,7 +280,7 @@ static void set_reg(const struct ddr_info *priv, enum reg_type type, const void 
 		} else {
 			value = *((u32 *)((u32)param + desc[i].par_offset));
 			writel(value, ptr);
-			debug("[0x", Hex{(u32)ptr}, "] ", desc[i].name, "= 0x", value, "\n");
+			debug("[0x", Hex{(u32)ptr}, "] ", desc[i].name, "= 0x", Hex{(u32)value}, "\n");
 		}
 	}
 }
@@ -552,10 +552,7 @@ void stm32mp1_ddrphy_init(struct stm32mp1_ddrphy *phy, u32 pir)
 }
 
 /* start quasi dynamic register update */
-static void start_sw_done(struct stm32mp1_ddrctl *ctl)
-{
-	clrbits_le32(&ctl->swctl, DDRCTRL_SWCTL_SW_DONE);
-}
+static void start_sw_done(struct stm32mp1_ddrctl *ctl) { clrbits_le32(&ctl->swctl, DDRCTRL_SWCTL_SW_DONE); }
 
 /* wait quasi dynamic register update */
 static void wait_sw_done_ack(struct stm32mp1_ddrctl *ctl)

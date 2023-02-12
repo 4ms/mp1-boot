@@ -45,7 +45,7 @@ int stm32mp1_ddr_clk_enable(struct ddr_info *priv, u32 mem_speed)
 	return 0;
 }
 
-int stm32mp1_ddr_setup(void)
+int stm32mp1_ddr_setup()
 {
 	struct ddr_info _priv;
 	struct ddr_info *priv = &_priv;
@@ -81,16 +81,13 @@ int stm32mp1_ddr_setup(void)
 
 	/* check memory access for all memory */
 	if (config.info.size != priv->info.size) {
-		pr_err("DDR invalid size : 0x%x, expected 0x%x\n", priv->info.size, config.info.size);
+		pr_err("DDR invalid size : 0x", Hex{(u32)priv->info.size}, ", expected 0x", Hex{(u32)config.info.size}, "\n");
 		return -EINVAL;
 	}
 	return 0;
 }
 
-uint32_t stm32mp1_ddr_get_size()
-{
-	return DDR_MEM_SIZE;
-}
+uint32_t stm32mp1_ddr_get_size() { return DDR_MEM_SIZE; }
 
 static void stm32mp1_ddr_get_config(struct stm32mp1_ddr_config *cfg)
 {
