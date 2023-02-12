@@ -10,18 +10,20 @@
 #include "stm32mp157cxx_ca7.h"
 #include "systeminit.h"
 
-#include "osd32brk_conf.hh"
-#include "stm32disco_conf.hh"
+// #include "osd32brk_conf.hh"
+// #include "stm32disco_conf.hh"
+#include "mmp10_conf.hh"
 
 // Uncomment one of these to select your board:
 // namespace Board = OSD32BRK;
-namespace Board = STM32MP1Disco;
+// namespace Board = STM32MP1Disco;
+namespace Board = MMp10;
 
 void main()
 {
 	Board::OrangeLED led;
 
-	auto clockspeed = SystemClocks::init_core_clocks(Board::HSE_Clock_Hz, Board::MPU_MHz);
+	auto clockspeed = SystemClocks::init_core_clocks(Board::HSE_Clock_Hz, Board::MPU_MHz, Board::ClockType);
 	security_init();
 
 	Uart<Board::ConsoleUART> console(Board::UartRX, Board::UartTX, 115200);
