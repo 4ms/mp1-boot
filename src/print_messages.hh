@@ -35,8 +35,7 @@ static inline void panic(Types... args)
 	if constexpr (PrintErrorMessages)
 		print(args...);
 
-	while (1)
-		;
-	// TODO: Reboot?
-	// NVIC_SystemReset();
+	volatile bool ForceCompilerToKeepInfLoop = true;
+	while (ForceCompilerToKeepInfLoop) {
+	}
 }
