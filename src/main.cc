@@ -6,6 +6,7 @@
 #include "drivers/leds.hh"
 #include "drivers/pmic.hh"
 #include "drivers/uart.hh"
+#include "norflash/norflash-loader.hh"
 #include "print.hh"
 #include "stm32mp157cxx_ca7.h"
 #include "systeminit.h"
@@ -16,6 +17,7 @@
 void main()
 {
 	Board::OrangeLED led;
+	Board::DFUMode.init(PinMode::Input, PinPull::Up);
 
 	auto clockspeed = SystemClocks::init_core_clocks(Board::HSE_Clock_Hz, Board::MPU_MHz, Board::ClockType);
 	security_init();
@@ -40,10 +42,19 @@ void main()
 	print("Testing RAM.\n");
 	RamTests::run_all(DRAM_MEM_BASE, stm32mp1_ddr_get_size());
 
-	// Look for DFU pin
-	Board::DFUpin.init(PinMode::Input, PinPull::Up);
-	if (Board::DFUpin.read()) {
+	// Look for DFU pin pulled down
+	if (!Board::DFUMode.read()) {
+		print("DFU Mode pin detected low => Starting USB DFU mode.\n");
+
 		// Start USB DFU
+		NorFlashDFULoader flash_writer;
+		flash_writer.start();
+
+		print("Attach a USB cable and run dfu-util\n");
+
+		// TODO: timer, if not connection in 10seconds? then continue booting
+		while (true)
+			;
 	}
 
 	auto boot_method = BootDetect::read_boot_method();
