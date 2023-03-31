@@ -52,6 +52,7 @@ INCLUDES = -I. \
 
 MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-abi=hard
 ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
+			  -DUSE_HAL_DRIVER \
 			  -DSTM32MP157Cxx \
 			  -DSTM32MP1 \
 			  -DCORE_CA7 \
