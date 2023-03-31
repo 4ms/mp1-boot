@@ -32,6 +32,10 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/usb_dfu/usbd_desc.c \
 		  $(SRCDIR)/usb_dfu/usbd_dfu_media.c \
 		  $(SRCDIR)/usb_dfu/norflash/qspi_flash_driver.cc \
+		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_core.c \
+		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
+		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
+		  $(EXTLIBDIR)/STM32_USB_Device_Library/Class/DFU/Src/usbd_dfu.c \
 
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
@@ -39,6 +43,8 @@ INCLUDES = -I. \
 		   -I$(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Inc \
 		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include \
+		   -I$(EXTLIBDIR)/STM32_USB_Device_Library/Class/DFU/Inc \
+		   -I$(EXTLIBDIR)/STM32_USB_Device_Library/Core/Inc \
 		   -I$(SRCDIR)/drivers/ddr/ \
 		   -I$(SRCDIR)/uboot-port/include \
 		   -I$(SRCDIR)/uboot-port/arch/arm/include \
