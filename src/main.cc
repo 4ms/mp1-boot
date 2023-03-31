@@ -10,12 +10,8 @@
 #include "stm32mp157cxx_ca7.h"
 #include "systeminit.h"
 
-#include "osd32brk_conf.hh"
-#include "stm32disco_conf.hh"
-
-// Uncomment one of these to select your board:
-// namespace Board = OSD32BRK;
-namespace Board = STM32MP1Disco;
+// Note: select your board configuration in board_conf.hh
+#include "board_conf.hh"
 
 void main()
 {
@@ -26,7 +22,7 @@ void main()
 
 	Uart<Board::ConsoleUART> console(Board::UartRX, Board::UartTX, 115200);
 	print("\n\nMP1-Boot\n\n");
-	print("MPU clock: ", clockspeed, " Hz\n");
+	print("MPU Clock: ", clockspeed, " Hz\n");
 
 	if constexpr (Board::PMIC::HasSTPMIC) {
 		STPMIC1 pmic{Board::PMIC::I2C_config};
