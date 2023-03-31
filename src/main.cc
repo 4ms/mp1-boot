@@ -40,6 +40,12 @@ void main()
 	print("Testing RAM.\n");
 	RamTests::run_all(DRAM_MEM_BASE, stm32mp1_ddr_get_size());
 
+	// Look for DFU pin
+	Board::DFUpin.init(PinMode::Input, PinPull::Up);
+	if (Board::DFUpin.read()) {
+		// Start USB DFU
+	}
+
 	auto boot_method = BootDetect::read_boot_method();
 	print("Booted from ", BootDetect::bootmethod_string(boot_method).data(), "\n");
 
