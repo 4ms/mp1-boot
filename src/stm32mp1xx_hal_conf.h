@@ -26,7 +26,7 @@ extern "C" {
 #endif
 
 // To allow HAL SDMMC to work without compiling/linking _hal_rcc.c
-#define HAL_RCC_GetSystemCoreClockFreq() (SystemCoreClock)
+// #define HAL_RCC_GetSystemCoreClockFreq(...) (SystemCoreClock)
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -47,7 +47,7 @@ extern "C" {
 //  #define HAL_DMA_MODULE_ENABLED
 // #define HAL_EXTI_MODULE_ENABLED
 // #define HAL_FDCAN_MODULE_ENABLED
-//  #define HAL_GPIO_MODULE_ENABLED
+#define HAL_GPIO_MODULE_ENABLED
 // #define HAL_HASH_MODULE_ENABLED
 // #define HAL_HSEM_MODULE_ENABLED
 // #define HAL_I2C_MODULE_ENABLED
@@ -57,7 +57,7 @@ extern "C" {
 // #define HAL_MDMA_MODULE_ENABLED
 // #define HAL_PWR_MODULE_ENABLED
 #define HAL_QSPI_MODULE_ENABLED
-// #define HAL_RCC_MODULE_ENABLED
+#define HAL_RCC_MODULE_ENABLED
 // #define HAL_RNG_MODULE_ENABLED
 // #define HAL_RTC_MODULE_ENABLED
 // #define HAL_SAI_MODULE_ENABLED
@@ -71,6 +71,9 @@ extern "C" {
 //  #define HAL_UART_MODULE_ENABLED
 // #define HAL_USART_MODULE_ENABLED
 // #define HAL_WWDG_MODULE_ENABLED
+
+// Modules ported from H7:
+#define HAL_PCD_MODULE_ENABLED
 
 /* ########################## Register Callbacks selection ############################## */
 /**
@@ -337,6 +340,11 @@ extern "C" {
 #ifdef HAL_WWDG_MODULE_ENABLED
 #include "stm32mp1xx_hal_wwdg.h"
 #endif /* HAL_WWDG_MODULE_ENABLED */
+
+#ifdef HAL_PCD_MODULE_ENABLED
+#include "stm32mp1xx_hal_pcd.h"
+#include "stm32mp1xx_hal_pcd_ex.h"
+#endif /* HAL_PCD_MODULE_ENABLED */
 
 /* Exported macro ------------------------------------------------------------*/
 #ifdef USE_FULL_ASSERT
