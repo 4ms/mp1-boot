@@ -19,6 +19,7 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_sd.c \
+		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_qspi.c \
 		  $(SRCDIR)/drivers/ddr/stm32mp1_ddr.cc \
 		  $(SRCDIR)/drivers/ddr/stm32mp1_ram.cc \
 		  $(SRCDIR)/drivers/ddr/ram_tests.cc \
@@ -27,6 +28,10 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
 		  $(SRCDIR)/drivers/norflash/qspi_norflash_read.c \
 		  $(SRCDIR)/gpt/gpt.cc \
+		  $(SRCDIR)/usb_dfu/usbd_conf.c \
+		  $(SRCDIR)/usb_dfu/usbd_desc.c \
+		  $(SRCDIR)/usb_dfu/usbd_dfu_media.c \
+		  $(SRCDIR)/usb_dfu/norflash/qspi_flash_driver.cc \
 
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
@@ -37,6 +42,7 @@ INCLUDES = -I. \
 		   -I$(SRCDIR)/drivers/ddr/ \
 		   -I$(SRCDIR)/uboot-port/include \
 		   -I$(SRCDIR)/uboot-port/arch/arm/include \
+		   -I$(SRCDIR)/usb_dfu \
 
 MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-abi=hard
 ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
@@ -161,7 +167,4 @@ endif
 .PHONY: compile_commands
 compile_commands:
 	compiledb make
-	compdb -p ./ list > compile_commands.tmp 2>/dev/null
-	rm compile_commands.json
-	mv compile_commands.tmp compile_commands.json
 
