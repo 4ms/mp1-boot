@@ -71,12 +71,19 @@ enum EraseCommands {
 #define QSPI_SR_QUADEN ((uint8_t)0x40)	 /*!< Quad IO mode enabled if =1 */
 #define QSPI_SR_SRWREN ((uint8_t)0x80)	 /*!< Status register write enable/disable */
 
-// From HAL:
+#define QSPI_ADDRESSSIZE_NONE ((uint32_t)0x00000000U)
+#define QSPI_ALTERNATE_BYTES_SIZE_NONE ((uint32_t)0x00000000U)
 
+// From HAL:
+// From hal_qspi.c:
 #define QSPI_FUNCTIONAL_MODE_INDIRECT_WRITE ((uint32_t)0x00000000U)		   /*!<Indirect write mode*/
 #define QSPI_FUNCTIONAL_MODE_INDIRECT_READ ((uint32_t)QUADSPI_CCR_FMODE_0) /*!<Indirect read mode*/
 #define QSPI_FUNCTIONAL_MODE_AUTO_POLLING ((uint32_t)QUADSPI_CCR_FMODE_1)  /*!<Automatic polling mode*/
 #define QSPI_FUNCTIONAL_MODE_MEMORY_MAPPED ((uint32_t)QUADSPI_CCR_FMODE)   /*!<Memory-mapped mode*/
+
+#ifdef USE_HAL_DRIVER
+#include "stm32mp1xx.h"
+#else
 
 /** @defgroup QSPI_SampleShifting QSPI Sample Shifting
  * @{
@@ -143,7 +150,6 @@ enum EraseCommands {
 /** @defgroup QSPI_AddressSize QSPI Address Size
  * @{
  */
-#define QSPI_ADDRESSSIZE_NONE ((uint32_t)0x00000000U)
 #define QSPI_ADDRESS_8_BITS ((uint32_t)0x00000000U)			  /*!<8-bit address*/
 #define QSPI_ADDRESS_16_BITS ((uint32_t)QUADSPI_CCR_ADSIZE_0) /*!<16-bit address*/
 #define QSPI_ADDRESS_24_BITS ((uint32_t)QUADSPI_CCR_ADSIZE_1) /*!<24-bit address*/
@@ -155,7 +161,6 @@ enum EraseCommands {
 /** @defgroup QSPI_AlternateBytesSize QSPI Alternate Bytes Size
  * @{
  */
-#define QSPI_ALTERNATE_BYTES_SIZE_NONE ((uint32_t)0x00000000U)
 #define QSPI_ALTERNATE_BYTES_8_BITS ((uint32_t)0x00000000U)			  /*!<8-bit alternate bytes*/
 #define QSPI_ALTERNATE_BYTES_16_BITS ((uint32_t)QUADSPI_CCR_ABSIZE_0) /*!<16-bit alternate bytes*/
 #define QSPI_ALTERNATE_BYTES_24_BITS ((uint32_t)QUADSPI_CCR_ABSIZE_1) /*!<24-bit alternate bytes*/
@@ -288,3 +293,5 @@ enum EraseCommands {
 #define QSPI_IT_FT QUADSPI_CR_FTIE /*!<Interrupt on the fifo threshold flag*/
 #define QSPI_IT_TC QUADSPI_CR_TCIE /*!<Interrupt on the transfer complete flag*/
 #define QSPI_IT_TE QUADSPI_CR_TEIE /*!<Interrupt on the transfer error flag*/
+
+#endif
