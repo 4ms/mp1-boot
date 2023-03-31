@@ -1,18 +1,16 @@
 #pragma once
+#include "board_conf.hh"
 #include "boot_image_def.hh"
 #include "boot_loader.hh"
 #include "drivers/norflash/qspi_norflash_read.h"
 #include "drivers/pinconf.hh"
 #include "print_messages.hh"
-#include <cstdint>
 
 struct BootNorLoader : BootLoader {
 	BootNorLoader()
 	{
-		PinConf d2{GPIO::F, PinNum::_7, PinAF::AF_9};
-		PinConf d3{GPIO::A, PinNum::_1, PinAF::AF_9};
-		d2.init(PinMode::Alt);
-		d3.init(PinMode::Alt);
+		Board::NORFlash::d2.init(PinMode::Alt);
+		Board::NORFlash::d3.init(PinMode::Alt);
 
 		QSPI_init();
 	}
