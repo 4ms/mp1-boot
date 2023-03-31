@@ -5,6 +5,7 @@ OPTFLAG = -O3
 SRCDIR = src
 EXTLIBDIR = third-party
 LINKSCR = linkscript.ld
+PATCHEDSTM32HALDIR = src/stm32hal_patched
 
 SD_DISK_DEV ?= /dev/disk4
 
@@ -16,7 +17,6 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/print.cc \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_usart.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_rcc.c \
-		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_sd.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_qspi.c \
@@ -36,6 +36,13 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
 		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
 		  $(EXTLIBDIR)/STM32_USB_Device_Library/Class/DFU/Src/usbd_dfu.c \
+		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_hal.c \
+		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_hal_pcd.c \
+		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_hal_pcd_ex.c \
+		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb.c \
+		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb_phy.c \
+
+		  # $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
@@ -49,6 +56,7 @@ INCLUDES = -I. \
 		   -I$(SRCDIR)/uboot-port/include \
 		   -I$(SRCDIR)/uboot-port/arch/arm/include \
 		   -I$(SRCDIR)/usb_dfu \
+		   -I$(PATCHEDSTM32HALDIR) \
 
 MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-abi=hard
 ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
