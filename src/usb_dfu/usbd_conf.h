@@ -27,6 +27,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32mp1xx.h"
+#include <string.h> //for memset
 
 #define USB_USB_HS // used in usbd_core.c
 
@@ -48,13 +49,12 @@ extern "C" {
 #define USBD_MAX_NUM_CONFIGURATION 1U
 #define USBD_MAX_STR_DESC_SIZ 0x100U
 #define USBD_SELF_POWERED 1U
-#define USBD_DEBUG_LEVEL 3U
+#define USBD_DEBUG_LEVEL 0U
 #define USE_USB_HS
 
 #if (USBD_DEBUG_LEVEL > 0U)
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #endif
 
 /* ECM, RNDIS, DFU Class Config */
