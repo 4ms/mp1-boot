@@ -38,12 +38,12 @@ SECTIONS {
         . = ALIGN(4);
     } >SYSRAM
 
-	.ARM.extab	 : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >ROM
+	.ARM.extab	 : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >SYSRAM
 	.ARM : {
 		__exidx_start = .;
 		*(.ARM.exidx*)
 		__exidx_end = .;
-	} >ROM
+	} >SYSRAM
 
 
     .preinit_array : {
