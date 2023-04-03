@@ -92,7 +92,7 @@ SECTIONS {
 
 
 	_user_stack_end = __STACK_START;
-	_user_stack_start = _user_stack_end - 0x1000;
+	_user_stack_start = _user_stack_end - 0x10000;
 
 	_svc_stack_end = _user_stack_start;
 	_svc_stack_start = _svc_stack_end - 0x100;
