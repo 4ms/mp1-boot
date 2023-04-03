@@ -1,5 +1,5 @@
 #include "irq_ctrl.h"
-// #include "mmu_ca7.h"
+#include "mmu_ca7.h"
 #include "stm32mp1xx.h"
 
 uint32_t SystemCoreClock = 24000000;

@@ -46,7 +46,9 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb.c \
 		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb_phy.c \
 
-		  # $(SRCDIR)/mmu_ca7.c \
+SOURCES += $(SRCDIR)/mmu_ca7.c
+
+#TODO: how is this HAL different from the patched HAL, and is it important?
 		  # $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 
 INCLUDES = -I. \

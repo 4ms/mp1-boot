@@ -42,6 +42,9 @@
 #define __HEAP_BASE 0xD0000000
 #define __HEAP_SIZE 0x10000000
 
+#define __DDR_RAM 0xC0000000
+#define __DDR_RAM_SIZE 0x10000000
+
 #define __TTB_BASE 0xC0100000
 
 #define A7_SYSRAM_BASE 0x2FFC0000
@@ -116,30 +119,33 @@ void MMU_CreateTranslationTable(void)
 	MMU_TTSection(TTB_BASE, __RAM_BASE, __RAM_SIZE / 0x100000, Sect_Normal_RW);
 	MMU_TTSection(TTB_BASE, __RAM2_BASE, __RAM2_SIZE / 0x100000, Sect_Normal_RW);
 	MMU_TTSection(TTB_BASE, __HEAP_BASE, __HEAP_SIZE / 0x100000, Sect_Normal_RW);
+	// MMU_TTSection(TTB_BASE, __DDR_RAM, __DDR_RAM_SIZE / 0x100000, Sect_Normal);
 
 	// SRAM1-4, used by Cortex-M4 MCU for code execution and stack
 	// It's actually is only 384kB, but we can set the whole 1MB section
-	MMU_TTSection(TTB_BASE, A7_SRAM1_BASE, 1, Sect_Device_RW);
+	// MMU_TTSection(TTB_BASE, A7_SRAM1_BASE, 1, Sect_Device_RW);
 
 	// Peripheral memory. Again, the actual peripherals use  only bits of pieces of the address spaces
 	MMU_TTSection(TTB_BASE, 0x40000000, 0x10000000 / 0x100000, Sect_Device_RW);
 	MMU_TTSection(TTB_BASE, 0x50000000, 0x10000000 / 0x100000, Sect_Device_RW);
 
 	// SYSRAM (256kB MCU RAM)
-	MMU_TTSection(TTB_BASE, A7_SYSRAM_1MB_SECTION_BASE, 1, Sect_Normal_RW);
+	// Allow execution (FSBL executes here)
+	MMU_TTSection(TTB_BASE, A7_SYSRAM_1MB_SECTION_BASE, 1, Sect_Normal);
 
 	// GIC, aka "Private peripherals". Starts at the address returned by __get_CBAR()
 	// For no particular reason, we use 4kb pages here instead of a 1MB section.
 	// Mostly I just wanted to document-by-example the process of using 4kb pages.
 	//
 	// Create (256 * 4k)=1MB faulting entries
-	MMU_TTPage4k(TTB_BASE, __get_CBAR(), 256, Page_L1_4k, (uint32_t *)PRIVATE_TABLE_L2_BASE_4k, DESCRIPTOR_FAULT);
+	// MMU_TTPage4k(TTB_BASE, __get_CBAR(), 256, Page_L1_4k, (uint32_t *)PRIVATE_TABLE_L2_BASE_4k, DESCRIPTOR_FAULT);
+	MMU_TTPage4k(TTB_BASE, __get_CBAR(), 256, Page_L1_4k, (uint32_t *)PRIVATE_TABLE_L2_BASE_4k, Page_4k_Device_RW);
 	// Define private address space entry. 8 pages of 4k each = 32k = 0x8000
 	MMU_TTPage4k(TTB_BASE, __get_CBAR(), 8, Page_L1_4k, (uint32_t *)PRIVATE_TABLE_L2_BASE_4k, Page_4k_Device_RW);
 
 	// Co-processor vector table (Cortex-M4)
 	// From A7's perspective, the M4 vectors are at 0x38000000 (form M4's perspective, they're at 0x00000000)
-	MMU_TTSection(TTB_BASE, M4_VECTORS_BASE, 1, Sect_Device_RW);
+	// MMU_TTSection(TTB_BASE, M4_VECTORS_BASE, 1, Sect_Device_RW);
 
 	/* Set location of level 1 page table
 	; 31:14 - Translation table base addr (31:14-TTBCR.N, TTBCR.N is 0 out of reset)

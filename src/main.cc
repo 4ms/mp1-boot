@@ -15,6 +15,11 @@
 // Note: select your board configuration in board_conf.hh
 #include "board_conf.hh"
 
+extern "C" {
+#include "irq_ctrl.h"
+#include "mmu_ca7.h"
+}
+
 void main()
 {
 	Board::OrangeLED led;
@@ -46,6 +51,24 @@ void main()
 	// Look for DFU pin pulled down
 	if (!Board::DFUMode.read()) {
 		print("DFU Mode pin detected low => Starting USB DFU mode.\n");
+
+		__set_TLBIALL(0);
+		__set_BPIALL(0);
+		__DSB();
+		__ISB();
+		__set_ICIALLU(0);
+		__DSB();
+		__ISB();
+		L1C_InvalidateDCacheAll();
+		__FPU_Enable();
+		MMU_CreateTranslationTable();
+		MMU_Enable();
+		L1C_EnableCaches();
+		L1C_EnableBTAC();
+#if (__L2C_PRESENT == 1)
+		L2C_Enable();
+#endif
+		// IRQ_Initialize();
 
 		if (DFUClocks::init())
 			print("Clocks init OK\n");
