@@ -33,7 +33,6 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/usb_dfu/usbd_desc.c \
 		  $(SRCDIR)/usb_dfu/usbd_dfu_media.c \
 		  $(SRCDIR)/usb_dfu/norflash/qspi_flash_driver.cc \
-		  $(SRCDIR)/mmu_ca7.c \
 		  $(SRCDIR)/irq_init.c \
 		  $(SRCDIR)/irq_handler.cc \
 		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_core.c \
@@ -46,6 +45,7 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb.c \
 		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb_phy.c \
 
+		  #$(SRCDIR)/mmu_ca7.c \
 		  # $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 
 INCLUDES = -I. \
