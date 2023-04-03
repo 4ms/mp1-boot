@@ -38,6 +38,14 @@ SECTIONS {
         . = ALIGN(4);
     } >SYSRAM
 
+	.ARM.extab	 : { *(.ARM.extab* .gnu.linkonce.armextab.*) } >ROM
+	.ARM : {
+		__exidx_start = .;
+		*(.ARM.exidx*)
+		__exidx_end = .;
+	} >ROM
+
+
     .preinit_array : {
         PROVIDE_HIDDEN (__preinit_array_start = .);
         KEEP (*(.preinit_array*))
