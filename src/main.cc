@@ -1,5 +1,6 @@
 #include "boot_media_loader.hh"
 #include "delay.h"
+#include "dfu_clk.hh"
 #include "drivers/clocks.hh"
 #include "drivers/ddr/ram_tests.hh"
 #include "drivers/ddr/stm32mp1_ram.h"
@@ -45,6 +46,11 @@ void main()
 	// Look for DFU pin pulled down
 	if (!Board::DFUMode.read()) {
 		print("DFU Mode pin detected low => Starting USB DFU mode.\n");
+
+		if (DFUClocks::init())
+			print("Clocks init OK\n");
+		else
+			print("FAIL: clocks not init\n");
 
 		// Start USB DFU
 		NorFlashDFULoader flash_writer;

@@ -18,6 +18,7 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_usart.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_rcc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_rcc.c \
+		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_rcc_ex.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_sd.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_qspi.c \
@@ -45,7 +46,7 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb.c \
 		  $(PATCHEDSTM32HALDIR)/stm32mp1xx_ll_usb_phy.c \
 
-		  #$(SRCDIR)/mmu_ca7.c \
+		  # $(SRCDIR)/mmu_ca7.c \
 		  # $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 
 INCLUDES = -I. \
