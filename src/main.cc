@@ -23,7 +23,7 @@ void main()
 	security_init();
 
 	Uart<Board::ConsoleUART> console(Board::UartRX, Board::UartTX, 115200);
-	print("\n\nMP1-Boot\n\n");
+	print("\n\nMP1-Boot (with USB-DFU support)\n\n");
 	print("MPU Clock: ", clockspeed, " Hz\n");
 
 	if constexpr (Board::PMIC::HasSTPMIC) {
@@ -54,7 +54,7 @@ void main()
 
 		// TODO: timer, if not connection in 10seconds? then continue booting
 		while (true)
-			;
+			__WFI();
 	}
 
 	auto boot_method = BootDetect::read_boot_method();

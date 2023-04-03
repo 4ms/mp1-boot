@@ -110,8 +110,7 @@ bss_loop:
 	bl SystemInit 									// Setup MMU, TLB, Caches, FPU, IRQ
     bl __libc_init_array 							// libc init (static constructors)
 
-	//Do not enable IRQ interrupts, this project doesn't use them
-	//cpsie  i 
+	cpsie  i 
 
 run_main:
     bl main
@@ -130,9 +129,6 @@ PAbt_Handler:
 	b .
 
 DAbt_Handler:
-	b .
-
-IRQ_Handler:
 	b .
 
 FIQ_Handler:

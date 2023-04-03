@@ -1,3 +1,5 @@
+#include "irq_ctrl.h"
+// #include "mmu_ca7.h"
 #include "stm32mp1xx.h"
 
 uint32_t SystemCoreClock = 24000000;
@@ -24,12 +26,17 @@ void SystemInit(void)
 
 	__FPU_Enable();
 
+	// MMU_CreateTranslationTable();
+	// MMU_Enable();
+
 	L1C_EnableCaches();
 	L1C_EnableBTAC();
 
 #if (__L2C_PRESENT == 1)
 	L2C_Enable();
 #endif
+
+	IRQ_Initialize();
 }
 
 void security_init()

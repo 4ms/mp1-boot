@@ -33,6 +33,9 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/usb_dfu/usbd_desc.c \
 		  $(SRCDIR)/usb_dfu/usbd_dfu_media.c \
 		  $(SRCDIR)/usb_dfu/norflash/qspi_flash_driver.cc \
+		  $(SRCDIR)/mmu_ca7.c \
+		  $(SRCDIR)/irq_init.c \
+		  $(SRCDIR)/irq_handler.cc \
 		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_core.c \
 		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
 		  $(EXTLIBDIR)/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
