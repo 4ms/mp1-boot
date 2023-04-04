@@ -32,6 +32,8 @@ constexpr PinConf UartTX{GPIO::G, PinNum::_11, PinAF::AF_6};
 namespace NORFlash
 {
 constexpr bool HasNORFlash = false;
+constexpr PinConf d2{};
+constexpr PinConf d3{};
 } // namespace NORFlash
 
 namespace PMIC

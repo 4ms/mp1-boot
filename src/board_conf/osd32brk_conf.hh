@@ -25,6 +25,8 @@ constexpr bool UseBoolSelect = false;
 namespace NORFlash
 {
 constexpr bool HasNORFlash = false;
+constexpr PinConf d2{};
+constexpr PinConf d3{};
 } // namespace NORFlash
 
 namespace PMIC
