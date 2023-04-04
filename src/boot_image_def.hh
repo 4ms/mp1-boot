@@ -9,6 +9,7 @@ namespace BootImageDef
 constexpr uint32_t NorFlashAppAddr = 0x80000;
 constexpr uint32_t NorFlashSSBLAddr = 0x50000;
 constexpr uint32_t SDCardSSBLPartition = 3;
+constexpr uint32_t SDCardAppPartition = 4;
 
 constexpr uint32_t IH_MAGIC = 0x27051956; /* Image Magic Number		*/
 constexpr uint32_t IH_NMLEN = 32;		  /* Image Name Length		*/

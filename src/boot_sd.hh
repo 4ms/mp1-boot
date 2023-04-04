@@ -38,7 +38,8 @@ struct BootSDLoader : BootLoader {
 
 	BootImageDef::image_header read_image_header(LoadTarget target) override
 	{
-		// TODO: handle target==App vs SSBL
+		auto image_part_num = target == LoadTarget::App ? app_part_num : ssbl_part_num;
+
 		BootImageDef::image_header header{};
 
 		// TODO: get_next_gpt_header(&gpt_hdr)
@@ -50,29 +51,27 @@ struct BootSDLoader : BootLoader {
 			read(gpt_hdr, blockaddr);
 			if (validate_gpt_header(&gpt_hdr, blockaddr, last_block)) {
 
-				ssbl_blockaddr = get_gpt_partition_startaddr(gpt_hdr);
-				if (ssbl_blockaddr != InvalidPartitionNum)
+				image_blockaddr = get_gpt_partition_startaddr(gpt_hdr, image_part_num);
+				if (image_blockaddr != InvalidPartitionNum)
 					break;
 			}
 		}
-		if (ssbl_blockaddr == InvalidPartitionNum) {
+		if (image_blockaddr == InvalidPartitionNum) {
 			// pr_err("No valid GPT header found\n");
 			return {};
 		}
 
 		// log("GPT partition header says partition %d is at %llu. Reading\n", ssbl_part_num, ssbl_blockaddr);
-		read(header, ssbl_blockaddr);
+		read(header, image_blockaddr);
 		return header;
 	}
 
 	bool load_image(uint32_t load_addr, uint32_t size, LoadTarget target) override
 	{
-		// TODO: handle target==App vs SSBL
-
 		auto load_dst = reinterpret_cast<uint8_t *>(load_addr);
 		uint32_t num_blocks = (size + hsd.SdCard.BlockSize - 1) / hsd.SdCard.BlockSize;
 		// log("Reading %d blocks starting with block %llu from SD Card\n", num_blocks, ssbl_blockaddr);
-		auto err = HAL_SD_ReadBlocks(&hsd, load_dst, ssbl_blockaddr, num_blocks, 0xFFFFFF);
+		auto err = HAL_SD_ReadBlocks(&hsd, load_dst, image_blockaddr, num_blocks, 0xFFFFFF);
 		return (err == HAL_OK);
 	}
 
@@ -80,15 +79,17 @@ struct BootSDLoader : BootLoader {
 
 private:
 	static constexpr uint32_t ssbl_part_num = BootImageDef::SDCardSSBLPartition - 1;
+	static constexpr uint32_t app_part_num = BootImageDef::SDCardAppPartition - 1;
+
 	static constexpr uint32_t InvalidPartitionNum = 0xFFFFFFFF;
 
 	SD_HandleTypeDef hsd;
-	uint64_t ssbl_blockaddr = 0;
+	uint64_t image_blockaddr = 0;
 	bool _has_error = false;
 
 	// Given a gpt_header, find the starting address (LBA) of the SSBL partition
 	// Validate the gpt partition entry, too.
-	uint64_t get_gpt_partition_startaddr(gpt_header &gpt_hdr)
+	uint64_t get_gpt_partition_startaddr(gpt_header &gpt_hdr, uint32_t image_part_num)
 	{
 		std::array<gpt_entry, 4> ptes;
 
@@ -97,10 +98,10 @@ private:
 		if (hsd.SdCard.BlockSize != 512)
 			sdcard_error();
 
-		uint32_t part_lba = gpt_hdr.partition_entry_lba + (ssbl_part_num / 4);
+		uint32_t part_lba = gpt_hdr.partition_entry_lba + (image_part_num / 4);
 		read(ptes, part_lba);
-		if (validate_partition_entry(ptes[ssbl_part_num % 4])) {
-			return ptes[ssbl_part_num % 4].starting_lba;
+		if (validate_partition_entry(ptes[image_part_num % 4])) {
+			return ptes[image_part_num % 4].starting_lba;
 		}
 
 		return InvalidPartitionNum;
