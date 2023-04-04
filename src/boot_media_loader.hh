@@ -13,6 +13,7 @@ struct AppImageInfo {
 };
 
 class BootMediaLoader {
+	using enum BootLoader::LoadTarget;
 
 public:
 	BootMediaLoader(BootDetect::BootMethod boot_method)
@@ -22,24 +23,26 @@ public:
 			pr_err("BootMediaLoader(): Unknown boot method\n");
 	}
 
-	bool load_image()
+	bool load_image(BootLoader::LoadTarget target)
 	{
 		if (!_loader) {
 			pr_err("BootMediaLoader::load_image(): Unknown boot method\n");
 			return false;
 		}
 
+		_target = target;
+
 		BootImageDef::image_header header;
 		static_assert(sizeof(header) == BootImageDef::HeaderSize);
 
-		header = _loader->read_image_header();
+		header = _loader->read_image_header(target);
 
 		if (!_parse_header(header)) {
 			pr_err("No valid img header found\n");
 			return false;
 		}
 
-		bool ok = _loader->load_image(_image_info.load_addr, _image_info.size);
+		bool ok = _loader->load_image(_image_info.load_addr, _image_info.size, target);
 		if (!ok) {
 			pr_err("Failed reading boot media when loading app img\n");
 			return false;
@@ -53,7 +56,7 @@ public:
 	void boot_image()
 	{
 		if (!_image_loaded) {
-			if (!load_image()) {
+			if (!load_image(_target)) {
 				pr_err("Failed to jump to app because of error loading image\n");
 				return;
 			}
@@ -74,9 +77,12 @@ public:
 
 private:
 	bool _image_loaded = false;
+	BootLoader::LoadTarget _target = App;
+
 	AppImageInfo _image_info;
 	// We don't have dynamic memory, so instead of having a static copy of each
 	// type of loader we use placement new.
+	// TODO: use std::variant
 	uint8_t loader_storage[std::max(sizeof(BootSDLoader), sizeof(BootNorLoader))];
 	BootLoader *_loader;
 
@@ -86,7 +92,7 @@ private:
 	{
 		return bootmethod == BootDetect::BOOT_NOR	 ? new (loader_storage) BootNorLoader :
 			   bootmethod == BootDetect::BOOT_SDCARD ? new (loader_storage) BootSDLoader :
-														 static_cast<BootLoader *>(nullptr);
+													   static_cast<BootLoader *>(nullptr);
 	}
 
 	bool _parse_header(BootImageDef::image_header &header)

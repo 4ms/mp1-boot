@@ -36,8 +36,9 @@ struct BootSDLoader : BootLoader {
 			init_error();
 	}
 
-	BootImageDef::image_header read_image_header() override
+	BootImageDef::image_header read_image_header(LoadTarget target) override
 	{
+		// TODO: handle target==App vs SSBL
 		BootImageDef::image_header header{};
 
 		// TODO: get_next_gpt_header(&gpt_hdr)
@@ -64,8 +65,10 @@ struct BootSDLoader : BootLoader {
 		return header;
 	}
 
-	bool load_image(uint32_t load_addr, uint32_t size) override
+	bool load_image(uint32_t load_addr, uint32_t size, LoadTarget target) override
 	{
+		// TODO: handle target==App vs SSBL
+
 		auto load_dst = reinterpret_cast<uint8_t *>(load_addr);
 		uint32_t num_blocks = (size + hsd.SdCard.BlockSize - 1) / hsd.SdCard.BlockSize;
 		// log("Reading %d blocks starting with block %llu from SD Card\n", num_blocks, ssbl_blockaddr);
@@ -73,10 +76,7 @@ struct BootSDLoader : BootLoader {
 		return (err == HAL_OK);
 	}
 
-	bool has_error()
-	{
-		return _has_error;
-	}
+	bool has_error() { return _has_error; }
 
 private:
 	static constexpr uint32_t ssbl_part_num = BootImageDef::SDCardSSBLPartition - 1;

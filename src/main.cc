@@ -16,6 +16,8 @@
 void main()
 {
 	Board::OrangeLED led;
+	// Pin to select if we jump to app at 0x80000 (default) or to the SSBL at (0x50000) if pin is detected as low
+	Board::StartSSBLPin.init(PinMode::Input, PinPull::Up);
 
 	auto clockspeed = SystemClocks::init_core_clocks(Board::HSE_Clock_Hz, Board::MPU_MHz, Board::ClockType);
 	security_init();
@@ -43,11 +45,19 @@ void main()
 	auto boot_method = BootDetect::read_boot_method();
 	print("Booted from ", BootDetect::bootmethod_string(boot_method).data(), "\n");
 
-	print("Loading app image...\n");
+	BootLoader::LoadTarget image_type;
+	// Check SSBL pin
+	if (!Board::StartSSBLPin.read()) {
+		image_type = BootLoader::LoadTarget::SSBL;
+		print("Loading SSBL image...\n");
+	} else {
+		image_type = BootLoader::LoadTarget::App;
+		print("Loading app image...\n");
+	}
 
 	BootMediaLoader loader{boot_method};
 
-	bool image_ok = loader.load_image();
+	bool image_ok = loader.load_image(image_type);
 
 	if (image_ok) {
 		print("Jumping to app\n");
