@@ -18,6 +18,10 @@ using LD5 = GreenLED;
 using RedLED = Led<GPIO::A, PinNum::_13, LedActive::High>;
 using LD6 = RedLED;
 
+// Button USER2 (also activates RedLED)
+constexpr bool UseBootSelect = false;
+constexpr PinConf BootSelectPin{GPIO::A, PinNum::_13};
+
 using RedLED2 = OrangeLED; // For compatibility with OSD32BRK board
 using GreenLED2 = BlueLED; // For compatibility with OSD32BRK board
 

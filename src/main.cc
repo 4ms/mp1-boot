@@ -1,3 +1,6 @@
+// Note: select your board configuration in board_conf.hh
+#include "board_conf.hh"
+
 #include "boot_media_loader.hh"
 #include "delay.h"
 #include "drivers/clocks.hh"
@@ -9,9 +12,6 @@
 #include "print.hh"
 #include "stm32mp157cxx_ca7.h"
 #include "systeminit.h"
-
-// Note: select your board configuration in board_conf.hh
-#include "board_conf.hh"
 
 void main()
 {
@@ -45,8 +45,8 @@ void main()
 
 	BootLoader::LoadTarget image_type = BootLoader::LoadTarget::App;
 
-	// Check Boot Select pin if present
-	if constexpr (requires { Board::BootSelectPin.read(); }) {
+	// Check Boot Select pin
+	if constexpr (Board::UseBootSelect) {
 		Board::BootSelectPin.init(PinMode::Input, PinPull::Up, PinPolarity::Inverted);
 		// delay to allow pull-up to settle
 		udelay(1000);
