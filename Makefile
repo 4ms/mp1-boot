@@ -45,6 +45,18 @@ ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
 			  -DCORE_CA7 \
 			  $(EXTRA_ARCH_CFLAGS) \
 
+ifeq ("$(BOARD_CONF)","OSD32")
+	ARCH_CFLAGS += -DBOARD_CONF_OSD32
+else
+ifeq ("$(BOARD_CONF)","DK2")
+	ARCH_CFLAGS += -DBOARD_CONF_DK2
+else
+ifneq ("$(BOARD_CONF)","")
+	ARCH_CFLAGS += -DBOARD_CONF_PATH=$(BOARD_CONF)
+endif
+endif
+endif
+
 AFLAGS = $(MCU)
 
 CFLAGS = -g2 \
