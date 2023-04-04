@@ -16,6 +16,7 @@ enum class GPIO : uint32_t {
 	J = GPIOJ_BASE,
 	K = GPIOK_BASE,
 	Z = GPIOZ_BASE,
+	Unused = 0,
 };
 
 enum class PinNum : uint16_t {
@@ -35,6 +36,7 @@ enum class PinNum : uint16_t {
 	_13 = (1 << 13),
 	_14 = (1 << 14),
 	_15 = (1 << 15),
+	Unused = 0,
 };
 
 enum class PinAF {
@@ -90,9 +92,9 @@ enum class PinPolarity {
 // Can be used as a convenient container for passing pin defintions
 // to a peripheral which performs the register initialization later
 struct PinConf {
-	GPIO gpio;
-	PinNum pin;
-	PinAF af;
+	GPIO gpio{GPIO::Unused};
+	PinNum pin{PinNum::Unused};
+	PinAF af{PinAF::AFNone};
 
 	void init(PinMode mode,
 			  PinPull pull = PinPull::None,
@@ -100,6 +102,9 @@ struct PinConf {
 			  PinSpeed speed = PinSpeed::High,
 			  PinOType otype = PinOType::PushPull) const
 	{
+		if (gpio == GPIO::Unused || pin == PinNum::Unused)
+			return;
+
 		auto port_ = reinterpret_cast<GPIO_TypeDef *>(gpio);
 		auto pin_ = static_cast<uint16_t>(pin);
 
@@ -169,6 +174,6 @@ struct PinConf {
 			   PINx == PinNum::_13 ? 13 :
 			   PINx == PinNum::_14 ? 14 :
 			   PINx == PinNum::_15 ? 15 :
-									   0;
+									 0;
 	}
 };
