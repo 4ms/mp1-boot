@@ -3,7 +3,7 @@
 #include "drivers/i2c_conf.hh"
 #include "drivers/leds.hh"
 
-namespace STM32MP1Disco
+namespace Board
 {
 using OrangeLED = Led<GPIO::H, PinNum::_7, LedActive::High>;
 using LD7 = OrangeLED;
@@ -18,12 +18,12 @@ using LD5 = GreenLED;
 using RedLED = Led<GPIO::A, PinNum::_13, LedActive::High>;
 using LD6 = RedLED;
 
+using RedLED2 = OrangeLED; // For compatibility with OSD32BRK board
+using GreenLED2 = BlueLED; // For compatibility with OSD32BRK board
+
 // Button USER2 (also activates RedLED)
 constexpr bool UseBootSelect = false;
 constexpr PinConf BootSelectPin{GPIO::A, PinNum::_13};
-
-using RedLED2 = OrangeLED; // For compatibility with OSD32BRK board
-using GreenLED2 = BlueLED; // For compatibility with OSD32BRK board
 
 constexpr uint32_t ConsoleUART = UART4_BASE;
 constexpr PinConf UartRX{GPIO::B, PinNum::_2, PinAF::AF_8};
@@ -49,4 +49,4 @@ constexpr I2C_Config I2C_config{
 constexpr uint32_t HSE_Clock_Hz = 24000000;
 constexpr uint32_t MPU_MHz = 650;
 constexpr auto ClockType = SystemClocks::HSEClockSource::AnalogOsc;
-} // namespace STM32MP1Disco
+} // namespace Board

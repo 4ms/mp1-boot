@@ -5,4 +5,3 @@
 // namespace Board = OSD32BRK;
 
 #include "stm32disco_conf.hh"
-namespace Board = STM32MP1Disco;

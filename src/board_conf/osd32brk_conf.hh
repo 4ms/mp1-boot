@@ -3,7 +3,7 @@
 #include "drivers/i2c_conf.hh"
 #include "drivers/leds.hh"
 
-namespace OSD32BRK
+namespace Board
 {
 
 using RedLED = Led<GPIO::Z, PinNum::_6, LedActive::Low>;
@@ -43,4 +43,4 @@ constexpr uint32_t HSE_Clock_Hz = 24000000;
 constexpr uint32_t MPU_MHz = 650;
 constexpr auto ClockType = SystemClocks::HSEClockSource::AnalogOsc;
 
-} // namespace OSD32BRK
+} // namespace Board
