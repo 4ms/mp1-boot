@@ -46,14 +46,16 @@ ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
 			  -DSTM32MP1 \
 			  -DCORE_CA7
 
-ifeq ($(BOARD_CONF),"OSD32")
+ifeq ("$(BOARD_CONF)","OSD32")
 	ARCH_CFLAGS += -DBOARD_CONF_OSD32
-endif
-ifeq ($(BOARD_CONF),"DK2")
+else
+ifeq ("$(BOARD_CONF)","DK2")
 	ARCH_CFLAGS += -DBOARD_CONF_DK2
+else
+ifneq ("$(BOARD_CONF)","")
+	ARCH_CFLAGS += -DBOARD_CONF_PATH=$(BOARD_CONF)
 endif
-ifneq ($(BOARD_CONF_PATH),)
-	ARCH_CFLAGS += -DBOARD_CONF_PATH=$(BOARD_CONF_PATH)
+endif
 endif
 
 AFLAGS = $(MCU)
