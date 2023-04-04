@@ -2,17 +2,22 @@
 
 ## Minimal, Performant Bootloader for the STM32MP15x
 
-This project replaces U-Boot with a simple single-stage bootloader.
+MP1-Boot is a fast, lightweight, and easily configured bootloader for the
+STM32MP15x.
 
+When using MP1-Boot, it replaces U-Boot with a single-stage bootloader.
 Normally U-Boot's First Stage Bootloader (SPL) loads the Second Stage
 Bootloader (U-Boot proper), which in turn loads the application. When using
 this bootloader, it loads the application immediately.
 
 ### Why not U-Boot?
 
-Why re-invent the wheel? Primarily for educational purposes.
+Why re-invent the wheel? MP1-Boot has very few features, which makes it fast
+(small binary, can boot a 1MB app in ~65ms). It's also easy to configure to new
+boards (take a look at a file in src/board_conf/ and compare to the number of
+options in U-Boot's menuconfig and DTS files).
 
-Secondarily, for a particular project I required fast booting with a somewhat
+For a particular project I required fast booting with a somewhat
 unorthodox boot algorithm, and had no need for all the features of U-Boot
 (command line, USB gadget, etc).
 
@@ -22,6 +27,10 @@ Universal), which means you can port to another platform easily. However, the
 complexity means debugging and customizing can be difficult, requiring a
 combination of searching through and modifying KConfig files, device trees
 (DTS), C code, and sometimes even linker outputs (`ll_entry_start()` etc).
+
+There are many, many awesome and useful features that U-Boot does, that
+MP1-Boot will never do. MP1-Boot is intended to fill a niche-case, not to
+replace U-Boot.
 
 ### How it works
 
@@ -50,12 +59,44 @@ RAM and then boot into it:
   - Detect the boot method (NOR Flash, SD Card, EMMC, etc.)
   - Verify the application image header, and load the image from the boot
 	medium into DDR RAM
+    * Optional: Read a "Boot Select" GPIO pin that selects what address to load the app from
   - Jump into the application 
   - Indicate an error on failure
 
 Also there is one step that is not strictly necessary, but useful:
 
   - Initialize the UART to allow for printing messages to the console
+
+### Boot Select Pin
+
+This is an optional feature. It lets you have two application firmware binaries
+present on a NOR Flash chip, and select which one to boot using a GPIO pin.
+The pin can be connected to a button, header, or jumper.
+
+This feature is enabled by defining `BootSelectPin` and setting `UseBootConf` to
+true in the board conf file.
+
+MP1-Boot will enable the internal pull-up on the BootSelectPin. Thus, if the
+pin is left floating, it will be read as high. This causes MP1 boot to load
+the application firmware as normal (from NOR Flash address 0x80000, or from
+SDMMC gpt partition 3).
+
+On the other hand, if the pin is being pulled low (because it's connected to a 
+button or switch that's shorting it to ground, or an external device is pulling it low),
+then MP1-Boot will load firmware from NOR Flash address 0x60000 or SDMMC 
+gpt partition 4. These values can be configured in `boot_image_def.hh`.
+
+The firmware at 0x60000 can be a maximum of 128kB since it cannot
+overlap the firmware at 0x80000 (0x80000 - 0x60000 = 128kB). 
+
+The use-case I designed this for is to allowing booting a USB DFU bootloader at
+0x60000, or the main application at 0x80000. The USB DFU bootloader allows a
+user to load new firmware over USB and write it to the NOR Flash.
+
+Another use-case could be to load a self-test firmware at 0x60000. A user could
+boot with a button pressed to verify their hardware is working.
+
+
 
 ### Dependencies, attribution, and inspriation
 
@@ -143,9 +184,6 @@ Discovery boards used in other projects. See examples of these files
 [here](examples/shared/osd32brk_conf.hh) and [here](stm32disco_conf.hh). Make
 sure you select the right board namespace at the top of main.cc.
 
-Unlike the other projects in this repository, you do not need to have U-boot
-installed on the SD Card or NOR flash.
-
 In this directory run one of these commands:
 
 ```
@@ -161,8 +199,9 @@ and enter the device name (such as `/dev/disk4`).
 `dd` commands to load `build/fsbl.stm32` onto partitions 1 and 2 of the SD
 Card.)
 
-The card must be partitioned the same way it's done in the other example
-projects. Use the `scripts/partition-sdcard.sh` script to do this. 
+The card must be partitioned the same way it's done in the example
+projects in the [stm32mp1-baremetal](https://github.com/4ms/stm32mp1-baremetal) repo.
+Use the `scripts/partition-sdcard.sh` script to do this
 
 Finally, copy the application uimg file to the 3rd partition like this:
 
