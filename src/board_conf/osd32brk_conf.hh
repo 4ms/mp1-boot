@@ -20,7 +20,7 @@ constexpr PinConf UartTX{GPIO::G, PinNum::_11, PinAF::AF_6};
 
 // Header C, pin 30 on OSD32MP1-BRK, can be shorted to neighboring GND pin
 constexpr PinConf BootSelectPin{GPIO::B, PinNum::_6};
-constexpr bool UseBoolSelect = false;
+constexpr bool UseBootSelect = false;
 
 namespace NORFlash
 {
