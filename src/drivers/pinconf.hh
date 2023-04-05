@@ -96,6 +96,8 @@ struct PinConf {
 	PinNum pin{PinNum::Unused};
 	PinAF af{PinAF::AFNone};
 
+	// FIXME: Polarity is not used
+
 	void init(PinMode mode,
 			  PinPull pull = PinPull::None,
 			  PinPolarity polarity = PinPolarity::Normal,

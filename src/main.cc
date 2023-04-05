@@ -47,10 +47,10 @@ void main()
 
 	// Check Boot Select pin
 	if constexpr (Board::UseBootSelect) {
-		Board::BootSelectPin.init(PinMode::Input, PinPull::Up, PinPolarity::Inverted);
+		Board::BootSelectPin.init(PinMode::Input, PinPull::Up);
 		// delay to allow pull-up to settle
 		udelay(1000);
-		if (Board::BootSelectPin.read()) {
+		if (!Board::BootSelectPin.read()) {
 			image_type = BootLoader::LoadTarget::SSBL;
 			print("Boot Select pin detected active: Loading alt image...\n");
 		}
