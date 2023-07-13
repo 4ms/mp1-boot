@@ -108,10 +108,21 @@ private:
 
 	void _enable_rcc()
 	{
+		if constexpr (BASE_ADDR == USART1_BASE)
+			mdrivlib::RCC_Enable::USART1_::set();
+		if constexpr (BASE_ADDR == USART2_BASE)
+			mdrivlib::RCC_Enable::USART2_::set();
+		if constexpr (BASE_ADDR == USART3_BASE)
+			mdrivlib::RCC_Enable::USART3_::set();
 		if constexpr (BASE_ADDR == UART4_BASE)
-			RCC->MP_APB1ENSETR = RCC->MP_APB1ENSETR | RCC_MP_APB1ENSETR_UART4EN;
+			mdrivlib::RCC_Enable::UART4_::set();
+		if constexpr (BASE_ADDR == UART5_BASE)
+			mdrivlib::RCC_Enable::UART5_::set();
 		if constexpr (BASE_ADDR == USART6_BASE)
-			RCC->MP_APB2ENSETR = RCC->MP_APB2ENSETR | RCC_MP_APB2ENSETR_USART6EN;
-		// TODO: add the rest
+			mdrivlib::RCC_Enable::USART6_::set();
+		if constexpr (BASE_ADDR == UART7_BASE)
+			mdrivlib::RCC_Enable::UART7_::set();
+		if constexpr (BASE_ADDR == UART8_BASE)
+			mdrivlib::RCC_Enable::UART8_::set();
 	}
 };
