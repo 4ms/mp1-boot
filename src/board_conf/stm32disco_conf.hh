@@ -25,6 +25,11 @@ using GreenLED2 = BlueLED; // For compatibility with OSD32BRK board
 constexpr bool UseBootSelect = false;
 constexpr PinConf BootSelectPin{GPIO::A, PinNum::_13};
 
+// Freeze mode: halts booting after initializing everything
+// so you can load firmware via SWD/JTAG
+constexpr bool UseFreezePin = false;
+constexpr PinConf FreezePin{GPIO::Unused, PinNum::_0};
+
 constexpr uint32_t ConsoleUART = UART4_BASE;
 constexpr PinConf UartRX{GPIO::B, PinNum::_2, PinAF::AF_8};
 constexpr PinConf UartTX{GPIO::G, PinNum::_11, PinAF::AF_6};
