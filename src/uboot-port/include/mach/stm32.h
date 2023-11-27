@@ -31,7 +31,10 @@
 #define STM32_SYSRAM_SIZE		SZ_256K
 
 #define STM32_DDR_BASE			0xC0000000
-#define STM32_DDR_SIZE			SZ_1G
+#define STM32_DDR_END			0xFFFFFFFF
+
+#define STM32MP15x_SRAM_SIZE	(384UL * 1024UL)
+#define STM32MP15x_RETRAM_SIZE	(64UL * 1024UL)
 
 #ifndef __ASSEMBLY__
 /* enumerated used to identify the SYSCON driver instance */
