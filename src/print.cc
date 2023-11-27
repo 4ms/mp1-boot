@@ -15,6 +15,8 @@ void printone(const char *str)
 		putchar_s(*str++);
 }
 
+void printone(char c) { putchar_s(c); }
+
 void printone(Hex hex)
 {
 	auto value = hex.x;
@@ -43,19 +45,14 @@ void printone(Hex hex)
 	printone(buf);
 }
 
-void printone(int value)
+void printone(unsigned long long value)
 {
 	if (!value) {
 		printone("0");
 		return;
 	}
 
-	if (value < 0) {
-		printone("-");
-		value = -value;
-	}
-
-	constexpr int MAX_DIGITS = 10;
+	constexpr int MAX_DIGITS = 20; // 2^64 has 20 digits in base-10
 	char buf[MAX_DIGITS + 1];
 	int len = 0;
 	do {
@@ -73,3 +70,17 @@ void printone(int value)
 
 	printone(buf);
 }
+
+void printone(unsigned long value) { printone((unsigned long long)value); }
+void printone(unsigned value) { printone((unsigned long long)value); }
+
+void printone(long long value)
+{
+	if (value < 0) {
+		printone('-');
+		printone(-value);
+	} else
+		printone((unsigned long long)value);
+}
+void printone(long value) { printone((long long)value); }
+void printone(int value) { printone((long long)value); }
