@@ -4,9 +4,11 @@
 #include "boot_nor.hh"
 #include "boot_sd.hh"
 #include "compiler.h"
+#include "mach/stm32.h"
 #include "print_messages.hh"
+#include <optional>
 
-struct AppImageInfo {
+struct ImageInfo {
 	uint32_t load_addr = 0;
 	uint32_t entry_point = 0;
 	uint32_t size = 0;
@@ -30,63 +32,66 @@ public:
 			return false;
 		}
 
-		_target = target;
+		constexpr auto header_size = sizeof(BootImageDef::image_header);
+		auto current_header_addr = _loader->get_first_header_addr(target);
 
-		BootImageDef::image_header header;
-		static_assert(sizeof(header) == BootImageDef::HeaderSize);
+		while (true) {
+			log("Reading uimg header from 0x", Hex{current_header_addr}, "\n");
+			auto header = _loader->read_image_header(current_header_addr);
+			auto info = _parse_header(header);
 
-		header = _loader->read_image_header(target);
+			if (info) {
+				auto end_addr = info->load_addr + info->size - header_size;
 
-		if (!_parse_header(header)) {
-			pr_err("No valid img header found\n");
-			return false;
-		}
+				if (valid_addr(info->load_addr) && valid_addr(end_addr)) {
+					uint32_t body_addr = current_header_addr + header_size;
 
-		log("Loading to 0x", Hex{_image_info.load_addr}, "\n");
-		bool ok = _loader->load_image(_image_info.load_addr, _image_info.size, target);
-		if (!ok) {
-			pr_err("Failed reading boot media when loading app img\n");
-			return false;
-		}
+					log("Loading 0x", Hex{info->size}, " bytes from 0x", Hex{body_addr});
+					log(" into 0x", Hex{info->load_addr}, "\n");
+					_loader->load_image(body_addr, info->load_addr, info->size);
 
-		_image_loaded = true;
-		return true;
-	}
+				} else {
+					log("Skipping Section with invalid load address range: ");
+					log("0x", Hex{info->load_addr}, "+ 0x", Hex{info->size}, "\n");
+				}
 
-	typedef void __attribute__((noreturn)) (*image_entry_noargs_t)(void);
-	void boot_image()
-	{
-		if (!_image_loaded) {
-			if (!load_image(_target)) {
-				pr_err("Failed to jump to app because of error loading image\n");
-				return;
+				current_header_addr += info->size;
+
+			} else {
+				log("No more sections found\n");
+				break;
 			}
 		}
 
-		auto image_entry = reinterpret_cast<image_entry_noargs_t>(_image_info.entry_point);
-		log("image entry point: 0x", Hex{_image_info.entry_point}, "\n");
-		image_entry();
+		return true;
+	}
+
+	void boot_image()
+	{
+		if (_entry_point.has_value()) {
+
+			typedef void __attribute__((noreturn)) (*image_entry_noargs_t)();
+			auto image_entry = reinterpret_cast<image_entry_noargs_t>(_entry_point.value());
+			log("Jumping to image entry point: 0x", Hex{_entry_point.value()}, "\n");
+
+			image_entry();
+
+		} else {
+			pr_err("No images containing an entry point have been loaded.\n");
+		}
 	}
 
 	// You may call this to change boot methods. For example
 	// if load_image() fails, you can try a different boot method
 	bool set_bootmethod(BootDetect::BootMethod new_boot_method)
 	{
+		_entry_point = std::nullopt;
+
 		_loader = _get_boot_loader(new_boot_method);
 		return (_loader != nullptr);
 	}
 
 private:
-	bool _image_loaded = false;
-	BootLoader::LoadTarget _target = App;
-
-	AppImageInfo _image_info;
-	// We don't have dynamic memory, so instead of having a static copy of each
-	// type of loader we use placement new.
-	// TODO: use std::variant
-	uint8_t loader_storage[std::max(sizeof(BootSDLoader), sizeof(BootNorLoader))];
-	BootLoader *_loader;
-
 	// To support a new boot media (such as NAND Flash),
 	// associate its class to the enum value BOOTROM uses for that media:
 	BootLoader *_get_boot_loader(BootDetect::BootMethod bootmethod)
@@ -96,50 +101,56 @@ private:
 													   static_cast<BootLoader *>(nullptr);
 	}
 
-	bool _parse_header(BootImageDef::image_header &header)
+	std::optional<ImageInfo> _parse_header(BootImageDef::image_header const &header)
 	{
-		log("Raw header (big-endian):\n");
-		log("  ih_magic: ", Hex{header.ih_magic}, "\n");
-		log("  ih_hcrc: ", Hex{header.ih_hcrc}, "\n");
-		log("  ih_time: ", Hex{header.ih_time}, "\n");
-		log("  ih_size: ", Hex{header.ih_size}, "\n");
-		log("  ih_load: ", Hex{header.ih_load}, "\n");
-		log("  ih_ep: ", Hex{header.ih_ep}, "\n");
-		log("  ih_dcrc: ", Hex{header.ih_dcrc}, "\n");
-		log("  ih_os: ", Hex{header.ih_os}, "\n");
-		log("  ih_arch: ", Hex{header.ih_arch}, "\n");
-		log("  ih_type: ", Hex{header.ih_type}, "\n");
-		log("  ih_comp: ", Hex{header.ih_comp}, "\n");
-		// Convert 32-char string to 0-padded C string:
-		char name_cstr[BootImageDef::IH_NMLEN + 1];
-		char *p = name_cstr;
+		debug("Raw header (big-endian):\n");
+		debug("  ih_magic: ", Hex{header.ih_magic}, "\n");
+		debug("  ih_hcrc:  ", Hex{header.ih_hcrc}, "\n");
+		debug("  ih_time:  ", Hex{header.ih_time}, "\n");
+		debug("  ih_size:  ", Hex{header.ih_size}, "\n");
+		debug("  ih_load:  ", Hex{header.ih_load}, "\n");
+		debug("  ih_ep:    ", Hex{header.ih_ep}, "\n");
+		debug("  ih_dcrc:  ", Hex{header.ih_dcrc}, "\n");
+		debug("  ih_os:    ", Hex{header.ih_os}, "\n");
+		debug("  ih_arch:  ", Hex{header.ih_arch}, "\n");
+		debug("  ih_type:  ", Hex{header.ih_type}, "\n");
+		debug("  ih_comp:  ", Hex{header.ih_comp}, "\n");
+		debug("  ih_name:  ");
 		for (char c : header.ih_name)
-			*p++ = c;
-		name_cstr[BootImageDef::IH_NMLEN] = 0;
-		log("  ih_name: ", name_cstr, "\n");
+			if (c >= 32 && c <= 126)
+				debug(c);
+		debug("\n");
+
+		ImageInfo image_info{};
 
 		uint32_t magic = be32_to_cpu(header.ih_magic);
 		if (magic == BootImageDef::IH_MAGIC) {
-			// if (header.ih_load == 0) {
-			// 	debug("ih_load is 0\n");
-			// On some system (e.g. powerpc), the load-address and
-			// entry-point is located at address 0. We can't load
-			// to 0-0x40. So skip header in this case.
-			_image_info.load_addr = be32_to_cpu(header.ih_load);
-			_image_info.entry_point = be32_to_cpu(header.ih_ep);
-			_image_info.size = be32_to_cpu(header.ih_size);
-			// } else {
-			// 	constexpr uint32_t header_size = sizeof(BootImageDef::image_header);
-			// 	_image_info.entry_point = be32_to_cpu(header.ih_load);
-			// 	_image_info.load_addr = _image_info.entry_point - header_size;
-			// 	_image_info.size = be32_to_cpu(header.ih_size) + header_size;
-			// }
+			auto entry_point = be32_to_cpu(header.ih_ep);
+			auto type = header.ih_type;
+			auto load_addr = be32_to_cpu(header.ih_load);
+			auto size = be32_to_cpu(header.ih_size);
 
-			log("Image load addr: 0x", Hex{_image_info.load_addr});
-			log(" entry_addr: 0x", Hex{_image_info.entry_point});
-			log(" size: ", Hex{_image_info.size}, "\n");
+			if (type == BootImageDef::IH_TYPE_KERNEL) {
+				if (entry_point >= load_addr && entry_point < (load_addr + size)) {
+					if (_entry_point.has_value())
+						pr_err("Error: more than one kernel image with a valid entry point found.\n");
+					else {
+						log("Setting entry point to 0x", Hex{entry_point}, "\n");
+						_entry_point = entry_point;
+						image_info.entry_point = entry_point;
+					}
+				} else
+					debug("Bad entry point found: 0x", Hex{entry_point}, "\n");
+			}
 
-			return true;
+			image_info.load_addr = load_addr;
+			image_info.size = size;
+
+			log("Image load addr: 0x", Hex{image_info.load_addr}, "\n");
+			log("     entry addr: 0x", Hex{image_info.entry_point}, "\n");
+			log("           size: 0x", Hex{image_info.size}, "\n");
+
+			return image_info;
 
 		} else {
 			// TODO: Handle raw images
@@ -147,6 +158,30 @@ private:
 			pr_err(" expected ", Hex{BootImageDef::IH_MAGIC}, "\n");
 		}
 
-		return false;
+		return std::nullopt;
 	}
+
+	bool valid_addr(uint64_t addr)
+	{
+		if (addr >= RETRAM_BASE && addr <= (RETRAM_BASE + STM32MP15x_RETRAM_SIZE))
+			return true;
+
+		if (addr >= SRAM_BASE && addr <= (SRAM_BASE + STM32MP15x_SRAM_SIZE))
+			return true;
+
+		if (addr >= STM32_DDR_BASE && addr <= STM32_DDR_END)
+			return true;
+
+		return false;
+	};
+
+	bool _image_loaded = false;
+
+	std::optional<uint32_t> _entry_point{};
+
+	// We don't have dynamic memory, so instead of having a static copy of each
+	// type of loader we use placement new.
+	// TODO: use std::variant
+	uint8_t loader_storage[std::max(sizeof(BootSDLoader), sizeof(BootNorLoader))];
+	BootLoader *_loader;
 };

@@ -5,6 +5,7 @@
 #include "drivers/norflash/qspi_norflash_read.h"
 #include "drivers/pinconf.hh"
 #include "print_messages.hh"
+#include <cstdint>
 
 struct BootNorLoader : BootLoader {
 	BootNorLoader()
@@ -15,13 +16,11 @@ struct BootNorLoader : BootLoader {
 		QSPI_init();
 	}
 
-	BootImageDef::image_header read_image_header(LoadTarget target) override
+	BootImageDef::image_header read_image_header(uint32_t header_addr) override
 	{
 		BootImageDef::image_header header;
 
-		auto flashaddr = target == LoadTarget::App ? BootImageDef::NorFlashAppAddr : BootImageDef::NorFlashSSBLAddr;
-
-		auto ok = QSPI_read_MM((uint8_t *)(&header), flashaddr, BootImageDef::HeaderSize);
+		auto ok = QSPI_read_MM((uint8_t *)(&header), header_addr, BootImageDef::HeaderSize);
 		if (!ok) {
 			pr_err("Failed reading NOR Flash\n");
 			return {};
@@ -30,11 +29,14 @@ struct BootNorLoader : BootLoader {
 		return header;
 	}
 
-	bool load_image(uint32_t load_addr, uint32_t size, LoadTarget target) override
+	bool load_image(uint32_t image_addr, uint32_t load_addr, uint32_t size) override
 	{
-		auto flashaddr = target == LoadTarget::App ? BootImageDef::NorFlashAppAddr : BootImageDef::NorFlashSSBLAddr;
-
 		auto load_dst = reinterpret_cast<uint8_t *>(load_addr);
-		return QSPI_read_MM(load_dst, flashaddr, size);
+		return QSPI_read_MM(load_dst, image_addr, size);
+	}
+
+	uint32_t get_first_header_addr(LoadTarget target) override
+	{
+		return (target == LoadTarget::App) ? BootImageDef::NorFlashAppAddr : BootImageDef::NorFlashSSBLAddr;
 	}
 };

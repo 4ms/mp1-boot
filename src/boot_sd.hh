@@ -3,8 +3,10 @@
 #include "boot_loader.hh"
 #include "drivers/pinconf.hh"
 #include "gpt/gpt.hh"
+#include "print_messages.hh"
 #include "stm32mp1xx_hal_sd.h"
 #include <array>
+#include <cstdint>
 
 struct BootSDLoader : BootLoader {
 	BootSDLoader()
@@ -36,11 +38,41 @@ struct BootSDLoader : BootLoader {
 			init_error();
 	}
 
-	BootImageDef::image_header read_image_header(LoadTarget target) override
+	BootImageDef::image_header read_image_header(uint32_t header_addr) override
+	{
+		log("Reading image header from address %lu...\n", header_addr);
+
+		BootImageDef::image_header header{};
+
+		// TODO: read more than one block and split up data if header_addr is not block-aligned
+
+		uint32_t block_num = header_addr / hsd.SdCard.BlockSize;
+		log("Reading SD Card block %lu\n", block_num);
+		read(header, block_num);
+
+		return header;
+	}
+
+	bool load_image(uint32_t image_addr, uint32_t load_addr, uint32_t size) override
+	{
+		uint32_t num_blocks = (size + hsd.SdCard.BlockSize - 1) / hsd.SdCard.BlockSize;
+		uint32_t block_num = image_addr / hsd.SdCard.BlockSize;
+
+		log("Reading %d blocks starting with block %llu from SD Card\n", num_blocks, block_num);
+
+		// TODO: split up data if image_addr is not block-aligned
+
+		auto load_dst = reinterpret_cast<uint8_t *>(load_addr);
+		auto err = HAL_SD_ReadBlocks(&hsd, load_dst, block_num, num_blocks, 0xFFFFFF);
+
+		return (err == HAL_OK);
+	}
+
+	uint32_t get_first_header_addr(LoadTarget target) override
 	{
 		auto image_part_num = target == LoadTarget::App ? app_part_num : ssbl_part_num;
 
-		BootImageDef::image_header header{};
+		uint32_t image_blockaddr = InvalidPartitionNum;
 
 		// TODO: get_next_gpt_header(&gpt_hdr)
 		gpt_header gpt_hdr;
@@ -57,22 +89,12 @@ struct BootSDLoader : BootLoader {
 			}
 		}
 		if (image_blockaddr == InvalidPartitionNum) {
-			// pr_err("No valid GPT header found\n");
+			pr_err("No valid GPT header found\n");
 			return {};
 		}
 
 		// log("GPT partition header says partition %d is at %llu. Reading\n", ssbl_part_num, ssbl_blockaddr);
-		read(header, image_blockaddr);
-		return header;
-	}
-
-	bool load_image(uint32_t load_addr, uint32_t size, LoadTarget target) override
-	{
-		auto load_dst = reinterpret_cast<uint8_t *>(load_addr);
-		uint32_t num_blocks = (size + hsd.SdCard.BlockSize - 1) / hsd.SdCard.BlockSize;
-		// log("Reading %d blocks starting with block %llu from SD Card\n", num_blocks, ssbl_blockaddr);
-		auto err = HAL_SD_ReadBlocks(&hsd, load_dst, image_blockaddr, num_blocks, 0xFFFFFF);
-		return (err == HAL_OK);
+		return image_blockaddr;
 	}
 
 	bool has_error() { return _has_error; }
@@ -84,7 +106,6 @@ private:
 	static constexpr uint32_t InvalidPartitionNum = 0xFFFFFFFF;
 
 	SD_HandleTypeDef hsd;
-	uint64_t image_blockaddr = 0;
 	bool _has_error = false;
 
 	// Given a gpt_header, find the starting address (LBA) of the SSBL partition
@@ -94,7 +115,7 @@ private:
 		std::array<gpt_entry, 4> ptes;
 
 		// Make sure we're loading 512B into a variable that's 512B
-		static_assert(sizeof(ptes) == 512, "GPT Entry must be 128 Bytes");
+		static_assert(sizeof(ptes) == 512, "GPT Entries must be 128 bytes each");
 		if (hsd.SdCard.BlockSize != 512)
 			sdcard_error();
 
