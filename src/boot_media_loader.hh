@@ -12,8 +12,9 @@
 
 struct ImageInfo {
 	uint32_t load_addr = 0;
-	uint32_t entry_point = 0;
 	uint32_t size = 0;
+	bool skip_header = false;
+	uint32_t entry_point = 0;
 };
 
 class BootMediaLoader {
@@ -38,29 +39,22 @@ public:
 		auto current_header_addr = _loader->get_first_header_addr(target);
 
 		while (true) {
-			log("\nReading 0x", Hex{current_header_addr}, " to check for uimg header\n");
+			log("\nReading 0x", Hex{current_header_addr}, " to look for a uimg header\n");
 
 			auto header = _loader->read_image_header(current_header_addr);
 			auto info = _parse_header(header);
 
 			if (info) {
-				uint32_t body_size = info->size - header_size;
-				uint32_t body_addr = current_header_addr + header_size;
-				uint32_t load_end_addr = info->load_addr + body_size;
+				uint32_t source_addr = current_header_addr;
+				if (info->skip_header)
+					source_addr += header_size;
 
-				if (valid_addr(info->load_addr) && valid_addr(load_end_addr)) {
+				log("Loading from 0x", Hex{source_addr}, "-0x", Hex{source_addr + info->size});
+				log(" to 0x", Hex{info->load_addr}, "-0x", Hex{info->load_addr + info->size}, "\n");
 
-					log("Loading from 0x", Hex{body_addr}, "-0x", Hex{body_addr + body_size});
-					log(" to 0x", Hex{info->load_addr}, "-0x", Hex{load_end_addr}, "\n");
+				_loader->load_image(source_addr, info->load_addr, info->size);
 
-					_loader->load_image(body_addr, info->load_addr, body_size);
-
-				} else {
-					log("Skipping Section with invalid load address range: ");
-					log("0x", Hex{info->load_addr}, "-0x", Hex{load_end_addr}, "\n");
-				}
-
-				current_header_addr += info->size;
+				current_header_addr = source_addr + info->size;
 
 			} else {
 				log("No more sections found\n");
@@ -99,6 +93,82 @@ public:
 private:
 	std::optional<ImageInfo> _parse_header(BootImageDef::image_header const &header)
 	{
+		debug_print_raw_header(header);
+
+		ImageInfo image_info{};
+
+		uint32_t magic = be32_to_cpu(header.ih_magic);
+		if (magic == BootImageDef::IH_MAGIC) {
+			auto entry_point = be32_to_cpu(header.ih_ep);
+			auto type = header.ih_type;
+			auto load_addr = be32_to_cpu(header.ih_load);
+			auto size = be32_to_cpu(header.ih_size);
+
+			// Look for entry point in Kernel type images
+			if (type == BootImageDef::IH_TYPE_KERNEL) {
+				if (entry_point >= load_addr && entry_point < (load_addr + size)) {
+					if (_entry_point.has_value())
+						pr_err("Error: more than one kernel image with a valid entry point found.\n");
+					else {
+						log("Setting entry point to 0x", Hex{entry_point}, "\n");
+						_entry_point = entry_point;
+					}
+				} else
+					pr_err("Bad entry point found: 0x", Hex{entry_point}, "\n");
+			}
+
+			if (std::strcmp((const char *)header.ih_name, "stm32mp1-baremetal image") == 0) {
+				// TODO: how to handle this better?
+				// Fix for old MetaModule images:
+				if (load_addr == 0xC1FBFFC0 && entry_point == 0xC2000040) {
+					log("Found legacy MetaModule image. Fixing load address\n");
+					load_addr += header_size;
+				}
+				// Fix for old USB DFU images:
+				if (load_addr == 0xC0200000 && entry_point == 0xC0200040) {
+					log("Found legacy USB DFU image. Fixing load address\n");
+					load_addr += header_size;
+				}
+			}
+
+			if (valid_addr(load_addr - header_size)) {
+				image_info.skip_header = false;
+				image_info.load_addr = load_addr - header_size;
+				image_info.size = size;
+			} else {
+				// If the load address is located at the beginning of a memory section,
+				// we can't load to 0x40 bytes before this. So skip header in this case.
+				image_info.skip_header = true;
+				image_info.load_addr = load_addr;
+				image_info.size = size - header_size;
+			}
+			image_info.entry_point = entry_point;
+
+			print_header_summary(image_info);
+
+			if (valid_addr(load_addr) && valid_addr(load_addr + size)) {
+				return image_info;
+			} else {
+				log("Not a valid image: Invalid load address range\n");
+			}
+
+		} else {
+			log("Not an image. Magic was ", Hex{magic}, ", expected ", Hex{BootImageDef::IH_MAGIC}, "\n");
+		}
+
+		return std::nullopt;
+	}
+
+	void print_header_summary(ImageInfo const &image_info)
+	{
+		log("Image load addr: 0x", Hex{image_info.load_addr}, "\n");
+		log("     entry addr: 0x", Hex{image_info.entry_point}, "\n");
+		log("           size: 0x", Hex{image_info.size}, "\n");
+		log("    skip header: ", image_info.skip_header ? "yes" : "no", "\n");
+	}
+
+	void debug_print_raw_header(BootImageDef::image_header const &header)
+	{
 		debug("Raw header (big-endian):\n");
 		debug("  ih_magic: ", Hex{header.ih_magic}, "\n");
 		debug("  ih_hcrc:  ", Hex{header.ih_hcrc}, "\n");
@@ -116,43 +186,6 @@ private:
 			if (c >= 32 && c <= 126)
 				debug(c);
 		debug("\n");
-
-		ImageInfo image_info{};
-
-		uint32_t magic = be32_to_cpu(header.ih_magic);
-		if (magic == BootImageDef::IH_MAGIC) {
-			auto entry_point = be32_to_cpu(header.ih_ep);
-			auto type = header.ih_type;
-			auto load_addr = be32_to_cpu(header.ih_load);
-			auto size = be32_to_cpu(header.ih_size);
-
-			if (type == BootImageDef::IH_TYPE_KERNEL) {
-				if (entry_point >= load_addr && entry_point < (load_addr + size)) {
-					if (_entry_point.has_value())
-						pr_err("Error: more than one kernel image with a valid entry point found.\n");
-					else {
-						log("Setting entry point to 0x", Hex{entry_point}, "\n");
-						_entry_point = entry_point;
-						image_info.entry_point = entry_point;
-					}
-				} else
-					debug("Bad entry point found: 0x", Hex{entry_point}, "\n");
-			}
-
-			image_info.load_addr = load_addr;
-			image_info.size = size;
-
-			log("Image load addr: 0x", Hex{image_info.load_addr}, "\n");
-			log("     entry addr: 0x", Hex{image_info.entry_point}, "\n");
-			log("           size: 0x", Hex{image_info.size}, "\n");
-
-			return image_info;
-
-		} else {
-			log("Not an image. Magic was ", Hex{magic}, ", expected ", Hex{BootImageDef::IH_MAGIC}, "\n");
-		}
-
-		return std::nullopt;
 	}
 
 	bool valid_addr(uint64_t addr)
