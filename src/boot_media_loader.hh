@@ -36,7 +36,7 @@ public:
 		auto current_header_addr = _loader->get_first_header_addr(target);
 
 		while (true) {
-			log("Reading uimg header from 0x", Hex{current_header_addr}, "\n");
+			log("\nReading uimg header from 0x", Hex{current_header_addr}, "\n");
 			auto header = _loader->read_image_header(current_header_addr);
 			auto info = _parse_header(header);
 
@@ -44,11 +44,12 @@ public:
 				auto end_addr = info->load_addr + info->size - header_size;
 
 				if (valid_addr(info->load_addr) && valid_addr(end_addr)) {
+					uint32_t body_size = info->size - header_size;
 					uint32_t body_addr = current_header_addr + header_size;
 
-					log("Loading 0x", Hex{info->size}, " bytes from 0x", Hex{body_addr});
+					log("Loading 0x", Hex{body_size}, " bytes from 0x", Hex{body_addr});
 					log(" into 0x", Hex{info->load_addr}, "\n");
-					_loader->load_image(body_addr, info->load_addr, info->size);
+					_loader->load_image(body_addr, info->load_addr, body_size);
 
 				} else {
 					log("Skipping Section with invalid load address range: ");
