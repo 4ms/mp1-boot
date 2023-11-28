@@ -1,4 +1,5 @@
 #pragma once
+#include "boot_ddr.hh"
 #include "boot_detect.hh"
 #include "boot_image_def.hh"
 #include "boot_nor.hh"
@@ -95,15 +96,6 @@ public:
 	}
 
 private:
-	// To support a new boot media (such as NAND Flash),
-	// associate its class to the enum value BOOTROM uses for that media:
-	BootLoader *_get_boot_loader(BootDetect::BootMethod bootmethod)
-	{
-		return bootmethod == BootDetect::BOOT_NOR	 ? new (loader_storage) BootNorLoader :
-			   bootmethod == BootDetect::BOOT_SDCARD ? new (loader_storage) BootSDLoader :
-													   static_cast<BootLoader *>(nullptr);
-	}
-
 	std::optional<ImageInfo> _parse_header(BootImageDef::image_header const &header)
 	{
 		debug("Raw header (big-endian):\n");
@@ -178,9 +170,17 @@ private:
 
 	std::optional<uint32_t> _entry_point{};
 
-	// We don't have dynamic memory, so instead of having a static copy of each
-	// type of loader we use placement new.
-	// TODO: use std::variant
-	uint8_t loader_storage[std::max(sizeof(BootSDLoader), sizeof(BootNorLoader))];
+	// We don't have dynamic memory, so we use placement new.
+	// TODO: use std::variant or keep an instance of each type and point _loader to the active one.
+	uint8_t loader_storage[std::max(std::max(sizeof(BootSDLoader), sizeof(BootNorLoader)), sizeof(BootDdrLoader))];
 	BootLoader *_loader;
+
+	BootLoader *_get_boot_loader(BootDetect::BootMethod bootmethod)
+	{
+		return bootmethod == BootDetect::BOOT_NOR	 ? new (loader_storage) BootNorLoader :
+			   bootmethod == BootDetect::BOOT_SDCARD ? new (loader_storage) BootSDLoader :
+			   bootmethod == BootDetect::BOOT_DDR	 ? new (loader_storage) BootDdrLoader :
+													   static_cast<BootLoader *>(nullptr);
+	}
+
 };

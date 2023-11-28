@@ -50,10 +50,8 @@ void main()
 		// delay to allow pull-up to settle
 		udelay(1000);
 		if (!Board::FreezePin.read()) {
-			print("Freeze pin detected active, freezing.\n");
-			print("Ready to load firmware to DDR RAM via SWD/JTAG.\n");
-			while (true)
-				;
+			print("Freeze pin detected active: booting from DDR\n");
+			boot_method = BootDetect::BootMethod::BOOT_DDR;
 		}
 	}
 
@@ -67,6 +65,7 @@ void main()
 			print("Boot Select pin detected active: Loading alt image...\n");
 		}
 	}
+
 	if (image_type == BootLoader::LoadTarget::App)
 		print("Loading main app image...\n");
 

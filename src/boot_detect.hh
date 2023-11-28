@@ -27,7 +27,9 @@ struct BootDetect {
 		BOOT_USB = 6,
 		BOOT_SPINAND = 7,
 
-		NUM_BOOT_METHODS,
+		NUM_BOOT_METHODS = 8,
+
+		BOOT_DDR = 9,
 	};
 
 	enum BootDeviceInstance {
