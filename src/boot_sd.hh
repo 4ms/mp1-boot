@@ -48,20 +48,20 @@ struct BootSDLoader : BootLoader {
 		if (read(header, header_addr))
 			return header;
 		else {
-			log("Failed to read header\n");
+			pr_err("Failed to read header\n");
 			return {};
 		}
 	}
 
 	bool load_image(uint32_t image_addr, uint32_t load_addr, uint32_t size) override
 	{
-		debug("SD: load_image\n");
+		debug("SD: load_image at 0x", image_addr, " to 0x", load_addr, "-0x", load_addr + size, "\n");
 		auto load_dst = std::span<uint8_t>{reinterpret_cast<uint8_t *>(load_addr), size};
 
 		if (read(load_dst, image_addr))
 			return true;
 		else {
-			log("Failed to read\n");
+			pr_err("Failed to read image\n");
 			return {};
 		}
 	}
@@ -135,18 +135,18 @@ private:
 
 		bool buf_is_aligned = !((uint32_t)buf.data() & 0b11);
 
-		debug("Read ", bytes_to_read, " bytes (", bytes_to_read / BlockSize);
+		debug("  Read ", bytes_to_read, " bytes (", bytes_to_read / BlockSize);
 		debug(" blocks) starting from block ", block_num, " to ", Hex{(uint32_t)buf.data()}, "\n");
 
 		if (buf_is_aligned && (bytes_to_read >= BlockSize)) {
 			uint32_t numblocks = bytes_to_read / BlockSize;
 
-			debug("Reading ", numblocks, " block(s) aligned\n");
+			debug("  Reading ", numblocks, " block(s) aligned\n");
 			if (HAL_SD_ReadBlocks(&hsd, read_ptr, block_num, numblocks, timeout) != HAL_OK)
 				read_error();
 
 			uint32_t bytes_read = numblocks * BlockSize;
-			debug("...read ", bytes_read, " bytes of ", bytes_to_read, "\n");
+			debug("  Did read ", bytes_read, " bytes of ", bytes_to_read, "\n");
 			if (bytes_to_read == bytes_read)
 				return true;
 
@@ -160,12 +160,12 @@ private:
 			alignas(4) uint8_t aligned_data[BlockSize];
 			constexpr uint32_t numblocks = 1;
 
-			debug(bytes_to_read, "B remain. Reading one block unaligned into `aligned_data`\n");
+			debug("  ", bytes_to_read, "B remain. Reading one block into `aligned_data`\n");
 			if (HAL_SD_ReadBlocks(&hsd, aligned_data, block_num, numblocks, timeout) != HAL_OK)
 				read_error();
 
 			uint32_t bytes_to_copy = std::min(bytes_to_read, BlockSize);
-			debug("Copy first ", bytes_to_copy, " from `aligned_data` to ", Hex{uint32_t(read_ptr)}, "\n");
+			debug("  Copy first ", bytes_to_copy, " from `aligned_data` to ", Hex{uint32_t(read_ptr)}, "\n");
 			for (unsigned i = 0; i < bytes_to_copy; i++) {
 				*read_ptr++ = aligned_data[i];
 			}
@@ -185,34 +185,30 @@ private:
 			return false;
 		}
 
-		debug("SD read from 0x", Hex{address}, " to 0x", Hex{(uint32_t)data.data()}, " for ", data.size(), "B\n");
+		debug(" SD read from 0x", Hex{address}, " to 0x", Hex{(uint32_t)data.data()}, " for ", data.size(), "B\n");
 
 		uint32_t aligned_addr = (address / BlockSize) * BlockSize;
 		if (aligned_addr < address) {
 			uint32_t bytes_to_drop = address - aligned_addr;
 			uint32_t bytes_to_keep = std::min<uint32_t>(BlockSize - bytes_to_drop, data.size());
 			std::array<uint8_t, BlockSize> tmp;
-			debug("Read a block, drop first ", bytes_to_drop, " bytes, keep last ", bytes_to_keep, "\n");
+			debug(" Read a block, drop first ", bytes_to_drop, " bytes, keep last ", bytes_to_keep, "\n");
 			read_blocks(tmp, address / BlockSize);
 
-			debug("Copying ", bytes_to_keep, " bytes from tmp to `data` (", Hex{(uint32_t)data.data()}, ")\n");
+			debug(" Copying ", bytes_to_keep, " bytes from tmp to `data` (", Hex{(uint32_t)data.data()}, ")\n");
 			auto source = std::span<uint8_t>{&tmp[bytes_to_drop], &tmp[512]};
 			for (auto i = 0; auto &d : data.subspan(0, bytes_to_keep))
 				d = source[i++];
 
-			// for (unsigned i = 0; i < bytes_to_keep; i++) {
-			// 	data[i] = tmp[i + bytes_to_drop];
-			// }
-
 			if (data.size() == bytes_to_keep) {
-				debug("SD read done\n");
+				debug(" SD read done\n");
 				return true;
 			}
 
 			address += bytes_to_keep;
 			data = data.subspan(bytes_to_keep);
-			debug("Moved data ptr to ", Hex{(uint32_t)data.data()}, " size= ", data.size(), "\n");
-			debug("address 0x", Hex{address}, " now is aligned\n");
+			debug(" Moved data ptr to ", Hex{(uint32_t)data.data()}, " size= ", data.size(), "\n");
+			debug(" address 0x", Hex{address}, " now is aligned\n");
 		}
 
 		return read_blocks(data, address / BlockSize);

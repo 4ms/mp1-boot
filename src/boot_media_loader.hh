@@ -16,6 +16,7 @@ struct ImageInfo {
 
 class BootMediaLoader {
 	using enum BootLoader::LoadTarget;
+	static constexpr auto header_size = sizeof(BootImageDef::image_header);
 
 public:
 	BootMediaLoader(BootDetect::BootMethod boot_method)
@@ -32,28 +33,29 @@ public:
 			return false;
 		}
 
-		constexpr auto header_size = sizeof(BootImageDef::image_header);
 		auto current_header_addr = _loader->get_first_header_addr(target);
 
 		while (true) {
-			log("\nReading uimg header from 0x", Hex{current_header_addr}, "\n");
+			log("\nReading 0x", Hex{current_header_addr}, " to check for uimg header\n");
+
 			auto header = _loader->read_image_header(current_header_addr);
 			auto info = _parse_header(header);
 
 			if (info) {
-				auto end_addr = info->load_addr + info->size - header_size;
+				uint32_t body_size = info->size - header_size;
+				uint32_t body_addr = current_header_addr + header_size;
+				uint32_t load_end_addr = info->load_addr + body_size;
 
-				if (valid_addr(info->load_addr) && valid_addr(end_addr)) {
-					uint32_t body_size = info->size - header_size;
-					uint32_t body_addr = current_header_addr + header_size;
+				if (valid_addr(info->load_addr) && valid_addr(load_end_addr)) {
 
-					log("Loading 0x", Hex{body_size}, " bytes from 0x", Hex{body_addr});
-					log(" into 0x", Hex{info->load_addr}, "\n");
+					log("Loading from 0x", Hex{body_addr}, "-0x", Hex{body_addr + body_size});
+					log(" to 0x", Hex{info->load_addr}, "-0x", Hex{load_end_addr}, "\n");
+
 					_loader->load_image(body_addr, info->load_addr, body_size);
 
 				} else {
 					log("Skipping Section with invalid load address range: ");
-					log("0x", Hex{info->load_addr}, "+ 0x", Hex{info->size}, "\n");
+					log("0x", Hex{info->load_addr}, "-0x", Hex{load_end_addr}, "\n");
 				}
 
 				current_header_addr += info->size;
@@ -154,9 +156,7 @@ private:
 			return image_info;
 
 		} else {
-			// TODO: Handle raw images
-			pr_err("Failed to read a valid header: magic was ", Hex{magic});
-			pr_err(" expected ", Hex{BootImageDef::IH_MAGIC}, "\n");
+			log("Not an image. Magic was ", Hex{magic}, ", expected ", Hex{BootImageDef::IH_MAGIC}, "\n");
 		}
 
 		return std::nullopt;
@@ -175,8 +175,6 @@ private:
 
 		return false;
 	};
-
-	bool _image_loaded = false;
 
 	std::optional<uint32_t> _entry_point{};
 
