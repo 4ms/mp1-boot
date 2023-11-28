@@ -66,9 +66,6 @@ void main()
 		}
 	}
 
-	if (image_type == BootLoader::LoadTarget::App)
-		print("Loading main app image...\n");
-
 	BootMediaLoader loader{boot_method};
 	bool image_ok = loader.load_image(image_type);
 
