@@ -8,6 +8,7 @@
 #include "mach/stm32.h"
 #include "print_messages.hh"
 #include <optional>
+#include <variant>
 
 struct ImageInfo {
 	uint32_t load_addr = 0;
@@ -170,17 +171,16 @@ private:
 
 	std::optional<uint32_t> _entry_point{};
 
-	// We don't have dynamic memory, so we use placement new.
-	// TODO: use std::variant or keep an instance of each type and point _loader to the active one.
-	uint8_t loader_storage[std::max(std::max(sizeof(BootSDLoader), sizeof(BootNorLoader)), sizeof(BootDdrLoader))];
-	BootLoader *_loader;
+	using BootLoaderV = std::variant<BootDdrLoader, BootNorLoader, BootSDLoader>;
+	std::aligned_storage<sizeof(BootLoaderV), alignof(BootLoaderV)>::type loader_storage;
+
+	BootLoader *_loader = nullptr;
 
 	BootLoader *_get_boot_loader(BootDetect::BootMethod bootmethod)
 	{
-		return bootmethod == BootDetect::BOOT_NOR	 ? new (loader_storage) BootNorLoader :
-			   bootmethod == BootDetect::BOOT_SDCARD ? new (loader_storage) BootSDLoader :
-			   bootmethod == BootDetect::BOOT_DDR	 ? new (loader_storage) BootDdrLoader :
+		return bootmethod == BootDetect::BOOT_NOR	 ? new (&loader_storage) BootNorLoader :
+			   bootmethod == BootDetect::BOOT_SDCARD ? new (&loader_storage) BootSDLoader :
+			   bootmethod == BootDetect::BOOT_DDR	 ? new (&loader_storage) BootDdrLoader :
 													   static_cast<BootLoader *>(nullptr);
 	}
-
 };
