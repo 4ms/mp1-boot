@@ -7,6 +7,7 @@
 #include "stm32mp1xx_hal_sd.h"
 #include <array>
 #include <cstdint>
+#include <span>
 
 struct BootSDLoader : BootLoader {
 	BootSDLoader()
@@ -40,32 +41,29 @@ struct BootSDLoader : BootLoader {
 
 	BootImageDef::image_header read_image_header(uint32_t header_addr) override
 	{
-		log("Reading image header from address %lu...\n", header_addr);
+		BootImageDef::image_header header;
 
-		BootImageDef::image_header header{};
+		log("SD: Reading header at 0x", Hex{header_addr}, "\n");
 
-		// TODO: read more than one block and split up data if header_addr is not block-aligned
-
-		uint32_t block_num = header_addr / hsd.SdCard.BlockSize;
-		log("Reading SD Card block %lu\n", block_num);
-		read(header, block_num);
-
-		return header;
+		if (read(header, header_addr))
+			return header;
+		else {
+			log("Failed to read header\n");
+			return {};
+		}
 	}
 
 	bool load_image(uint32_t image_addr, uint32_t load_addr, uint32_t size) override
 	{
-		uint32_t num_blocks = (size + hsd.SdCard.BlockSize - 1) / hsd.SdCard.BlockSize;
-		uint32_t block_num = image_addr / hsd.SdCard.BlockSize;
+		debug("SD: load_image\n");
+		auto load_dst = std::span<uint8_t>{reinterpret_cast<uint8_t *>(load_addr), size};
 
-		log("Reading %d blocks starting with block %llu from SD Card\n", num_blocks, block_num);
-
-		// TODO: split up data if image_addr is not block-aligned
-
-		auto load_dst = reinterpret_cast<uint8_t *>(load_addr);
-		auto err = HAL_SD_ReadBlocks(&hsd, load_dst, block_num, num_blocks, 0xFFFFFF);
-
-		return (err == HAL_OK);
+		if (read(load_dst, image_addr))
+			return true;
+		else {
+			log("Failed to read\n");
+			return {};
+		}
 	}
 
 	uint32_t get_first_header_addr(LoadTarget target) override
@@ -80,7 +78,8 @@ struct BootSDLoader : BootLoader {
 		const uint32_t gpt_addrs[2] = {1, last_block - 1};
 
 		for (auto blockaddr : gpt_addrs) {
-			read(gpt_hdr, blockaddr);
+			debug("Looking for gpt header at block ", blockaddr, "\n");
+			read(gpt_hdr, blockaddr * BlockSize);
 			if (validate_gpt_header(&gpt_hdr, blockaddr, last_block)) {
 
 				image_blockaddr = get_gpt_partition_startaddr(gpt_hdr, image_part_num);
@@ -93,8 +92,8 @@ struct BootSDLoader : BootLoader {
 			return {};
 		}
 
-		// log("GPT partition header says partition %d is at %llu. Reading\n", ssbl_part_num, ssbl_blockaddr);
-		return image_blockaddr;
+		debug("GPT partition header says partition ", image_part_num, " is at block ", image_blockaddr, "\n");
+		return image_blockaddr * BlockSize;
 	}
 
 	bool has_error() { return _has_error; }
@@ -115,12 +114,10 @@ private:
 		std::array<gpt_entry, 4> ptes;
 
 		// Make sure we're loading 512B into a variable that's 512B
-		static_assert(sizeof(ptes) == 512, "GPT Entries must be 128 bytes each");
-		if (hsd.SdCard.BlockSize != 512)
-			sdcard_error();
+		static_assert(sizeof(ptes) == 512, "An array of four gpt_entry must be 512 bytes");
 
 		uint32_t part_lba = gpt_hdr.partition_entry_lba + (image_part_num / 4);
-		read(ptes, part_lba);
+		read(ptes, part_lba * BlockSize);
 		if (validate_partition_entry(ptes[image_part_num % 4])) {
 			return ptes[image_part_num % 4].starting_lba;
 		}
@@ -128,48 +125,122 @@ private:
 		return InvalidPartitionNum;
 	}
 
-	// Read from SD card into a generic data structure. Max one block (512B)
-	void read(auto &data, uint32_t block)
+	// Read block-aligned data from SD card
+	bool read_blocks(std::span<uint8_t> buf, uint32_t first_block_num)
 	{
-		constexpr uint32_t numblocks = 1;
-		constexpr uint32_t timeout = 0xFFFFFF;
+		constexpr uint32_t timeout = 2000; // 2 seconds
+		uint32_t block_num = first_block_num;
+		uint32_t bytes_to_read = buf.size_bytes();
+		auto read_ptr = buf.data();
 
-		if constexpr (sizeof data == 512) {
-			// Size matches block size: read directly into data
-			auto err = HAL_SD_ReadBlocks(&hsd, (uint8_t *)&data, block, numblocks, timeout);
-			if (err != HAL_OK)
-				read_error();
-		} else if (sizeof data < 512) {
-			uint8_t _data[512];
-			auto err = HAL_SD_ReadBlocks(&hsd, _data, block, numblocks, timeout);
-			if (err != HAL_OK)
+		bool buf_is_aligned = !((uint32_t)buf.data() & 0b11);
+
+		debug("Read ", bytes_to_read, " bytes (", bytes_to_read / BlockSize);
+		debug(" blocks) starting from block ", block_num, " to ", Hex{(uint32_t)buf.data()}, "\n");
+
+		if (buf_is_aligned && (bytes_to_read >= BlockSize)) {
+			uint32_t numblocks = bytes_to_read / BlockSize;
+
+			debug("Reading ", numblocks, " block(s) aligned\n");
+			if (HAL_SD_ReadBlocks(&hsd, read_ptr, block_num, numblocks, timeout) != HAL_OK)
 				read_error();
 
-			auto *dst = (uint8_t *)(&data);
-			auto *src = (uint8_t *)_data;
-			auto sz = sizeof(data);
-			while (sz--)
-				*dst++ = *src++;
-		} else {
-			static_assert(sizeof data <= 512, "Multiblock reads not yet supported");
+			uint32_t bytes_read = numblocks * BlockSize;
+			debug("...read ", bytes_read, " bytes of ", bytes_to_read, "\n");
+			if (bytes_to_read == bytes_read)
+				return true;
+
+			// setup for reading the remainder
+			bytes_to_read -= bytes_read;
+			block_num += numblocks;
+			read_ptr += bytes_read;
 		}
+
+		while (bytes_to_read > 0) {
+			alignas(4) uint8_t aligned_data[BlockSize];
+			constexpr uint32_t numblocks = 1;
+
+			debug(bytes_to_read, "B remain. Reading one block unaligned into `aligned_data`\n");
+			if (HAL_SD_ReadBlocks(&hsd, aligned_data, block_num, numblocks, timeout) != HAL_OK)
+				read_error();
+
+			uint32_t bytes_to_copy = std::min(bytes_to_read, BlockSize);
+			debug("Copy first ", bytes_to_copy, " from `aligned_data` to ", Hex{uint32_t(read_ptr)}, "\n");
+			for (unsigned i = 0; i < bytes_to_copy; i++) {
+				*read_ptr++ = aligned_data[i];
+			}
+			bytes_to_read -= bytes_to_copy;
+			block_num++;
+		}
+		return true;
+	}
+
+	// Read from SD card into a generic data structure from an address
+	bool read(std::span<uint8_t> data, uint32_t address)
+	{
+		// We only support cards with a BlockSize of 512B
+		if (hsd.SdCard.BlockSize != 512) {
+			if (hsd.SdCard.BlockSize > 0)
+				sdcard_error();
+			return false;
+		}
+
+		debug("SD read from 0x", Hex{address}, " to 0x", Hex{(uint32_t)data.data()}, " for ", data.size(), "B\n");
+
+		uint32_t aligned_addr = (address / BlockSize) * BlockSize;
+		if (aligned_addr < address) {
+			uint32_t bytes_to_drop = address - aligned_addr;
+			uint32_t bytes_to_keep = std::min<uint32_t>(BlockSize - bytes_to_drop, data.size());
+			std::array<uint8_t, BlockSize> tmp;
+			debug("Read a block, drop first ", bytes_to_drop, " bytes, keep last ", bytes_to_keep, "\n");
+			read_blocks(tmp, address / BlockSize);
+
+			debug("Copying ", bytes_to_keep, " bytes from tmp to `data` (", Hex{(uint32_t)data.data()}, ")\n");
+			auto source = std::span<uint8_t>{&tmp[bytes_to_drop], &tmp[512]};
+			for (auto i = 0; auto &d : data.subspan(0, bytes_to_keep))
+				d = source[i++];
+
+			// for (unsigned i = 0; i < bytes_to_keep; i++) {
+			// 	data[i] = tmp[i + bytes_to_drop];
+			// }
+
+			if (data.size() == bytes_to_keep) {
+				debug("SD read done\n");
+				return true;
+			}
+
+			address += bytes_to_keep;
+			data = data.subspan(bytes_to_keep);
+			debug("Moved data ptr to ", Hex{(uint32_t)data.data()}, " size= ", data.size(), "\n");
+			debug("address 0x", Hex{address}, " now is aligned\n");
+		}
+
+		return read_blocks(data, address / BlockSize);
+	}
+
+	bool read(auto &data, uint32_t address)
+	{
+		std::span<uint8_t> dest{reinterpret_cast<uint8_t *>(&data), sizeof(data)};
+		return read(dest, address);
 	}
 
 	void init_error()
 	{
 		_has_error = true;
-		// 	panic("SDInit not ok");
+		// panic("SDInit not ok");
 	}
 
 	void sdcard_error()
 	{
 		_has_error = true;
-		// panic("SD Card block size is not 512!");
+		panic("SD Card block size is ", hsd.SdCard.BlockSize, " but only 512 is supported\n");
 	}
 
 	void read_error()
 	{
 		_has_error = true;
-		// panic("HAL Read SD not ok");
+		pr_err("HAL Read SD not ok\n");
 	}
+
+	constexpr static uint32_t BlockSize = 512;
 };
