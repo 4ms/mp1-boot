@@ -96,7 +96,9 @@ user to load new firmware over USB and write it to the NOR Flash.
 Another use-case could be to load a self-test firmware at 0x60000. A user could
 boot with a button pressed to verify their hardware is working.
 
+### Freeze Pin
 
+TODO
 
 ### Dependencies, attribution, and inspriation
 
@@ -189,15 +191,20 @@ In this directory run one of these commands:
 ```
 make load                           # To be prompted for the SD card device
 
-make load SD_DISK_DEV=/dev/diskX    # To use /dev/diskX
+make load SD_DISK_STEM=/dev/XXX    # To use /dev/XXX1 and /dev/XXX2
 ```
 
-If you don't specify `SD_DISK_DEV`, it will prompt you for the disk device name
-of the SD Card. Make sure a partitioned SD Card is inserted into your computer,
-and enter the device name (such as `/dev/disk4`). 
-(Alternatively, you can load the image yourself by running `make` followed by
+If you don't specify `SD_DISK_STEM`, it will prompt you for the disk device
+"stem" of the SD Card. By "stem" we mean the full device partition name, minus
+the partition number. On macOS this is typically `/dev/disk4s` (if the
+partitions are `/dev/disk4s1` and `/dev/disk4s2`), or for Linux this might be
+something like `/dev/mmcblk0p` (if the partitions are `/dev/mmcblk0p1` and
+`/dev/mmcblk0p2`), or `/dev/sdc` (if the partitions are `/dev/sdc1` and
+`/dev/sdc2`).
+
+Alternatively, you can load the image yourself by running `make` followed by
 `dd` commands to load `build/fsbl.stm32` onto partitions 1 and 2 of the SD
-Card.)
+Card.
 
 The card must be partitioned the same way it's done in the example
 projects in the [stm32mp1-baremetal](https://github.com/4ms/stm32mp1-baremetal) repo.
