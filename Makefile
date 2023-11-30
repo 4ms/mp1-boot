@@ -6,7 +6,7 @@ SRCDIR = src
 EXTLIBDIR = third-party
 LINKSCR = linkscript.ld
 
-SD_DISK_DEV ?= /dev/disk4
+SD_DISK_STEM ?= /dev/disk4s
 
 SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/main.cc \
@@ -155,11 +155,11 @@ image: $(BIN)
 	@ls -l $(BUILDDIR)/$(BINARYNAME).stm32
 
 load: image
-	@read -p "What is the disk device (Enter for $(SD_DISK_DEV)): " DISK && \
-	DISK=$${DISK:-$(SD_DISK_DEV)} && \
-	echo "Writing to $${DISK}s1 and $${DISK}s2" && \
-	sudo dd if=$(BUILDDIR)/$(BINARYNAME).stm32 of=$${DISK}p1 conv=fdatasync && \
-	sudo dd if=$(BUILDDIR)/$(BINARYNAME).stm32 of=$${DISK}p2 conv=fdatasync
+	@read -p "What is the disk device stem (Enter for $(SD_DISK_STEM)): " DISKSTEM && \
+	DISKSTEM=$${DISKSTEM:-$(SD_DISK_STEM)} && \
+	echo "Writing to $${DISKSTEM}1 and $${DISKSTEM}2" && \
+	sudo dd if=$(BUILDDIR)/$(BINARYNAME).stm32 of=$${DISKSTEM}1 && \
+	sudo dd if=$(BUILDDIR)/$(BINARYNAME).stm32 of=$${DISKSTEM}2 
     
 %.d: ;
 
