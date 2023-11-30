@@ -95,15 +95,18 @@ LFLAGS = -Wl,--gc-sections \
 
 DEPFLAGS = -MMD -MP -MF $(OBJDIR)/$(basename $<).d
 
-ARCH 	= arm-none-eabi
-CC 		= $(ARCH)-gcc
-CXX 	= $(ARCH)-g++
-LD 		= $(ARCH)-g++
-AS 		= $(ARCH)-as
-OBJCPY 	= $(ARCH)-objcopy
-OBJDMP 	= $(ARCH)-objdump
-GDB 	= $(ARCH)-gdb
-SZ 		= $(ARCH)-size
+# By default, this uses the toolchain on your path
+# Override by invoking make with TOOLCHAIN_DIR=/my/location/ (final slash is required)
+TOOLCHAIN_DIR ?= 
+ARCH    = arm-none-eabi
+CC      = ${TOOLCHAIN_DIR}$(ARCH)-gcc
+CXX     = ${TOOLCHAIN_DIR}$(ARCH)-g++
+LD      = ${TOOLCHAIN_DIR}$(ARCH)-g++
+AS      = ${TOOLCHAIN_DIR}$(ARCH)-as
+OBJCPY  = ${TOOLCHAIN_DIR}$(ARCH)-objcopy
+OBJDMP  = ${TOOLCHAIN_DIR}$(ARCH)-objdump
+GDB     = ${TOOLCHAIN_DIR}$(ARCH)-gdb
+SZ      = ${TOOLCHAIN_DIR}$(ARCH)-size
 
 SZOPTS 	= -d
 
