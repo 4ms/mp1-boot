@@ -36,7 +36,8 @@ int stm32mp1_ddr_clk_enable(struct ddr_info *priv, u32 mem_speed)
 	log("DDR: mem_speed ", mem_speed, " kHz, RCC ", (u32)(ddrphy_clk / 1000), " kHz\n");
 
 	/* max 10% frequency delta */
-	ddr_clk = abs((int)ddrphy_clk - (int)mem_speed * 1000);
+	auto iabs = [](int x) { return x > 0 ? x : -x; };
+	ddr_clk = iabs((int)ddrphy_clk - (int)mem_speed * 1000);
 	if (ddr_clk > (mem_speed * 100)) {
 		pr_err("DDR expected freq %d kHz, current is %d kHz\n", mem_speed, (u32)(ddrphy_clk / 1000));
 		return -EINVAL;
