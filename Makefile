@@ -39,11 +39,24 @@ INCLUDES = -I. \
 		   -I$(SRCDIR)/uboot-port/arch/arm/include \
 
 MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-abi=hard
+
+
 ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
 			  -DSTM32MP157Cxx \
 			  -DSTM32MP1 \
-			  -DCORE_CA7 \
-			  $(EXTRA_ARCH_CFLAGS) \
+			  -DCORE_CA7
+
+ifeq ("$(BOARD_CONF)","OSD32")
+	ARCH_CFLAGS += -DBOARD_CONF_OSD32
+else
+ifeq ("$(BOARD_CONF)","DK2")
+	ARCH_CFLAGS += -DBOARD_CONF_DK2
+else
+ifneq ("$(BOARD_CONF)","")
+	ARCH_CFLAGS += -DBOARD_CONF_PATH=$(BOARD_CONF)
+endif
+endif
+endif
 
 AFLAGS = $(MCU)
 
@@ -58,7 +71,7 @@ CFLAGS = -g2 \
 		 $(EXTRACFLAGS)\
 
 CXXFLAGS = $(CFLAGS) \
-		-std=c++2a \
+		-std=c++20 \
 		-fno-rtti \
 		-fno-exceptions \
 		-fno-unwind-tables \

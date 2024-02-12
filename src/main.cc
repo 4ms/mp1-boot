@@ -45,12 +45,24 @@ void main()
 
 	BootLoader::LoadTarget image_type = BootLoader::LoadTarget::App;
 
-	// Check Boot Select pin
-	if constexpr (Board::UseBootSelect) {
-		Board::BootSelectPin.init(PinMode::Input, PinPull::Up, PinPolarity::Inverted);
+	if constexpr (Board::UseFreezePin) {
+		Board::FreezePin.init(PinMode::Input, PinPull::Up);
 		// delay to allow pull-up to settle
 		udelay(1000);
-		if (Board::BootSelectPin.read()) {
+		if (!Board::FreezePin.read()) {
+			print("Freeze pin detected active, freezing.\n");
+			print("Ready to load firmware to DDR RAM via SWD/JTAG.\n");
+			while (true)
+				;
+		}
+	}
+
+	// Check Boot Select pin
+	if constexpr (Board::UseBootSelect) {
+		Board::BootSelectPin.init(PinMode::Input, PinPull::Up);
+		// delay to allow pull-up to settle
+		udelay(1000);
+		if (!Board::BootSelectPin.read()) {
 			image_type = BootLoader::LoadTarget::SSBL;
 			print("Boot Select pin detected active: Loading alt image...\n");
 		}
