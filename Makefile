@@ -138,6 +138,10 @@ image: $(BIN)
 	python3 fsbl_header.py $(BUILDDIR)/$(BINARYNAME).bin $(BUILDDIR)/$(BINARYNAME).stm32
 	@ls -l $(BUILDDIR)/$(BINARYNAME).stm32
 
+image-mp2: $(BIN)
+	python3 fsbl_header.py --format=mp2 $(BUILDDIR)/$(BINARYNAME).bin $(BUILDDIR)/$(BINARYNAME).stm32
+	@ls -l $(BUILDDIR)/$(BINARYNAME).stm32
+
 load: image
 	@read -p "What is the disk device (Enter for $(SD_DISK_DEV)): " DISK && \
 	DISK=$${DISK:-$(SD_DISK_DEV)} && \

@@ -11,14 +11,14 @@ def add_mp2_fsbl_header(binary_file):
 
     payload = bytearray(binary_file[0x100:])
 
-    header = struct.pack("<ccccQQQQQQQQIIIIQQQIIII8xII",
+    header = struct.pack("<ccccQQQQQQQQIIIIIIIIIII8xII",
         bytes('S', "ascii"), bytes('T', "ascii"), bytes('M', "ascii"), bytes('2', "ascii"), # Header magic
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,                                     # ECDSA signature (512bits=64Bytes=8 quads), unsigned here
         sum(payload),                                                                       # Checksum of payload, sum of all bytes
         0x00020200,                                                                         # Header version 1.0
         len(payload),                                                                       # Length of payload
         0x2FFC0000 + 0x2400 + 0x100,                                                        # Entrypoint address. ????
-        0x00000000, 0x00000000, 0x00000000,                                                 # Reserved (96 bits = 3 quads)
+        0x00, 0x00, 0x00,                                                                   # Reserved (96 bits = 3 quads)
         0x00000000,                                                                         # Image version (32bits)
         0x00000000,                                                                         # Option flags (32bits) , header padding disabled, auth disabled, decrypt disabled
         0x00000000,                                                                         # Header extension lengths (32bits)
