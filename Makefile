@@ -104,8 +104,8 @@ DEPS   	  = $(addprefix $(OBJDIR)/, $(addsuffix .d, $(basename $(SOURCES))))
 BUILDDIR = build
 OBJDIR = $(BUILDDIR)/obj/obj
 
-all: image
-all: Makefile $(ELF) $(UIMAGENAME)
+all: Makefile $(ELF) $(UIMAGENAME) image
+	@:
 
 
 $(OBJDIR)/%.o: %.s
@@ -134,9 +134,11 @@ $(HEX): $(ELF)
 	@$(OBJCPY) --output-target=ihex $< $@
 	@$(SZ) $(SZOPTS) $(ELF)
 
-image: $(BIN)
+$(BUILDDIR)/$(BINARYNAME).stm32: $(BIN)
 	python3 fsbl_header.py $(BUILDDIR)/$(BINARYNAME).bin $(BUILDDIR)/$(BINARYNAME).stm32
 	@ls -l $(BUILDDIR)/$(BINARYNAME).stm32
+
+image: $(BUILDDIR)/$(BINARYNAME).stm32
 
 load: image
 	@read -p "What is the disk device (Enter for $(SD_DISK_DEV)): " DISK && \
@@ -156,7 +158,7 @@ ifneq "$(MAKECMDGOALS)" "clean"
 endif
 
 .PRECIOUS: $(DEPS) $(OBJECTS) $(ELF)
-.PHONY: all clean 
+.PHONY: all clean image load
 
 .PHONY: compile_commands
 compile_commands:
