@@ -91,6 +91,7 @@ LFLAGS = -Wl,--gc-sections \
 		 -nostdlib \
 		 -nostartfiles \
 		 -ffreestanding \
+		 -Wl,--no-warn-rwx-segments \
 		 $(EXTRALDFLAGS) \
 
 DEPFLAGS = -MMD -MP -MF $(OBJDIR)/$(basename $<).d
