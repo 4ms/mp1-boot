@@ -42,6 +42,7 @@ public:
 			return false;
 		}
 
+		log("Loading to 0x", Hex{_image_info.load_addr}, "\n");
 		bool ok = _loader->load_image(_image_info.load_addr, _image_info.size, target);
 		if (!ok) {
 			pr_err("Failed reading boot media when loading app img\n");
@@ -119,20 +120,20 @@ private:
 
 		uint32_t magic = be32_to_cpu(header.ih_magic);
 		if (magic == BootImageDef::IH_MAGIC) {
-			if (header.ih_load == 0) {
-				debug("ih_load is 0\n");
-				// On some system (e.g. powerpc), the load-address and
-				// entry-point is located at address 0. We can't load
-				// to 0-0x40. So skip header in this case.
-				_image_info.load_addr = be32_to_cpu(header.ih_load);
-				_image_info.entry_point = be32_to_cpu(header.ih_ep);
-				_image_info.size = be32_to_cpu(header.ih_size);
-			} else {
-				constexpr uint32_t header_size = sizeof(BootImageDef::image_header);
-				_image_info.entry_point = be32_to_cpu(header.ih_load);
-				_image_info.load_addr = _image_info.entry_point - header_size;
-				_image_info.size = be32_to_cpu(header.ih_size) + header_size;
-			}
+			// if (header.ih_load == 0) {
+			// 	debug("ih_load is 0\n");
+			// On some system (e.g. powerpc), the load-address and
+			// entry-point is located at address 0. We can't load
+			// to 0-0x40. So skip header in this case.
+			_image_info.load_addr = be32_to_cpu(header.ih_load);
+			_image_info.entry_point = be32_to_cpu(header.ih_ep);
+			_image_info.size = be32_to_cpu(header.ih_size);
+			// } else {
+			// 	constexpr uint32_t header_size = sizeof(BootImageDef::image_header);
+			// 	_image_info.entry_point = be32_to_cpu(header.ih_load);
+			// 	_image_info.load_addr = _image_info.entry_point - header_size;
+			// 	_image_info.size = be32_to_cpu(header.ih_size) + header_size;
+			// }
 
 			log("Image load addr: 0x", Hex{_image_info.load_addr});
 			log(" entry_addr: 0x", Hex{_image_info.entry_point});

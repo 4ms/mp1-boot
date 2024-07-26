@@ -22,6 +22,11 @@ constexpr PinConf UartTX{GPIO::G, PinNum::_11, PinAF::AF_6};
 constexpr PinConf BootSelectPin{GPIO::B, PinNum::_6};
 constexpr bool UseBootSelect = false;
 
+// Freeze mode: halts booting after initializing everything
+// so you can load firmware via SWD/JTAG
+constexpr bool UseFreezePin = false;
+constexpr PinConf FreezePin{GPIO::Unused, PinNum::_0};
+
 namespace NORFlash
 {
 constexpr bool HasNORFlash = false;
