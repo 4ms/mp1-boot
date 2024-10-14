@@ -15,7 +15,10 @@
 
 void main()
 {
-	Board::OrangeLED led;
+	Board::RedLED red_led;
+	Board::BlueLED blue_led;
+	red_led.off();
+	blue_led.on();
 
 	auto clockspeed = SystemClocks::init_core_clocks(Board::HSE_Clock_Hz, Board::MPU_MHz, Board::ClockType);
 	security_init();
@@ -69,6 +72,7 @@ void main()
 	BootMediaLoader loader{boot_method};
 	bool image_ok = loader.load_image(image_type);
 
+	blue_led.off();
 	if (image_ok) {
 		print("Jumping to app\n");
 		loader.boot_image();
@@ -78,9 +82,9 @@ void main()
 	print("FAILED!\n");
 	constexpr uint32_t dlytime = 50000;
 	while (true) {
-		led.on();
+		red_led.on();
 		udelay(dlytime);
-		led.off();
+		red_led.off();
 		udelay(dlytime);
 	}
 }
