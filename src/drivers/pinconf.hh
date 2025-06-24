@@ -91,16 +91,15 @@ enum class PinPolarity {
 // Pin class
 // Can be used as a convenient container for passing pin defintions
 // to a peripheral which performs the register initialization later
+// polarity controls read() polarity only (does not affect setting the pin)
 struct PinConf {
 	GPIO gpio{GPIO::Unused};
 	PinNum pin{PinNum::Unused};
 	PinAF af{PinAF::AFNone};
-
-	// FIXME: Polarity is not used
+	PinPolarity polarity{PinPolarity::Normal};
 
 	void init(PinMode mode,
 			  PinPull pull = PinPull::None,
-			  PinPolarity polarity = PinPolarity::Normal,
 			  PinSpeed speed = PinSpeed::High,
 			  PinOType otype = PinOType::PushPull) const
 	{
@@ -128,13 +127,9 @@ struct PinConf {
 
 	// Same as init(), just args in a different order
 	// Makes it a little cleaner when init'ing AF OpenDrain pins such as I2C
-	void init(PinMode mode,
-			  PinOType otype,
-			  PinPull pull = PinPull::None,
-			  PinPolarity polarity = PinPolarity::Normal,
-			  PinSpeed speed = PinSpeed::High) const
+	void init(PinMode mode, PinOType otype, PinPull pull = PinPull::None, PinSpeed speed = PinSpeed::High) const
 	{
-		init(mode, pull, polarity, speed, otype);
+		init(mode, pull, speed, otype);
 	}
 
 	void low() const
@@ -155,7 +150,8 @@ struct PinConf {
 	{
 		auto port_ = reinterpret_cast<GPIO_TypeDef *>(gpio);
 		auto pin_ = static_cast<uint16_t>(pin);
-		return LL_GPIO_IsInputPinSet(port_, pin_);
+		bool is_set = LL_GPIO_IsInputPinSet(port_, pin_);
+		return polarity == PinPolarity::Normal ? is_set : !is_set;
 	}
 
 	static constexpr uint32_t bit_to_num(PinNum PINx)
