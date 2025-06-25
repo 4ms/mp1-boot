@@ -25,14 +25,14 @@ struct BootSDLoader : BootLoader {
 		// These pins are not board-specific, they are required by BOOTROM
 		// for booting with SDMMC1
 		// D1 - D3 are not used by BOOTROM, so need to be init by FSBL
-		PinConf{GPIO::C, PinNum::_9, PinAF::AF_12}.init(PinMode::Alt);
-		PinConf{GPIO::C, PinNum::_10, PinAF::AF_12}.init(PinMode::Alt);
-		PinConf{GPIO::C, PinNum::_11, PinAF::AF_12}.init(PinMode::Alt);
+		PinConf{GPIO::C, PinNum::_9, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+		PinConf{GPIO::C, PinNum::_10, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+		PinConf{GPIO::C, PinNum::_11, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
 
 		// D0, CK, CMD are used by BOOTROM and should already be init. We re-init them just in case...
-		PinConf{GPIO::C, PinNum::_8, PinAF::AF_12}.init(PinMode::Alt);
-		PinConf{GPIO::C, PinNum::_12, PinAF::AF_12}.init(PinMode::Alt);
-		PinConf{GPIO::D, PinNum::_2, PinAF::AF_12}.init(PinMode::Alt);
+		PinConf{GPIO::C, PinNum::_8, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+		PinConf{GPIO::C, PinNum::_12, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+		PinConf{GPIO::D, PinNum::_2, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
 
 		// TODO: Skip if no card detected
 		auto ok = HAL_SD_Init(&hsd);
