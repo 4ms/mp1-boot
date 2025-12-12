@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    stm32mp135dxx_ca7.h
+  * @file    stm32mp133cxx_ca7.h
   * @author  MCD Application Team
-  * @brief   CMSIS stm32mp135dxx_ca7 Device Peripheral Access Layer Header File.
+  * @brief   CMSIS stm32mp133cxx_ca7 Device Peripheral Access Layer Header File.
   *
   *          This file contains:
   *           - Data structures and the address mapping for all peripherals
@@ -26,12 +26,12 @@
   * @{
   */
 
-/** @addtogroup stm32mp135dxx_ca7
+/** @addtogroup stm32mp133cxx_ca7
   * @{
   */
 
-#ifndef __STM32MP135Dxx_CA7_H
-#define __STM32MP135Dxx_CA7_H
+#ifndef __STM32MP133Cxx_CA7_H
+#define __STM32MP133Cxx_CA7_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -162,17 +162,17 @@
    USBH_PORT2_IRQn                  = 108,    /*!< USB Host port 2  Interrupt                                           */
    EXTI12_IRQn                      = 109,    /*!< EXTI Line 76 Interrupts                                              */
    EXTI13_IRQn                      = 110,    /*!< EXTI Line 77 Interrupts                                              */
-   DCMIPP_IRQn                      = 111,    /*!< DCMIPP global interrupt                                              */
-   RESERVED_112                     = 112,    /*!< reserved                                                             */
+   RESERVED_111                     = 111,    /*!< reserved                                                             */
+   CRYP1_IRQn                       = 112,    /*!< CRYP crypto global interrupt                                         */
    HASH1_IRQn                       = 113,    /*!< Hash global interrupt                                                */
-   RESERVED_114                     = 114,    /*!< reserved                                                             */
+   SAES_IRQn                        = 114,    /*!< Secure AES global interrupt                                          */
    UART7_IRQn                       = 115,    /*!< UART7 global interrupt                                               */
    UART8_IRQn                       = 116,    /*!< UART8 global interrupt                                               */
    SPI4_IRQn                        = 117,    /*!< SPI4 global Interrupt                                                */
    SPI5_IRQn                        = 118,    /*!< SPI5 global Interrupt                                                */
    SAI1_IRQn                        = 119,    /*!< SAI1 global Interrupt                                                */
-   LTDC_IRQn                        = 120,    /*!< LTDC global Interrupt                                                */
-   LTDC_ER_IRQn                     = 121,    /*!< LTDC Error global Interrupt                                          */
+   RESERVED_120                     = 120,    /*!< reserved                                                             */
+   RESERVED_121                     = 121,    /*!< reserved                                                             */
    SAI2_IRQn                        = 122,    /*!< SAI2 global Interrupt                                                */
    QUADSPI_IRQn                     = 123,    /*!< Quad SPI global interrupt                                            */
    LPTIM1_IRQn                      = 124,    /*!< LP TIM1 interrupt                                                    */
@@ -214,15 +214,15 @@
    TAMP_S_IRQn                      = 160,    /*!< TAMP Tamper Secure interrupt                                         */
    RTC_WKUP_ALARM_S_IRQn            = 161,    /*!< RTC Wakeup Timer and Alarms (A and B) Secure interrupt               */
    RTC_TS_S_IRQn                    = 162,    /*!< RTC TimeStamp Secure interrupt                                       */
-   LTDC_SEC_IRQn                    = 163,    /*!< LTDC secure global interrupt                                         */
-   LTDC_SEC_ER_IRQn                 = 164,    /*!< LTDC secure global Error interrupt                                   */
+   RESERVED_163                     = 163,    /*!< reserved                                                             */
+   RESERVED_164                     = 164,    /*!< reserved                                                             */
    PMUIRQ0_IRQn                     = 165,    /*!< Cortex-A7 Core#0 Performance Monitor Interrupt                       */
    COMMRX0_IRQn                     = 166,    /*!< Cortex-A7 Core#0 Debug Communication Channel Receive interrupt       */
    COMMTX0_IRQn                     = 167,    /*!< Cortex-A7 Core#0 Debug Communication Channel Transmit interrupt      */
    AXIERRIRQ_IRQn                   = 168,    /*!< Asynchronous AXI Abort interrupt                                     */
    DDRPERFM_IRQn                    = 169,    /*!< DDR Performance Monitor Interrupt                                    */
    nCTIIRQ0_IRQn                    = 170,    /*!< Cortex-A7 Core#0 CTI interrupt                                       */
-   RESERVED_171                     = 171,    /*!< reserved                                                             */
+   MCE_IRQn                         = 171,    /*!< MCE interrupt                                                        */
    DFSDM1_IRQn                      = 172,    /*!< DFSDM Filter1 Interrupt                                              */
    DFSDM2_IRQn                      = 173,    /*!< DFSDM Filter2 Interrupt                                              */
    DMA3_Stream0_IRQn                = 174,    /*!< DMA3 Stream 0 global Interrupt                                       */
@@ -277,1096 +277,6 @@
 /** @addtogroup Peripheral_registers_structures
   * @{
   */
-
-
-/*
- * @brief DCMIPP Camera Interface (DCMIPP)
- */
-typedef struct
-{
-  __IO uint32_t IPGR1;            /*!< DCMIPP IPPLUG Global register 1                               Address offset: 0x000 */
-  __IO uint32_t IPGR2;            /*!< DCMIPP IPPLUG Global register 2                               Address offset: 0x004 */
-  __IO uint32_t IPGR3;            /*!< DCMIPP IPPLUG Global register 3                               Address offset: 0x008 */
-       uint32_t RESERVED0[4];     /*!< Reserved                                                      Address offset: 0x00C-0x018 */
-  __IO uint32_t IPGR8;            /*!< DCMIPP IPPLUG Identification register                         Address offset: 0x01C */
-  __IO uint32_t IPC1R1;           /*!< DCMIPP IPPLUG Client 1 register 1                             Address offset: 0x020 */
-  __IO uint32_t IPC1R2;           /*!< DCMIPP IPPLUG Client 1 register 2                             Address offset: 0x024 */
-  __IO uint32_t IPC1R3;           /*!< DCMIPP IPPLUG Client 1 register 3                             Address offset: 0x028 */
-       uint32_t RESERVED1[53];    /*!< Reserved                                                      Address offset: 0x02C-0x0FC */
-  __IO uint32_t PRHWCFGR;         /*!< Parallel Interface HW Configuration register                  Address offset: 0x100 */
-  __IO uint32_t PRCR;             /*!< Parallel Interface control register                           Address offset: 0x104 */
-  __IO uint32_t PRESCR;           /*!< Parallel Interface Embedded Sync code register                Address offset: 0x108 */
-  __IO uint32_t PRESUR;           /*!< Parallel Interface Embedded Sync Unmsk register               Address offset: 0x10C */
-       uint32_t RESERVED2[57];    /*!< Reserved                                                      Address offset: 0x110-0x1F0 */
-  __IO uint32_t PRIER;            /*!< Parallel Interface Interrupt enable register                  Address offset: 0x1F4 */
-  __IO uint32_t PRSR;             /*!< Parallel Interface status register                            Address offset: 0x1F8 */
-  __IO uint32_t PRFCR;            /*!< Parallel Interface Interrupt clear register                   Address offset: 0x1FC */
-  __IO uint32_t CMHWCFGR;         /*!< Common IP HW Configuration register                           Address offset: 0x200 */
-  __IO uint32_t CMCR;             /*!< Common Configuration register                                 Address offset: 0x204 */
-  __IO uint32_t CMFRCR;           /*!< Common frame counter register                                 Address offset: 0x208 */
-       uint32_t RESERVED3[121];   /*!< Reserved                                                      Address offset: 0x20C-0x3EC */
-  __IO uint32_t CMIER;            /*!< Common Interrupt enable register                              Address offset: 0x3F0 */
-  __IO uint32_t CMSR1;            /*!< Common status register 1                                      Address offset: 0x3F4 */
-  __IO uint32_t CMSR2;            /*!< Common status register 2                                      Address offset: 0x3F8 */
-  __IO uint32_t CMFCR;            /*!< Common Interrupt clear register                               Address offset: 0x3FC */
-  __IO uint32_t P0HWCFGR;         /*!< Pipe0 HW Configuration register                               Address offset: 0x400 */
-  __IO uint32_t P0FSCR;           /*!< Pipe0 Flow Selection configuration register                   Address offset: 0x404 */
-       uint32_t RESERVED4[62];    /*!< Reserved                                                      Address offset: 0x408-0x4FC */
-  __IO uint32_t P0FCTCR;          /*!< Pipe0 Flow Control configuration register                     Address offset: 0x500 */
-  __IO uint32_t P0SCSTR;          /*!< Pipe0 Stat/Crop Start register                                Address offset: 0x504 */
-  __IO uint32_t P0SCSZR;          /*!< Pipe0 Stat/Crop Size register                                 Address offset: 0x508 */
-       uint32_t RESERVED5[41];    /*!< Reserved                                                      Address offset: 0x50C-0x5AC */
-  __IO uint32_t P0DCCNTR;         /*!< Pipe0 Dump counter register                                   Address offset: 0x5B0 */
-  __IO uint32_t P0DCLMTR;         /*!< Pipe0 Dump limit register                                     Address offset: 0x5B4 */
-       uint32_t RESERVED6[2];     /*!< Reserved                                                      Address offset: 0x5B8-0x5BC */
-  __IO uint32_t P0PPCR;           /*!< Pipe0 Pixel Packer configuration register                     Address offset: 0x5C0 */
-  __IO uint32_t P0PPM0AR1;        /*!< Pipe0 Pixel Packer memory0 address register 1                 Address offset: 0x5C4 */
-  __IO uint32_t P0PPM0AR2;        /*!< Pipe0 Pixel Packer memory0 address register 2                 Address offset: 0x5C8 */
-       uint32_t RESERVED7[10];    /*!< Reserved                                                      Address offset: 0x5CC-0x5F0 */
-  __IO uint32_t P0IER;            /*!< Pipe0 Interrupt enable register                               Address offset: 0x5F4 */
-  __IO uint32_t P0SR;             /*!< Pipe0 status register                                         Address offset: 0x5F8 */
-  __IO uint32_t P0FCR;            /*!< Pipe0 Interrupt clear register                                Address offset: 0x5FC */
-       uint32_t RESERVED8[64];    /*!< Reserved                                                      Address offset: 0x600-0x6FC */
-  __IO uint32_t P0CFCTCR;         /*!< Pipe0 Current Flow Control configuration register             Address offset: 0x700 */
-  __IO uint32_t P0CSCSTR;         /*!< Pipe0 Current Stat/Crop Start register                        Address offset: 0x704 */
-  __IO uint32_t P0CSCSZR;         /*!< Pipe0 Current Stat/Crop Size register                         Address offset: 0x708 */
-       uint32_t RESERVED9[45];    /*!< Reserved                                                      Address offset: 0x70C-0x7BC */
-  __IO uint32_t P0CPPCR;          /*!< Pipe0 Current Pixel Packer configuration register             Address offset: 0x7C0 */
-  __IO uint32_t P0CPPM0AR1;       /*!< Pipe0 Current Pixel Packer memory0 address register 1         Address offset: 0x7C4 */
-  __IO uint32_t P0CPPM0AR2;       /*!< Pipe0 Current Pixel Packer Current memory0 address register 2 Address offset: 0x7C8 */
-       uint32_t RESERVED10[521];  /*!< Reserved                                                      Address offset: 0x7CC-0xFEC */
-  __IO uint32_t HWCFGR;           /*!< IP HW Configuration register                                  Address offset: 0xFF0 */
-  __IO uint32_t VERR;             /*!< IP Version register                                           Address offset: 0xFF4 */
-  __IO uint32_t IPIDR;            /*!< IP Identification register                                    Address offset: 0xFF8 */
-  __IO uint32_t SIDR;             /*!< Size Identification register                                  Address offset: 0xFFC */
-} DCMIPP_TypeDef;
-
-/******************************************************************************/
-/*                                                                            */
-/*                      DCMIPP Camera Interface (DCMIPP)                      */
-/*                                                                            */
-/******************************************************************************/
-
-#define DCMIPP_NUM_OF_PIPES               (0x1U)
-/*****************  Bit definition for DCMIPP_IPGR1 register  *****************/
-#define DCMIPP_IPGR1_MEMORYPAGE_Pos       (0U)
-#define DCMIPP_IPGR1_MEMORYPAGE_Msk       (0x7UL << DCMIPP_IPGR1_MEMORYPAGE_Pos)         /*!< 0x00000007 */
-#define DCMIPP_IPGR1_MEMORYPAGE           DCMIPP_IPGR1_MEMORYPAGE_Msk                   /*!< memory page size, as power2 of 64Bytes units: */
-#define DCMIPP_IPGR1_MEMORYPAGE_0         (0x1UL << DCMIPP_IPGR1_MEMORYPAGE_Pos)         /*!< 0x00000001 */
-#define DCMIPP_IPGR1_MEMORYPAGE_1         (0x2UL << DCMIPP_IPGR1_MEMORYPAGE_Pos)         /*!< 0x00000002 */
-#define DCMIPP_IPGR1_MEMORYPAGE_2         (0x4UL << DCMIPP_IPGR1_MEMORYPAGE_Pos)         /*!< 0x00000004 */
-
-/*****************  Bit definition for DCMIPP_IPGR2 register  *****************/
-#define DCMIPP_IPGR2_PSTART_Pos           (0U)
-#define DCMIPP_IPGR2_PSTART_Msk           (0x1UL << DCMIPP_IPGR2_PSTART_Pos)             /*!< 0x00000001 */
-#define DCMIPP_IPGR2_PSTART               DCMIPP_IPGR2_PSTART_Msk                       /*!< request to lock the IP-Plug, to allow reconfiguration. */
-
-/*****************  Bit definition for DCMIPP_IPGR3 register  *****************/
-#define DCMIPP_IPGR3_IDLE_Pos             (0U)
-#define DCMIPP_IPGR3_IDLE_Msk             (0x1UL << DCMIPP_IPGR3_IDLE_Pos)               /*!< 0x00000001 */
-#define DCMIPP_IPGR3_IDLE                 DCMIPP_IPGR3_IDLE_Msk                         /*!< status of IP-Plug. */
-
-/*****************  Bit definition for DCMIPP_IPGR8 register  *****************/
-#define DCMIPP_IPGR8_DID_Pos              (0U)
-#define DCMIPP_IPGR8_DID_Msk              (0x3FUL << DCMIPP_IPGR8_DID_Pos)               /*!< 0x0000003F */
-#define DCMIPP_IPGR8_DID                  DCMIPP_IPGR8_DID_Msk                          /*!< division identifier (0x14) */
-#define DCMIPP_IPGR8_DID_0                (0x1UL << DCMIPP_IPGR8_DID_Pos)                /*!< 0x00000001 */
-#define DCMIPP_IPGR8_DID_1                (0x2UL << DCMIPP_IPGR8_DID_Pos)                /*!< 0x00000002 */
-#define DCMIPP_IPGR8_DID_2                (0x4UL << DCMIPP_IPGR8_DID_Pos)                /*!< 0x00000004 */
-#define DCMIPP_IPGR8_DID_3                (0x8UL << DCMIPP_IPGR8_DID_Pos)                /*!< 0x00000008 */
-#define DCMIPP_IPGR8_DID_4                (0x10UL << DCMIPP_IPGR8_DID_Pos)               /*!< 0x00000010 */
-#define DCMIPP_IPGR8_DID_5                (0x20UL << DCMIPP_IPGR8_DID_Pos)               /*!< 0x00000020 */
-#define DCMIPP_IPGR8_REVID_Pos            (8U)
-#define DCMIPP_IPGR8_REVID_Msk            (0x1FUL << DCMIPP_IPGR8_REVID_Pos)             /*!< 0x00001F00 */
-#define DCMIPP_IPGR8_REVID                DCMIPP_IPGR8_REVID_Msk                        /*!< revision identifier (0x03) */
-#define DCMIPP_IPGR8_REVID_0              (0x1UL << DCMIPP_IPGR8_REVID_Pos)            /*!< 0x00000100 */
-#define DCMIPP_IPGR8_REVID_1              (0x2UL << DCMIPP_IPGR8_REVID_Pos)            /*!< 0x00000200 */
-#define DCMIPP_IPGR8_REVID_2              (0x4UL << DCMIPP_IPGR8_REVID_Pos)            /*!< 0x00000400 */
-#define DCMIPP_IPGR8_REVID_3              (0x8UL << DCMIPP_IPGR8_REVID_Pos)            /*!< 0x00000800 */
-#define DCMIPP_IPGR8_REVID_4              (0x10UL << DCMIPP_IPGR8_REVID_Pos)           /*!< 0x00001000 */
-#define DCMIPP_IPGR8_ARCHIID_Pos          (16U)
-#define DCMIPP_IPGR8_ARCHIID_Msk          (0x1FUL << DCMIPP_IPGR8_ARCHIID_Pos)           /*!< 0x001F0000 */
-#define DCMIPP_IPGR8_ARCHIID              DCMIPP_IPGR8_ARCHIID_Msk                      /*!< architecture identifier (0x04) */
-#define DCMIPP_IPGR8_ARCHIID_0            (0x1UL << DCMIPP_IPGR8_ARCHIID_Pos)        /*!< 0x00010000 */
-#define DCMIPP_IPGR8_ARCHIID_1            (0x2UL << DCMIPP_IPGR8_ARCHIID_Pos)        /*!< 0x00020000 */
-#define DCMIPP_IPGR8_ARCHIID_2            (0x4UL << DCMIPP_IPGR8_ARCHIID_Pos)        /*!< 0x00040000 */
-#define DCMIPP_IPGR8_ARCHIID_3            (0x8UL << DCMIPP_IPGR8_ARCHIID_Pos)        /*!< 0x00080000 */
-#define DCMIPP_IPGR8_ARCHIID_4            (0x10UL << DCMIPP_IPGR8_ARCHIID_Pos)       /*!< 0x00100000 */
-#define DCMIPP_IPGR8_IPPID_Pos            (24U)
-#define DCMIPP_IPGR8_IPPID_Msk            (0xFFUL << DCMIPP_IPGR8_IPPID_Pos)             /*!< 0xFF000000 */
-#define DCMIPP_IPGR8_IPPID                DCMIPP_IPGR8_IPPID_Msk                        /*!< IP identifier (0xAA) */
-#define DCMIPP_IPGR8_IPPID_0              (0x1UL << DCMIPP_IPGR8_IPPID_Pos)        /*!< 0x01000000 */
-#define DCMIPP_IPGR8_IPPID_1              (0x2UL << DCMIPP_IPGR8_IPPID_Pos)        /*!< 0x02000000 */
-#define DCMIPP_IPGR8_IPPID_2              (0x4UL << DCMIPP_IPGR8_IPPID_Pos)        /*!< 0x04000000 */
-#define DCMIPP_IPGR8_IPPID_3              (0x8UL << DCMIPP_IPGR8_IPPID_Pos)        /*!< 0x08000000 */
-#define DCMIPP_IPGR8_IPPID_4              (0x10UL << DCMIPP_IPGR8_IPPID_Pos)       /*!< 0x10000000 */
-#define DCMIPP_IPGR8_IPPID_5              (0x20UL << DCMIPP_IPGR8_IPPID_Pos)       /*!< 0x20000000 */
-#define DCMIPP_IPGR8_IPPID_6              (0x40UL << DCMIPP_IPGR8_IPPID_Pos)       /*!< 0x40000000 */
-#define DCMIPP_IPGR8_IPPID_7              (0x80UL << DCMIPP_IPGR8_IPPID_Pos)       /*!< 0x80000000 */
-
-/****************  Bit definition for DCMIPP_IPC1R1 register  *****************/
-#define DCMIPP_IPC1R1_TRAFFIC_Pos         (0U)
-#define DCMIPP_IPC1R1_TRAFFIC_Msk         (0x7UL << DCMIPP_IPC1R1_TRAFFIC_Pos)           /*!< 0x00000007 */
-#define DCMIPP_IPC1R1_TRAFFIC             DCMIPP_IPC1R1_TRAFFIC_Msk                     /*!< burst size as power2 of 8Bytes units */
-#define DCMIPP_IPC1R1_TRAFFIC_0           (0x1UL << DCMIPP_IPC1R1_TRAFFIC_Pos)           /*!< 0x00000001 */
-#define DCMIPP_IPC1R1_TRAFFIC_1           (0x2UL << DCMIPP_IPC1R1_TRAFFIC_Pos)           /*!< 0x00000002 */
-#define DCMIPP_IPC1R1_TRAFFIC_2           (0x4UL << DCMIPP_IPC1R1_TRAFFIC_Pos)           /*!< 0x00000004 */
-#define DCMIPP_IPC1R1_OTR_Pos             (8U)
-#define DCMIPP_IPC1R1_OTR_Msk             (0xFUL << DCMIPP_IPC1R1_OTR_Pos)               /*!< 0x00000F00 */
-#define DCMIPP_IPC1R1_OTR                 DCMIPP_IPC1R1_OTR_Msk                         /*!< max outstanding transactions: */
-#define DCMIPP_IPC1R1_OTR_0               (0x1UL << DCMIPP_IPC1R1_OTR_Pos)             /*!< 0x00000100 */
-#define DCMIPP_IPC1R1_OTR_1               (0x2UL << DCMIPP_IPC1R1_OTR_Pos)             /*!< 0x00000200 */
-#define DCMIPP_IPC1R1_OTR_2               (0x4UL << DCMIPP_IPC1R1_OTR_Pos)             /*!< 0x00000400 */
-#define DCMIPP_IPC1R1_OTR_3               (0x8UL << DCMIPP_IPC1R1_OTR_Pos)             /*!< 0x00000800 */
-
-/****************  Bit definition for DCMIPP_IPC1R2 register  *****************/
-#define DCMIPP_IPC1R2_SVCMAPPING_Pos      (8U)
-#define DCMIPP_IPC1R2_SVCMAPPING_Msk      (0xFUL << DCMIPP_IPC1R2_SVCMAPPING_Pos)        /*!< 0x00000F00 */
-#define DCMIPP_IPC1R2_SVCMAPPING          DCMIPP_IPC1R2_SVCMAPPING_Msk                  /*!< Non-User, must be kept at reset value. */
-#define DCMIPP_IPC1R2_SVCMAPPING_0        (0x1UL << DCMIPP_IPC1R2_SVCMAPPING_Pos)      /*!< 0x00000100 */
-#define DCMIPP_IPC1R2_SVCMAPPING_1        (0x2UL << DCMIPP_IPC1R2_SVCMAPPING_Pos)      /*!< 0x00000200 */
-#define DCMIPP_IPC1R2_SVCMAPPING_2        (0x4UL << DCMIPP_IPC1R2_SVCMAPPING_Pos)      /*!< 0x00000400 */
-#define DCMIPP_IPC1R2_SVCMAPPING_3        (0x8UL << DCMIPP_IPC1R2_SVCMAPPING_Pos)      /*!< 0x00000800 */
-#define DCMIPP_IPC1R2_WLRU_Pos            (16U)
-#define DCMIPP_IPC1R2_WLRU_Msk            (0xFUL << DCMIPP_IPC1R2_WLRU_Pos)              /*!< 0x000F0000 */
-#define DCMIPP_IPC1R2_WLRU                DCMIPP_IPC1R2_WLRU_Msk                        /*!< ratio for WLRU[3:0] arbitration: */
-#define DCMIPP_IPC1R2_WLRU_0              (0x1UL << DCMIPP_IPC1R2_WLRU_Pos)          /*!< 0x00010000 */
-#define DCMIPP_IPC1R2_WLRU_1              (0x2UL << DCMIPP_IPC1R2_WLRU_Pos)          /*!< 0x00020000 */
-#define DCMIPP_IPC1R2_WLRU_2              (0x4UL << DCMIPP_IPC1R2_WLRU_Pos)          /*!< 0x00040000 */
-#define DCMIPP_IPC1R2_WLRU_3              (0x8UL << DCMIPP_IPC1R2_WLRU_Pos)          /*!< 0x00080000 */
-
-/****************  Bit definition for DCMIPP_IPC1R3 register  *****************/
-#define DCMIPP_IPC1R3_DPREGSTART_Pos      (0U)
-#define DCMIPP_IPC1R3_DPREGSTART_Msk      (0x3FUL << DCMIPP_IPC1R3_DPREGSTART_Pos)       /*!< 0x0000003F */
-#define DCMIPP_IPC1R3_DPREGSTART          DCMIPP_IPC1R3_DPREGSTART_Msk                  /*!< start word (AXI width, =64bit) of the fifo of this client. */
-#define DCMIPP_IPC1R3_DPREGSTART_0        (0x1UL << DCMIPP_IPC1R3_DPREGSTART_Pos)        /*!< 0x00000001 */
-#define DCMIPP_IPC1R3_DPREGSTART_1        (0x2UL << DCMIPP_IPC1R3_DPREGSTART_Pos)        /*!< 0x00000002 */
-#define DCMIPP_IPC1R3_DPREGSTART_2        (0x4UL << DCMIPP_IPC1R3_DPREGSTART_Pos)        /*!< 0x00000004 */
-#define DCMIPP_IPC1R3_DPREGSTART_3        (0x8UL << DCMIPP_IPC1R3_DPREGSTART_Pos)        /*!< 0x00000008 */
-#define DCMIPP_IPC1R3_DPREGSTART_4        (0x10UL << DCMIPP_IPC1R3_DPREGSTART_Pos)       /*!< 0x00000010 */
-#define DCMIPP_IPC1R3_DPREGSTART_5        (0x20UL << DCMIPP_IPC1R3_DPREGSTART_Pos)       /*!< 0x00000020 */
-#define DCMIPP_IPC1R3_DPREGEND_Pos        (16U)
-#define DCMIPP_IPC1R3_DPREGEND_Msk        (0x3FUL << DCMIPP_IPC1R3_DPREGEND_Pos)         /*!< 0x003F0000 */
-#define DCMIPP_IPC1R3_DPREGEND            DCMIPP_IPC1R3_DPREGEND_Msk                    /*!< end word (AXI width, =64bit) of the fifo of this client. */
-#define DCMIPP_IPC1R3_DPREGEND_0          (0x1UL << DCMIPP_IPC1R3_DPREGEND_Pos)      /*!< 0x00010000 */
-#define DCMIPP_IPC1R3_DPREGEND_1          (0x2UL << DCMIPP_IPC1R3_DPREGEND_Pos)      /*!< 0x00020000 */
-#define DCMIPP_IPC1R3_DPREGEND_2          (0x4UL << DCMIPP_IPC1R3_DPREGEND_Pos)      /*!< 0x00040000 */
-#define DCMIPP_IPC1R3_DPREGEND_3          (0x8UL << DCMIPP_IPC1R3_DPREGEND_Pos)      /*!< 0x00080000 */
-#define DCMIPP_IPC1R3_DPREGEND_4          (0x10UL << DCMIPP_IPC1R3_DPREGEND_Pos)     /*!< 0x00100000 */
-#define DCMIPP_IPC1R3_DPREGEND_5          (0x20UL << DCMIPP_IPC1R3_DPREGEND_Pos)     /*!< 0x00200000 */
-
-/***************  Bit definition for DCMIPP_PRHWCFGR register  ****************/
-
-/*****************  Bit definition for DCMIPP_PRCR register  ******************/
-#define DCMIPP_PRCR_ESS_Pos               (4U)
-#define DCMIPP_PRCR_ESS_Msk               (0x1UL << DCMIPP_PRCR_ESS_Pos)                 /*!< 0x00000010 */
-#define DCMIPP_PRCR_ESS                   DCMIPP_PRCR_ESS_Msk                           /*!< Embedded synchronization select */
-#define DCMIPP_PRCR_PCKPOL_Pos            (5U)
-#define DCMIPP_PRCR_PCKPOL_Msk            (0x1UL << DCMIPP_PRCR_PCKPOL_Pos)              /*!< 0x00000020 */
-#define DCMIPP_PRCR_PCKPOL                DCMIPP_PRCR_PCKPOL_Msk                        /*!< Pixel clock polarity */
-#define DCMIPP_PRCR_HSPOL_Pos             (6U)
-#define DCMIPP_PRCR_HSPOL_Msk             (0x1UL << DCMIPP_PRCR_HSPOL_Pos)               /*!< 0x00000040 */
-#define DCMIPP_PRCR_HSPOL                 DCMIPP_PRCR_HSPOL_Msk                         /*!< Horizontal synchronization polarity */
-#define DCMIPP_PRCR_VSPOL_Pos             (7U)
-#define DCMIPP_PRCR_VSPOL_Msk             (0x1UL << DCMIPP_PRCR_VSPOL_Pos)               /*!< 0x00000080 */
-#define DCMIPP_PRCR_VSPOL                 DCMIPP_PRCR_VSPOL_Msk                         /*!< Vertical synchronization polarity */
-#define DCMIPP_PRCR_EDM_Pos               (10U)
-#define DCMIPP_PRCR_EDM_Msk               (0x7UL << DCMIPP_PRCR_EDM_Pos)                 /*!< 0x00001C00 */
-#define DCMIPP_PRCR_EDM                   DCMIPP_PRCR_EDM_Msk                           /*!< Extended data mode */
-#define DCMIPP_PRCR_EDM_0                 (0x1UL << DCMIPP_PRCR_EDM_Pos)               /*!< 0x00000400 */
-#define DCMIPP_PRCR_EDM_1                 (0x2UL << DCMIPP_PRCR_EDM_Pos)               /*!< 0x00000800 */
-#define DCMIPP_PRCR_EDM_2                 (0x4UL << DCMIPP_PRCR_EDM_Pos)              /*!< 0x00001000 */
-#define DCMIPP_PRCR_ENABLE_Pos            (14U)
-#define DCMIPP_PRCR_ENABLE_Msk            (0x1UL << DCMIPP_PRCR_ENABLE_Pos)              /*!< 0x00004000 */
-#define DCMIPP_PRCR_ENABLE                DCMIPP_PRCR_ENABLE_Msk                        /*!< Parallel Interface enable */
-#define DCMIPP_PRCR_FORMAT_Pos            (16U)
-#define DCMIPP_PRCR_FORMAT_Msk            (0xFFUL << DCMIPP_PRCR_FORMAT_Pos)             /*!< 0x00FF0000 */
-#define DCMIPP_PRCR_FORMAT                DCMIPP_PRCR_FORMAT_Msk                        /*!< Others: Data is captured and output as-is through the data/dump pipeline only(for Instance the JPEG or the Byte input format. */
-#define DCMIPP_PRCR_FORMAT_0              (0x1UL << DCMIPP_PRCR_FORMAT_Pos)          /*!< 0x00010000 */
-#define DCMIPP_PRCR_FORMAT_1              (0x2UL << DCMIPP_PRCR_FORMAT_Pos)          /*!< 0x00020000 */
-#define DCMIPP_PRCR_FORMAT_2              (0x4UL << DCMIPP_PRCR_FORMAT_Pos)          /*!< 0x00040000 */
-#define DCMIPP_PRCR_FORMAT_3              (0x8UL << DCMIPP_PRCR_FORMAT_Pos)          /*!< 0x00080000 */
-#define DCMIPP_PRCR_FORMAT_4              (0x10UL << DCMIPP_PRCR_FORMAT_Pos)         /*!< 0x00100000 */
-#define DCMIPP_PRCR_FORMAT_5              (0x20UL << DCMIPP_PRCR_FORMAT_Pos)         /*!< 0x00200000 */
-#define DCMIPP_PRCR_FORMAT_6              (0x40UL << DCMIPP_PRCR_FORMAT_Pos)         /*!< 0x00400000 */
-#define DCMIPP_PRCR_FORMAT_7              (0x80UL << DCMIPP_PRCR_FORMAT_Pos)         /*!< 0x00800000 */
-#define DCMIPP_PRCR_SWAPCYCLES_Pos        (25U)
-#define DCMIPP_PRCR_SWAPCYCLES_Msk        (0x1UL << DCMIPP_PRCR_SWAPCYCLES_Pos)          /*!< 0x02000000 */
-#define DCMIPP_PRCR_SWAPCYCLES            DCMIPP_PRCR_SWAPCYCLES_Msk                    /*!< swap data from cycle 0 vs cycle 1, for pixels received on 2 cycles. */
-#define DCMIPP_PRCR_SWAPBITS_Pos          (26U)
-#define DCMIPP_PRCR_SWAPBITS_Msk          (0x1UL << DCMIPP_PRCR_SWAPBITS_Pos)            /*!< 0x04000000 */
-#define DCMIPP_PRCR_SWAPBITS              DCMIPP_PRCR_SWAPBITS_Msk                      /*!< swap lsb vs msb within each received component. */
-
-/****************  Bit definition for DCMIPP_PRESCR register  *****************/
-#define DCMIPP_PRESCR_FSC_Pos             (0U)
-#define DCMIPP_PRESCR_FSC_Msk             (0xFFUL << DCMIPP_PRESCR_FSC_Pos)              /*!< 0x000000FF */
-#define DCMIPP_PRESCR_FSC                 DCMIPP_PRESCR_FSC_Msk                         /*!< Frame start delimiter code */
-#define DCMIPP_PRESCR_FSC_0               (0x1UL << DCMIPP_PRESCR_FSC_Pos)               /*!< 0x00000001 */
-#define DCMIPP_PRESCR_FSC_1               (0x2UL << DCMIPP_PRESCR_FSC_Pos)               /*!< 0x00000002 */
-#define DCMIPP_PRESCR_FSC_2               (0x4UL << DCMIPP_PRESCR_FSC_Pos)               /*!< 0x00000004 */
-#define DCMIPP_PRESCR_FSC_3               (0x8UL << DCMIPP_PRESCR_FSC_Pos)               /*!< 0x00000008 */
-#define DCMIPP_PRESCR_FSC_4               (0x10UL << DCMIPP_PRESCR_FSC_Pos)              /*!< 0x00000010 */
-#define DCMIPP_PRESCR_FSC_5               (0x20UL << DCMIPP_PRESCR_FSC_Pos)              /*!< 0x00000020 */
-#define DCMIPP_PRESCR_FSC_6               (0x40UL << DCMIPP_PRESCR_FSC_Pos)              /*!< 0x00000040 */
-#define DCMIPP_PRESCR_FSC_7               (0x80UL << DCMIPP_PRESCR_FSC_Pos)              /*!< 0x00000080 */
-#define DCMIPP_PRESCR_LSC_Pos             (8U)
-#define DCMIPP_PRESCR_LSC_Msk             (0xFFUL << DCMIPP_PRESCR_LSC_Pos)              /*!< 0x0000FF00 */
-#define DCMIPP_PRESCR_LSC                 DCMIPP_PRESCR_LSC_Msk                         /*!< Line start delimiter code */
-#define DCMIPP_PRESCR_LSC_0               (0x1UL << DCMIPP_PRESCR_LSC_Pos)             /*!< 0x00000100 */
-#define DCMIPP_PRESCR_LSC_1               (0x2UL << DCMIPP_PRESCR_LSC_Pos)             /*!< 0x00000200 */
-#define DCMIPP_PRESCR_LSC_2               (0x4UL << DCMIPP_PRESCR_LSC_Pos)             /*!< 0x00000400 */
-#define DCMIPP_PRESCR_LSC_3               (0x8UL << DCMIPP_PRESCR_LSC_Pos)             /*!< 0x00000800 */
-#define DCMIPP_PRESCR_LSC_4               (0x10UL << DCMIPP_PRESCR_LSC_Pos)            /*!< 0x00001000 */
-#define DCMIPP_PRESCR_LSC_5               (0x20UL << DCMIPP_PRESCR_LSC_Pos)            /*!< 0x00002000 */
-#define DCMIPP_PRESCR_LSC_6               (0x40UL << DCMIPP_PRESCR_LSC_Pos)            /*!< 0x00004000 */
-#define DCMIPP_PRESCR_LSC_7               (0x80UL << DCMIPP_PRESCR_LSC_Pos)            /*!< 0x00008000 */
-#define DCMIPP_PRESCR_LEC_Pos             (16U)
-#define DCMIPP_PRESCR_LEC_Msk             (0xFFUL << DCMIPP_PRESCR_LEC_Pos)              /*!< 0x00FF0000 */
-#define DCMIPP_PRESCR_LEC                 DCMIPP_PRESCR_LEC_Msk                         /*!< Line end delimiter code */
-#define DCMIPP_PRESCR_LEC_0               (0x1UL << DCMIPP_PRESCR_LEC_Pos)           /*!< 0x00010000 */
-#define DCMIPP_PRESCR_LEC_1               (0x2UL << DCMIPP_PRESCR_LEC_Pos)           /*!< 0x00020000 */
-#define DCMIPP_PRESCR_LEC_2               (0x4UL << DCMIPP_PRESCR_LEC_Pos)           /*!< 0x00040000 */
-#define DCMIPP_PRESCR_LEC_3               (0x8UL << DCMIPP_PRESCR_LEC_Pos)           /*!< 0x00080000 */
-#define DCMIPP_PRESCR_LEC_4               (0x10UL << DCMIPP_PRESCR_LEC_Pos)          /*!< 0x00100000 */
-#define DCMIPP_PRESCR_LEC_5               (0x20UL << DCMIPP_PRESCR_LEC_Pos)          /*!< 0x00200000 */
-#define DCMIPP_PRESCR_LEC_6               (0x40UL << DCMIPP_PRESCR_LEC_Pos)          /*!< 0x00400000 */
-#define DCMIPP_PRESCR_LEC_7               (0x80UL << DCMIPP_PRESCR_LEC_Pos)          /*!< 0x00800000 */
-#define DCMIPP_PRESCR_FEC_Pos             (24U)
-#define DCMIPP_PRESCR_FEC_Msk             (0xFFUL << DCMIPP_PRESCR_FEC_Pos)              /*!< 0xFF000000 */
-#define DCMIPP_PRESCR_FEC                 DCMIPP_PRESCR_FEC_Msk                         /*!< Frame end delimiter code */
-#define DCMIPP_PRESCR_FEC_0               (0x1UL << DCMIPP_PRESCR_FEC_Pos)         /*!< 0x01000000 */
-#define DCMIPP_PRESCR_FEC_1               (0x2UL << DCMIPP_PRESCR_FEC_Pos)         /*!< 0x02000000 */
-#define DCMIPP_PRESCR_FEC_2               (0x4UL << DCMIPP_PRESCR_FEC_Pos)         /*!< 0x04000000 */
-#define DCMIPP_PRESCR_FEC_3               (0x8UL << DCMIPP_PRESCR_FEC_Pos)         /*!< 0x08000000 */
-#define DCMIPP_PRESCR_FEC_4               (0x10UL << DCMIPP_PRESCR_FEC_Pos)        /*!< 0x10000000 */
-#define DCMIPP_PRESCR_FEC_5               (0x20UL << DCMIPP_PRESCR_FEC_Pos)        /*!< 0x20000000 */
-#define DCMIPP_PRESCR_FEC_6               (0x40UL << DCMIPP_PRESCR_FEC_Pos)        /*!< 0x40000000 */
-#define DCMIPP_PRESCR_FEC_7               (0x80UL << DCMIPP_PRESCR_FEC_Pos)        /*!< 0x80000000 */
-
-/****************  Bit definition for DCMIPP_PRESUR register  *****************/
-#define DCMIPP_PRESUR_FSU_Pos             (0U)
-#define DCMIPP_PRESUR_FSU_Msk             (0xFFUL << DCMIPP_PRESUR_FSU_Pos)              /*!< 0x000000FF */
-#define DCMIPP_PRESUR_FSU                 DCMIPP_PRESUR_FSU_Msk                         /*!< Frame start delimiter unmask */
-#define DCMIPP_PRESUR_FSU_0               (0x1UL << DCMIPP_PRESUR_FSU_Pos)               /*!< 0x00000001 */
-#define DCMIPP_PRESUR_FSU_1               (0x2UL << DCMIPP_PRESUR_FSU_Pos)               /*!< 0x00000002 */
-#define DCMIPP_PRESUR_FSU_2               (0x4UL << DCMIPP_PRESUR_FSU_Pos)               /*!< 0x00000004 */
-#define DCMIPP_PRESUR_FSU_3               (0x8UL << DCMIPP_PRESUR_FSU_Pos)               /*!< 0x00000008 */
-#define DCMIPP_PRESUR_FSU_4               (0x10UL << DCMIPP_PRESUR_FSU_Pos)              /*!< 0x00000010 */
-#define DCMIPP_PRESUR_FSU_5               (0x20UL << DCMIPP_PRESUR_FSU_Pos)              /*!< 0x00000020 */
-#define DCMIPP_PRESUR_FSU_6               (0x40UL << DCMIPP_PRESUR_FSU_Pos)              /*!< 0x00000040 */
-#define DCMIPP_PRESUR_FSU_7               (0x80UL << DCMIPP_PRESUR_FSU_Pos)              /*!< 0x00000080 */
-#define DCMIPP_PRESUR_LSU_Pos             (8U)
-#define DCMIPP_PRESUR_LSU_Msk             (0xFFUL << DCMIPP_PRESUR_LSU_Pos)              /*!< 0x0000FF00 */
-#define DCMIPP_PRESUR_LSU                 DCMIPP_PRESUR_LSU_Msk                         /*!< Line start delimiter unmask */
-#define DCMIPP_PRESUR_LSU_0               (0x1UL << DCMIPP_PRESUR_LSU_Pos)             /*!< 0x00000100 */
-#define DCMIPP_PRESUR_LSU_1               (0x2UL << DCMIPP_PRESUR_LSU_Pos)             /*!< 0x00000200 */
-#define DCMIPP_PRESUR_LSU_2               (0x4UL << DCMIPP_PRESUR_LSU_Pos)             /*!< 0x00000400 */
-#define DCMIPP_PRESUR_LSU_3               (0x8UL << DCMIPP_PRESUR_LSU_Pos)             /*!< 0x00000800 */
-#define DCMIPP_PRESUR_LSU_4               (0x10UL << DCMIPP_PRESUR_LSU_Pos)            /*!< 0x00001000 */
-#define DCMIPP_PRESUR_LSU_5               (0x20UL << DCMIPP_PRESUR_LSU_Pos)            /*!< 0x00002000 */
-#define DCMIPP_PRESUR_LSU_6               (0x40UL << DCMIPP_PRESUR_LSU_Pos)            /*!< 0x00004000 */
-#define DCMIPP_PRESUR_LSU_7               (0x80UL << DCMIPP_PRESUR_LSU_Pos)            /*!< 0x00008000 */
-#define DCMIPP_PRESUR_LEU_Pos             (16U)
-#define DCMIPP_PRESUR_LEU_Msk             (0xFFUL << DCMIPP_PRESUR_LEU_Pos)              /*!< 0x00FF0000 */
-#define DCMIPP_PRESUR_LEU                 DCMIPP_PRESUR_LEU_Msk                         /*!< Line end delimiter unmask */
-#define DCMIPP_PRESUR_LEU_0               (0x1UL << DCMIPP_PRESUR_LEU_Pos)           /*!< 0x00010000 */
-#define DCMIPP_PRESUR_LEU_1               (0x2UL << DCMIPP_PRESUR_LEU_Pos)           /*!< 0x00020000 */
-#define DCMIPP_PRESUR_LEU_2               (0x4UL << DCMIPP_PRESUR_LEU_Pos)           /*!< 0x00040000 */
-#define DCMIPP_PRESUR_LEU_3               (0x8UL << DCMIPP_PRESUR_LEU_Pos)           /*!< 0x00080000 */
-#define DCMIPP_PRESUR_LEU_4               (0x10UL << DCMIPP_PRESUR_LEU_Pos)          /*!< 0x00100000 */
-#define DCMIPP_PRESUR_LEU_5               (0x20UL << DCMIPP_PRESUR_LEU_Pos)          /*!< 0x00200000 */
-#define DCMIPP_PRESUR_LEU_6               (0x40UL << DCMIPP_PRESUR_LEU_Pos)          /*!< 0x00400000 */
-#define DCMIPP_PRESUR_LEU_7               (0x80UL << DCMIPP_PRESUR_LEU_Pos)          /*!< 0x00800000 */
-#define DCMIPP_PRESUR_FEU_Pos             (24U)
-#define DCMIPP_PRESUR_FEU_Msk             (0xFFUL << DCMIPP_PRESUR_FEU_Pos)              /*!< 0xFF000000 */
-#define DCMIPP_PRESUR_FEU                 DCMIPP_PRESUR_FEU_Msk                         /*!< Frame end delimiter unmask */
-#define DCMIPP_PRESUR_FEU_0               (0x1UL << DCMIPP_PRESUR_FEU_Pos)         /*!< 0x01000000 */
-#define DCMIPP_PRESUR_FEU_1               (0x2UL << DCMIPP_PRESUR_FEU_Pos)         /*!< 0x02000000 */
-#define DCMIPP_PRESUR_FEU_2               (0x4UL << DCMIPP_PRESUR_FEU_Pos)         /*!< 0x04000000 */
-#define DCMIPP_PRESUR_FEU_3               (0x8UL << DCMIPP_PRESUR_FEU_Pos)         /*!< 0x08000000 */
-#define DCMIPP_PRESUR_FEU_4               (0x10UL << DCMIPP_PRESUR_FEU_Pos)        /*!< 0x10000000 */
-#define DCMIPP_PRESUR_FEU_5               (0x20UL << DCMIPP_PRESUR_FEU_Pos)        /*!< 0x20000000 */
-#define DCMIPP_PRESUR_FEU_6               (0x40UL << DCMIPP_PRESUR_FEU_Pos)        /*!< 0x40000000 */
-#define DCMIPP_PRESUR_FEU_7               (0x80UL << DCMIPP_PRESUR_FEU_Pos)        /*!< 0x80000000 */
-
-/*****************  Bit definition for DCMIPP_PRIER register  *****************/
-#define DCMIPP_PRIER_ERRIE_Pos            (6U)
-#define DCMIPP_PRIER_ERRIE_Msk            (0x1UL << DCMIPP_PRIER_ERRIE_Pos)              /*!< 0x00000040 */
-#define DCMIPP_PRIER_ERRIE                DCMIPP_PRIER_ERRIE_Msk                        /*!< Synchronization error interrupt enable */
-
-/*****************  Bit definition for DCMIPP_PRSR register  ******************/
-#define DCMIPP_PRSR_ERRF_Pos              (6U)
-#define DCMIPP_PRSR_ERRF_Msk              (0x1UL << DCMIPP_PRSR_ERRF_Pos)                /*!< 0x00000040 */
-#define DCMIPP_PRSR_ERRF                  DCMIPP_PRSR_ERRF_Msk                          /*!< Synchronization error raw interrupt status */
-#define DCMIPP_PRSR_HSYNC_Pos             (16U)
-#define DCMIPP_PRSR_HSYNC_Msk             (0x1UL << DCMIPP_PRSR_HSYNC_Pos)               /*!< 0x00010000 */
-#define DCMIPP_PRSR_HSYNC                 DCMIPP_PRSR_HSYNC_Msk                         /*!< This bit gives the state of the HSYNC pin with the correct programmed polarity if the ENABLE bit is set into the DCMIPP_PRCR register and if the pixel clock is received. It is set during the blanking period whatever the polarity selected in HPOL bit, and cleared otherwise. */
-#define DCMIPP_PRSR_VSYNC_Pos             (17U)
-#define DCMIPP_PRSR_VSYNC_Msk             (0x1UL << DCMIPP_PRSR_VSYNC_Pos)               /*!< 0x00020000 */
-#define DCMIPP_PRSR_VSYNC                 DCMIPP_PRSR_VSYNC_Msk                         /*!< This bit gives the state of the VSYNC pin with the correct programmed polarity if the ENABLE bit is set into the DCMIPP_PRCR register and if the pixel clock is received. It is set during the blanking period whatever the polarity selected in VPOL bit, and cleared otherwise. */
-
-/*****************  Bit definition for DCMIPP_PRFCR register  *****************/
-#define DCMIPP_PRFCR_CERRF_Pos            (6U)
-#define DCMIPP_PRFCR_CERRF_Msk            (0x1UL << DCMIPP_PRFCR_CERRF_Pos)              /*!< 0x00000040 */
-#define DCMIPP_PRFCR_CERRF                DCMIPP_PRFCR_CERRF_Msk                        /*!< Synchronization error interrupt status clear */
-
-/***************  Bit definition for DCMIPP_CMHWCFGR register  ****************/
-#define DCMIPP_CMHWCFGR_CPIPES_Pos        (2U)
-#define DCMIPP_CMHWCFGR_CPIPES_Msk        (0x3UL << DCMIPP_CMHWCFGR_CPIPES_Pos)          /*!< 0x0000000C */
-#define DCMIPP_CMHWCFGR_CPIPES            DCMIPP_CMHWCFGR_CPIPES_Msk                    /*!< (1..3) Amount of instantiated Pipes (either Dump Pipes or Pixel Pipes) */
-#define DCMIPP_CMHWCFGR_CPIPES_0          (0x1UL << DCMIPP_CMHWCFGR_CPIPES_Pos)          /*!< 0x00000004 */
-#define DCMIPP_CMHWCFGR_CPIPES_1          (0x2UL << DCMIPP_CMHWCFGR_CPIPES_Pos)          /*!< 0x00000008 */
-#define DCMIPP_CMHWCFGR_CPAR_Pos          (4U)
-#define DCMIPP_CMHWCFGR_CPAR_Msk          (0x1UL << DCMIPP_CMHWCFGR_CPAR_Pos)            /*!< 0x00000010 */
-#define DCMIPP_CMHWCFGR_CPAR              DCMIPP_CMHWCFGR_CPAR_Msk                      /*!< Presence of the Parallel Interface: */
-#define DCMIPP_CMHWCFGR_CCSI_Pos          (5U)
-#define DCMIPP_CMHWCFGR_CCSI_Msk          (0x1UL << DCMIPP_CMHWCFGR_CCSI_Pos)            /*!< 0x00000020 */
-#define DCMIPP_CMHWCFGR_CCSI              DCMIPP_CMHWCFGR_CCSI_Msk                      /*!< presence of the CSI-2 Host interface: */
-
-/*****************  Bit definition for DCMIPP_CMCR register  ******************/
-#define DCMIPP_CMCR_CFC_Pos               (4U)
-#define DCMIPP_CMCR_CFC_Msk               (0x1UL << DCMIPP_CMCR_CFC_Pos)                 /*!< 0x00000010 */
-#define DCMIPP_CMCR_CFC                   DCMIPP_CMCR_CFC_Msk                           /*!< Clear frame counter */
-
-/****************  Bit definition for DCMIPP_CMFRCR register  *****************/
-#define DCMIPP_CMFRCR_FRMCNT_Pos          (0U)
-#define DCMIPP_CMFRCR_FRMCNT_Msk          (0xFFFFFFFFUL << DCMIPP_CMFRCR_FRMCNT_Pos)     /*!< 0xFFFFFFFF */
-#define DCMIPP_CMFRCR_FRMCNT              DCMIPP_CMFRCR_FRMCNT_Msk                      /*!< frame counter, read-only, loops around.. */
-#define DCMIPP_CMFRCR_FRMCNT_0            (0x1UL << DCMIPP_CMFRCR_FRMCNT_Pos)            /*!< 0x00000001 */
-#define DCMIPP_CMFRCR_FRMCNT_1            (0x2UL << DCMIPP_CMFRCR_FRMCNT_Pos)            /*!< 0x00000002 */
-#define DCMIPP_CMFRCR_FRMCNT_2            (0x4UL << DCMIPP_CMFRCR_FRMCNT_Pos)            /*!< 0x00000004 */
-#define DCMIPP_CMFRCR_FRMCNT_3            (0x8UL << DCMIPP_CMFRCR_FRMCNT_Pos)            /*!< 0x00000008 */
-#define DCMIPP_CMFRCR_FRMCNT_4            (0x10UL << DCMIPP_CMFRCR_FRMCNT_Pos)           /*!< 0x00000010 */
-#define DCMIPP_CMFRCR_FRMCNT_5            (0x20UL << DCMIPP_CMFRCR_FRMCNT_Pos)           /*!< 0x00000020 */
-#define DCMIPP_CMFRCR_FRMCNT_6            (0x40UL << DCMIPP_CMFRCR_FRMCNT_Pos)           /*!< 0x00000040 */
-#define DCMIPP_CMFRCR_FRMCNT_7            (0x80UL << DCMIPP_CMFRCR_FRMCNT_Pos)           /*!< 0x00000080 */
-#define DCMIPP_CMFRCR_FRMCNT_8            (0x100UL << DCMIPP_CMFRCR_FRMCNT_Pos)          /*!< 0x00000100 */
-#define DCMIPP_CMFRCR_FRMCNT_9            (0x200UL << DCMIPP_CMFRCR_FRMCNT_Pos)          /*!< 0x00000200 */
-#define DCMIPP_CMFRCR_FRMCNT_10           (0x400UL << DCMIPP_CMFRCR_FRMCNT_Pos)          /*!< 0x00000400 */
-#define DCMIPP_CMFRCR_FRMCNT_11           (0x800UL << DCMIPP_CMFRCR_FRMCNT_Pos)          /*!< 0x00000800 */
-#define DCMIPP_CMFRCR_FRMCNT_12           (0x1000UL << DCMIPP_CMFRCR_FRMCNT_Pos)         /*!< 0x00001000 */
-#define DCMIPP_CMFRCR_FRMCNT_13           (0x2000UL << DCMIPP_CMFRCR_FRMCNT_Pos)         /*!< 0x00002000 */
-#define DCMIPP_CMFRCR_FRMCNT_14           (0x4000UL << DCMIPP_CMFRCR_FRMCNT_Pos)         /*!< 0x00004000 */
-#define DCMIPP_CMFRCR_FRMCNT_15           (0x8000UL << DCMIPP_CMFRCR_FRMCNT_Pos)         /*!< 0x00008000 */
-#define DCMIPP_CMFRCR_FRMCNT_16           (0x10000UL << DCMIPP_CMFRCR_FRMCNT_Pos)        /*!< 0x00010000 */
-#define DCMIPP_CMFRCR_FRMCNT_17           (0x20000UL << DCMIPP_CMFRCR_FRMCNT_Pos)        /*!< 0x00020000 */
-#define DCMIPP_CMFRCR_FRMCNT_18           (0x40000UL << DCMIPP_CMFRCR_FRMCNT_Pos)        /*!< 0x00040000 */
-#define DCMIPP_CMFRCR_FRMCNT_19           (0x80000UL << DCMIPP_CMFRCR_FRMCNT_Pos)        /*!< 0x00080000 */
-#define DCMIPP_CMFRCR_FRMCNT_20           (0x100000UL << DCMIPP_CMFRCR_FRMCNT_Pos)       /*!< 0x00100000 */
-#define DCMIPP_CMFRCR_FRMCNT_21           (0x200000UL << DCMIPP_CMFRCR_FRMCNT_Pos)       /*!< 0x00200000 */
-#define DCMIPP_CMFRCR_FRMCNT_22           (0x400000UL << DCMIPP_CMFRCR_FRMCNT_Pos)       /*!< 0x00400000 */
-#define DCMIPP_CMFRCR_FRMCNT_23           (0x800000UL << DCMIPP_CMFRCR_FRMCNT_Pos)       /*!< 0x00800000 */
-#define DCMIPP_CMFRCR_FRMCNT_24           (0x1000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)      /*!< 0x01000000 */
-#define DCMIPP_CMFRCR_FRMCNT_25           (0x2000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)      /*!< 0x02000000 */
-#define DCMIPP_CMFRCR_FRMCNT_26           (0x4000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)      /*!< 0x04000000 */
-#define DCMIPP_CMFRCR_FRMCNT_27           (0x8000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)      /*!< 0x08000000 */
-#define DCMIPP_CMFRCR_FRMCNT_28           (0x10000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)     /*!< 0x10000000 */
-#define DCMIPP_CMFRCR_FRMCNT_29           (0x20000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)     /*!< 0x20000000 */
-#define DCMIPP_CMFRCR_FRMCNT_30           (0x40000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)     /*!< 0x40000000 */
-#define DCMIPP_CMFRCR_FRMCNT_31           (0x80000000UL << DCMIPP_CMFRCR_FRMCNT_Pos)     /*!< 0x80000000 */
-
-/*****************  Bit definition for DCMIPP_CMIER register  *****************/
-#define DCMIPP_CMIER_ATXERRIE_Pos         (5U)
-#define DCMIPP_CMIER_ATXERRIE_Msk         (0x1UL << DCMIPP_CMIER_ATXERRIE_Pos)           /*!< 0x00000020 */
-#define DCMIPP_CMIER_ATXERRIE             DCMIPP_CMIER_ATXERRIE_Msk                     /*!< AXI Transfer error interrupt enable for IPPLUG. */
-#define DCMIPP_CMIER_PRERRIE_Pos          (6U)
-#define DCMIPP_CMIER_PRERRIE_Msk          (0x1UL << DCMIPP_CMIER_PRERRIE_Pos)            /*!< 0x00000040 */
-#define DCMIPP_CMIER_PRERRIE              DCMIPP_CMIER_PRERRIE_Msk                      /*!< limit interrupt enable for the Parallel Interface. */
-#define DCMIPP_CMIER_PROVRIE_Pos          (7U)
-#define DCMIPP_CMIER_PROVRIE_Msk          (0x1UL << DCMIPP_CMIER_PROVRIE_Pos)            /*!< 0x00000080 */
-#define DCMIPP_CMIER_PROVRIE              DCMIPP_CMIER_PROVRIE_Msk                      /*!< overrun interrupt enable for the Parallel Interface. */
-#define DCMIPP_CMIER_P0LINEIE_Pos         (8U)
-#define DCMIPP_CMIER_P0LINEIE_Msk         (0x1UL << DCMIPP_CMIER_P0LINEIE_Pos)           /*!< 0x00000100 */
-#define DCMIPP_CMIER_P0LINEIE             DCMIPP_CMIER_P0LINEIE_Msk                     /*!< multi-Line Capture complete interrupt enable for the Pipe0 */
-#define DCMIPP_CMIER_P0FRAMEIE_Pos        (9U)
-#define DCMIPP_CMIER_P0FRAMEIE_Msk        (0x1UL << DCMIPP_CMIER_P0FRAMEIE_Pos)          /*!< 0x00000200 */
-#define DCMIPP_CMIER_P0FRAMEIE            DCMIPP_CMIER_P0FRAMEIE_Msk                    /*!< Frame Capture complete interrupt enable for the Pipe0 */
-#define DCMIPP_CMIER_P0VSYNCIE_Pos        (10U)
-#define DCMIPP_CMIER_P0VSYNCIE_Msk        (0x1UL << DCMIPP_CMIER_P0VSYNCIE_Pos)          /*!< 0x00000400 */
-#define DCMIPP_CMIER_P0VSYNCIE            DCMIPP_CMIER_P0VSYNCIE_Msk                    /*!< Vertical sync interrupt enable for the Pipe0. */
-#define DCMIPP_CMIER_P0LIMITIE_Pos        (14U)
-#define DCMIPP_CMIER_P0LIMITIE_Msk        (0x1UL << DCMIPP_CMIER_P0LIMITIE_Pos)          /*!< 0x00004000 */
-#define DCMIPP_CMIER_P0LIMITIE            DCMIPP_CMIER_P0LIMITIE_Msk                    /*!< limit interrupt status clear for the Pipe0. */
-#define DCMIPP_CMIER_P0OVRIE_Pos          (15U)
-#define DCMIPP_CMIER_P0OVRIE_Msk          (0x1UL << DCMIPP_CMIER_P0OVRIE_Pos)            /*!< 0x00008000 */
-#define DCMIPP_CMIER_P0OVRIE              DCMIPP_CMIER_P0OVRIE_Msk                      /*!< Overrun interrupt status clear for the Pipe0. */
-
-/*****************  Bit definition for DCMIPP_CMSR1 register  *****************/
-#define DCMIPP_CMSR1_PRHSYNC_Pos          (0U)
-#define DCMIPP_CMSR1_PRHSYNC_Msk          (0x1UL << DCMIPP_CMSR1_PRHSYNC_Pos)            /*!< 0x00000001 */
-#define DCMIPP_CMSR1_PRHSYNC              DCMIPP_CMSR1_PRHSYNC_Msk                      /*!< This bit gives the state of the HSYNC pin with the correct programmed polarity on the Parallel Interface if the ENABLE bit is set into the DCMIPP_PRCR register and if the pixel clock is received. It is set during the blanking period whatever the polarity selected in HPOL bit into the DCMIPP_PRCR, and cleared otherwise. */
-#define DCMIPP_CMSR1_PRVSYNC_Pos          (1U)
-#define DCMIPP_CMSR1_PRVSYNC_Msk          (0x1UL << DCMIPP_CMSR1_PRVSYNC_Pos)            /*!< 0x00000002 */
-#define DCMIPP_CMSR1_PRVSYNC              DCMIPP_CMSR1_PRVSYNC_Msk                      /*!< This bit gives the state of the VSYNC pin with the correct programmed polarity on the Parallel Interface if the ENABLE bit is set into the DCMIPP_PRCR register and if the pixel clock is received. It is set during the blanking period whatever the polarity selected in VPOL bit into the DCMIPP_PRCR, and cleared otherwise. */
-#define DCMIPP_CMSR1_P0CPTACT_Pos         (15U)
-#define DCMIPP_CMSR1_P0CPTACT_Msk         (0x1UL << DCMIPP_CMSR1_P0CPTACT_Pos)           /*!< 0x00008000 */
-#define DCMIPP_CMSR1_P0CPTACT             DCMIPP_CMSR1_P0CPTACT_Msk                     /*!< active frame capture (active from start-of-frame to frame complete) for the Pipe0. */
-
-/*****************  Bit definition for DCMIPP_CMSR2 register  *****************/
-#define DCMIPP_CMSR2_ATXERRF_Pos          (5U)
-#define DCMIPP_CMSR2_ATXERRF_Msk          (0x1UL << DCMIPP_CMSR2_ATXERRF_Pos)            /*!< 0x00000020 */
-#define DCMIPP_CMSR2_ATXERRF              DCMIPP_CMSR2_ATXERRF_Msk                      /*!< AXI transfer error interrupt status flag for the IPPLUG. */
-#define DCMIPP_CMSR2_PRERRF_Pos           (6U)
-#define DCMIPP_CMSR2_PRERRF_Msk           (0x1UL << DCMIPP_CMSR2_PRERRF_Pos)             /*!< 0x00000040 */
-#define DCMIPP_CMSR2_PRERRF               DCMIPP_CMSR2_PRERRF_Msk                       /*!< Synchronization error raw interrupt status for the Parallel Interface. */
-#define DCMIPP_CMSR2_P0LINEF_Pos          (8U)
-#define DCMIPP_CMSR2_P0LINEF_Msk          (0x1UL << DCMIPP_CMSR2_P0LINEF_Pos)            /*!< 0x00000100 */
-#define DCMIPP_CMSR2_P0LINEF              DCMIPP_CMSR2_P0LINEF_Msk                      /*!< multi-Line Capture completed raw interrupt status for the Pipe0. */
-#define DCMIPP_CMSR2_P0FRAMEF_Pos         (9U)
-#define DCMIPP_CMSR2_P0FRAMEF_Msk         (0x1UL << DCMIPP_CMSR2_P0FRAMEF_Pos)           /*!< 0x00000200 */
-#define DCMIPP_CMSR2_P0FRAMEF             DCMIPP_CMSR2_P0FRAMEF_Msk                     /*!< Frame Capture completed raw interrupt status for the Pipe0. */
-#define DCMIPP_CMSR2_P0VSYNCF_Pos         (10U)
-#define DCMIPP_CMSR2_P0VSYNCF_Msk         (0x1UL << DCMIPP_CMSR2_P0VSYNCF_Pos)           /*!< 0x00000400 */
-#define DCMIPP_CMSR2_P0VSYNCF             DCMIPP_CMSR2_P0VSYNCF_Msk                     /*!< VSYNC raw interrupt status for the Pipe0. */
-#define DCMIPP_CMSR2_P0LIMITF_Pos         (14U)
-#define DCMIPP_CMSR2_P0LIMITF_Msk         (0x1UL << DCMIPP_CMSR2_P0LIMITF_Pos)           /*!< 0x00004000 */
-#define DCMIPP_CMSR2_P0LIMITF             DCMIPP_CMSR2_P0LIMITF_Msk                     /*!< Limit raw interrupt status for the Pipe0. */
-#define DCMIPP_CMSR2_P0OVRF_Pos           (15U)
-#define DCMIPP_CMSR2_P0OVRF_Msk           (0x1UL << DCMIPP_CMSR2_P0OVRF_Pos)             /*!< 0x00008000 */
-#define DCMIPP_CMSR2_P0OVRF               DCMIPP_CMSR2_P0OVRF_Msk                       /*!< Overrun raw interrupt status for the Pipe0. */
-
-/*****************  Bit definition for DCMIPP_CMFCR register  *****************/
-#define DCMIPP_CMFCR_CATXERRF_Pos         (5U)
-#define DCMIPP_CMFCR_CATXERRF_Msk         (0x1UL << DCMIPP_CMFCR_CATXERRF_Pos)           /*!< 0x00000020 */
-#define DCMIPP_CMFCR_CATXERRF             DCMIPP_CMFCR_CATXERRF_Msk                     /*!< AXI Transfer error interrupt status clear */
-#define DCMIPP_CMFCR_CPRERRF_Pos          (6U)
-#define DCMIPP_CMFCR_CPRERRF_Msk          (0x1UL << DCMIPP_CMFCR_CPRERRF_Pos)            /*!< 0x00000040 */
-#define DCMIPP_CMFCR_CPRERRF              DCMIPP_CMFCR_CPRERRF_Msk                      /*!< Synchronization error interrupt status clear */
-#define DCMIPP_CMFCR_CP0LINEF_Pos         (8U)
-#define DCMIPP_CMFCR_CP0LINEF_Msk         (0x1UL << DCMIPP_CMFCR_CP0LINEF_Pos)           /*!< 0x00000100 */
-#define DCMIPP_CMFCR_CP0LINEF             DCMIPP_CMFCR_CP0LINEF_Msk                     /*!< multi-Line Capture complete interrupt status clear */
-#define DCMIPP_CMFCR_CP0FRAMEF_Pos        (9U)
-#define DCMIPP_CMFCR_CP0FRAMEF_Msk        (0x1UL << DCMIPP_CMFCR_CP0FRAMEF_Pos)          /*!< 0x00000200 */
-#define DCMIPP_CMFCR_CP0FRAMEF            DCMIPP_CMFCR_CP0FRAMEF_Msk                    /*!< Frame Capture complete interrupt status clear */
-#define DCMIPP_CMFCR_CP0VSYNCF_Pos        (10U)
-#define DCMIPP_CMFCR_CP0VSYNCF_Msk        (0x1UL << DCMIPP_CMFCR_CP0VSYNCF_Pos)          /*!< 0x00000400 */
-#define DCMIPP_CMFCR_CP0VSYNCF            DCMIPP_CMFCR_CP0VSYNCF_Msk                    /*!< Vertical synch interrupt status clear */
-#define DCMIPP_CMFCR_CP0LIMITF_Pos        (14U)
-#define DCMIPP_CMFCR_CP0LIMITF_Msk        (0x1UL << DCMIPP_CMFCR_CP0LIMITF_Pos)          /*!< 0x00004000 */
-#define DCMIPP_CMFCR_CP0LIMITF            DCMIPP_CMFCR_CP0LIMITF_Msk                    /*!< limit interrupt status clear */
-#define DCMIPP_CMFCR_CP0OVRF_Pos          (15U)
-#define DCMIPP_CMFCR_CP0OVRF_Msk          (0x1UL << DCMIPP_CMFCR_CP0OVRF_Pos)            /*!< 0x00008000 */
-#define DCMIPP_CMFCR_CP0OVRF              DCMIPP_CMFCR_CP0OVRF_Msk                      /*!< Overrun interrupt status clear */
-
-/***************  Bit definition for DCMIPP_P0HWCFGR register  ****************/
-#define DCMIPP_P0HWCFGR_CPLA_Pos          (0U)
-#define DCMIPP_P0HWCFGR_CPLA_Msk          (0x3UL << DCMIPP_P0HWCFGR_CPLA_Pos)            /*!< 0x00000003 */
-#define DCMIPP_P0HWCFGR_CPLA              DCMIPP_P0HWCFGR_CPLA_Msk                      /*!< Capability for planar buffers */
-#define DCMIPP_P0HWCFGR_CPLA_0            (0x1UL << DCMIPP_P0HWCFGR_CPLA_Pos)            /*!< 0x00000001 */
-#define DCMIPP_P0HWCFGR_CPLA_1            (0x2UL << DCMIPP_P0HWCFGR_CPLA_Pos)            /*!< 0x00000002 */
-#define DCMIPP_P0HWCFGR_CDS_Pos           (2U)
-#define DCMIPP_P0HWCFGR_CDS_Msk           (0x1UL << DCMIPP_P0HWCFGR_CDS_Pos)             /*!< 0x00000004 */
-#define DCMIPP_P0HWCFGR_CDS               DCMIPP_P0HWCFGR_CDS_Msk                       /*!< capability for Downsize Filter: */
-#define DCMIPP_P0HWCFGR_DBM_Pos           (3U)
-#define DCMIPP_P0HWCFGR_DBM_Msk           (0x1UL << DCMIPP_P0HWCFGR_DBM_Pos)             /*!< 0x00000008 */
-#define DCMIPP_P0HWCFGR_DBM               DCMIPP_P0HWCFGR_DBM_Msk                       /*!< Double buffer mode */
-#define DCMIPP_P0HWCFGR_CRB_Pos           (4U)
-#define DCMIPP_P0HWCFGR_CRB_Msk           (0x3UL << DCMIPP_P0HWCFGR_CRB_Pos)             /*!< 0x00000030 */
-#define DCMIPP_P0HWCFGR_CRB               DCMIPP_P0HWCFGR_CRB_Msk                       /*!< 1: capability for demosaicing: */
-#define DCMIPP_P0HWCFGR_CRB_0             (0x1UL << DCMIPP_P0HWCFGR_CRB_Pos)            /*!< 0x00000010 */
-#define DCMIPP_P0HWCFGR_CRB_1             (0x2UL << DCMIPP_P0HWCFGR_CRB_Pos)            /*!< 0x00000020 */
-#define DCMIPP_P0HWCFGR_CGM_Pos           (6U)
-#define DCMIPP_P0HWCFGR_CGM_Msk           (0x3UL << DCMIPP_P0HWCFGR_CGM_Pos)             /*!< 0x000000C0 */
-#define DCMIPP_P0HWCFGR_CGM               DCMIPP_P0HWCFGR_CGM_Msk                       /*!< capability for Gamma Conversions: */
-#define DCMIPP_P0HWCFGR_CGM_0             (0x1UL << DCMIPP_P0HWCFGR_CGM_Pos)            /*!< 0x00000040 */
-#define DCMIPP_P0HWCFGR_CGM_1             (0x2UL << DCMIPP_P0HWCFGR_CGM_Pos)            /*!< 0x00000080 */
-#define DCMIPP_P0HWCFGR_CROI_Pos          (8U)
-#define DCMIPP_P0HWCFGR_CROI_Msk          (0xFUL << DCMIPP_P0HWCFGR_CROI_Pos)            /*!< 0x00000F00 */
-#define DCMIPP_P0HWCFGR_CROI              DCMIPP_P0HWCFGR_CROI_Msk                      /*!< capability for ROI : It defines the number of ROI in the pipe */
-#define DCMIPP_P0HWCFGR_CROI_0            (0x1UL << DCMIPP_P0HWCFGR_CROI_Pos)          /*!< 0x00000100 */
-#define DCMIPP_P0HWCFGR_CROI_1            (0x2UL << DCMIPP_P0HWCFGR_CROI_Pos)          /*!< 0x00000200 */
-#define DCMIPP_P0HWCFGR_CROI_2            (0x4UL << DCMIPP_P0HWCFGR_CROI_Pos)          /*!< 0x00000400 */
-#define DCMIPP_P0HWCFGR_CROI_3            (0x8UL << DCMIPP_P0HWCFGR_CROI_Pos)          /*!< 0x00000800 */
-#define DCMIPP_P0HWCFGR_CVP_Pos           (13U)
-#define DCMIPP_P0HWCFGR_CVP_Msk           (0x1UL << DCMIPP_P0HWCFGR_CVP_Pos)             /*!< 0x00002000 */
-#define DCMIPP_P0HWCFGR_CVP               DCMIPP_P0HWCFGR_CVP_Msk                       /*!< Capability for virtual pipeline virtualization */
-
-/****************  Bit definition for DCMIPP_P0FSCR register  *****************/
-#define DCMIPP_P0FSCR_PIPEN_Pos           (31U)
-#define DCMIPP_P0FSCR_PIPEN_Msk           (0x1UL << DCMIPP_P0FSCR_PIPEN_Pos)             /*!< 0x80000000 */
-#define DCMIPP_P0FSCR_PIPEN               DCMIPP_P0FSCR_PIPEN_Msk                       /*!< activation of this Pipe. */
-
-/****************  Bit definition for DCMIPP_P0FCTCR register  ****************/
-#define DCMIPP_P0FCTCR_FRATE_Pos          (0U)
-#define DCMIPP_P0FCTCR_FRATE_Msk          (0x3UL << DCMIPP_P0FCTCR_FRATE_Pos)            /*!< 0x00000003 */
-#define DCMIPP_P0FCTCR_FRATE              DCMIPP_P0FCTCR_FRATE_Msk                      /*!< Frame capture rate control */
-#define DCMIPP_P0FCTCR_FRATE_0            (0x1UL << DCMIPP_P0FCTCR_FRATE_Pos)            /*!< 0x00000001 */
-#define DCMIPP_P0FCTCR_FRATE_1            (0x2UL << DCMIPP_P0FCTCR_FRATE_Pos)            /*!< 0x00000002 */
-#define DCMIPP_P0FCTCR_CPTMODE_Pos        (2U)
-#define DCMIPP_P0FCTCR_CPTMODE_Msk        (0x1UL << DCMIPP_P0FCTCR_CPTMODE_Pos)          /*!< 0x00000004 */
-#define DCMIPP_P0FCTCR_CPTMODE            DCMIPP_P0FCTCR_CPTMODE_Msk                    /*!< Capture mode */
-#define DCMIPP_P0FCTCR_CPTREQ_Pos         (3U)
-#define DCMIPP_P0FCTCR_CPTREQ_Msk         (0x1UL << DCMIPP_P0FCTCR_CPTREQ_Pos)           /*!< 0x00000008 */
-#define DCMIPP_P0FCTCR_CPTREQ             DCMIPP_P0FCTCR_CPTREQ_Msk                     /*!< Capture requested */
-
-/****************  Bit definition for DCMIPP_P0SCSTR register  ****************/
-#define DCMIPP_P0SCSTR_HSTART_Pos         (0U)
-#define DCMIPP_P0SCSTR_HSTART_Msk         (0xFFFUL << DCMIPP_P0SCSTR_HSTART_Pos)         /*!< 0x00000FFF */
-#define DCMIPP_P0SCSTR_HSTART             DCMIPP_P0SCSTR_HSTART_Msk                     /*!< horizontal start, from 0 to 4094 words wide */
-#define DCMIPP_P0SCSTR_HSTART_0           (0x1UL << DCMIPP_P0SCSTR_HSTART_Pos)           /*!< 0x00000001 */
-#define DCMIPP_P0SCSTR_HSTART_1           (0x2UL << DCMIPP_P0SCSTR_HSTART_Pos)           /*!< 0x00000002 */
-#define DCMIPP_P0SCSTR_HSTART_2           (0x4UL << DCMIPP_P0SCSTR_HSTART_Pos)           /*!< 0x00000004 */
-#define DCMIPP_P0SCSTR_HSTART_3           (0x8UL << DCMIPP_P0SCSTR_HSTART_Pos)           /*!< 0x00000008 */
-#define DCMIPP_P0SCSTR_HSTART_4           (0x10UL << DCMIPP_P0SCSTR_HSTART_Pos)          /*!< 0x00000010 */
-#define DCMIPP_P0SCSTR_HSTART_5           (0x20UL << DCMIPP_P0SCSTR_HSTART_Pos)          /*!< 0x00000020 */
-#define DCMIPP_P0SCSTR_HSTART_6           (0x40UL << DCMIPP_P0SCSTR_HSTART_Pos)          /*!< 0x00000040 */
-#define DCMIPP_P0SCSTR_HSTART_7           (0x80UL << DCMIPP_P0SCSTR_HSTART_Pos)          /*!< 0x00000080 */
-#define DCMIPP_P0SCSTR_HSTART_8           (0x100UL << DCMIPP_P0SCSTR_HSTART_Pos)         /*!< 0x00000100 */
-#define DCMIPP_P0SCSTR_HSTART_9           (0x200UL << DCMIPP_P0SCSTR_HSTART_Pos)         /*!< 0x00000200 */
-#define DCMIPP_P0SCSTR_HSTART_10          (0x400UL << DCMIPP_P0SCSTR_HSTART_Pos)         /*!< 0x00000400 */
-#define DCMIPP_P0SCSTR_HSTART_11          (0x800UL << DCMIPP_P0SCSTR_HSTART_Pos)         /*!< 0x00000800 */
-#define DCMIPP_P0SCSTR_VSTART_Pos         (16U)
-#define DCMIPP_P0SCSTR_VSTART_Msk         (0xFFFUL << DCMIPP_P0SCSTR_VSTART_Pos)         /*!< 0x0FFF0000 */
-#define DCMIPP_P0SCSTR_VSTART             DCMIPP_P0SCSTR_VSTART_Msk                     /*!< vertical start, from 0 to 4094 pixels high */
-#define DCMIPP_P0SCSTR_VSTART_0           (0x1UL << DCMIPP_P0SCSTR_VSTART_Pos)       /*!< 0x00010000 */
-#define DCMIPP_P0SCSTR_VSTART_1           (0x2UL << DCMIPP_P0SCSTR_VSTART_Pos)       /*!< 0x00020000 */
-#define DCMIPP_P0SCSTR_VSTART_2           (0x4UL << DCMIPP_P0SCSTR_VSTART_Pos)       /*!< 0x00040000 */
-#define DCMIPP_P0SCSTR_VSTART_3           (0x8UL << DCMIPP_P0SCSTR_VSTART_Pos)       /*!< 0x00080000 */
-#define DCMIPP_P0SCSTR_VSTART_4           (0x10UL << DCMIPP_P0SCSTR_VSTART_Pos)      /*!< 0x00100000 */
-#define DCMIPP_P0SCSTR_VSTART_5           (0x20UL << DCMIPP_P0SCSTR_VSTART_Pos)      /*!< 0x00200000 */
-#define DCMIPP_P0SCSTR_VSTART_6           (0x40UL << DCMIPP_P0SCSTR_VSTART_Pos)      /*!< 0x00400000 */
-#define DCMIPP_P0SCSTR_VSTART_7           (0x80UL << DCMIPP_P0SCSTR_VSTART_Pos)      /*!< 0x00800000 */
-#define DCMIPP_P0SCSTR_VSTART_8           (0x100UL << DCMIPP_P0SCSTR_VSTART_Pos)     /*!< 0x01000000 */
-#define DCMIPP_P0SCSTR_VSTART_9           (0x200UL << DCMIPP_P0SCSTR_VSTART_Pos)     /*!< 0x02000000 */
-#define DCMIPP_P0SCSTR_VSTART_10          (0x400UL << DCMIPP_P0SCSTR_VSTART_Pos)     /*!< 0x04000000 */
-#define DCMIPP_P0SCSTR_VSTART_11          (0x800UL << DCMIPP_P0SCSTR_VSTART_Pos)     /*!< 0x08000000 */
-
-/****************  Bit definition for DCMIPP_P0SCSZR register  ****************/
-#define DCMIPP_P0SCSZR_HSIZE_Pos          (0U)
-#define DCMIPP_P0SCSZR_HSIZE_Msk          (0xFFFUL << DCMIPP_P0SCSZR_HSIZE_Pos)          /*!< 0x00000FFF */
-#define DCMIPP_P0SCSZR_HSIZE              DCMIPP_P0SCSZR_HSIZE_Msk                      /*!< horizontal size, from 0 to 4094 word wide (data 32-bit). If the value is maintained at 0 when enabling the crop thanks to the ENABLE bit, the value is forced internally at 0x3FF which is the maximum value. */
-#define DCMIPP_P0SCSZR_HSIZE_0            (0x1UL << DCMIPP_P0SCSZR_HSIZE_Pos)            /*!< 0x00000001 */
-#define DCMIPP_P0SCSZR_HSIZE_1            (0x2UL << DCMIPP_P0SCSZR_HSIZE_Pos)            /*!< 0x00000002 */
-#define DCMIPP_P0SCSZR_HSIZE_2            (0x4UL << DCMIPP_P0SCSZR_HSIZE_Pos)            /*!< 0x00000004 */
-#define DCMIPP_P0SCSZR_HSIZE_3            (0x8UL << DCMIPP_P0SCSZR_HSIZE_Pos)            /*!< 0x00000008 */
-#define DCMIPP_P0SCSZR_HSIZE_4            (0x10UL << DCMIPP_P0SCSZR_HSIZE_Pos)           /*!< 0x00000010 */
-#define DCMIPP_P0SCSZR_HSIZE_5            (0x20UL << DCMIPP_P0SCSZR_HSIZE_Pos)           /*!< 0x00000020 */
-#define DCMIPP_P0SCSZR_HSIZE_6            (0x40UL << DCMIPP_P0SCSZR_HSIZE_Pos)           /*!< 0x00000040 */
-#define DCMIPP_P0SCSZR_HSIZE_7            (0x80UL << DCMIPP_P0SCSZR_HSIZE_Pos)           /*!< 0x00000080 */
-#define DCMIPP_P0SCSZR_HSIZE_8            (0x100UL << DCMIPP_P0SCSZR_HSIZE_Pos)          /*!< 0x00000100 */
-#define DCMIPP_P0SCSZR_HSIZE_9            (0x200UL << DCMIPP_P0SCSZR_HSIZE_Pos)          /*!< 0x00000200 */
-#define DCMIPP_P0SCSZR_HSIZE_10           (0x400UL << DCMIPP_P0SCSZR_HSIZE_Pos)          /*!< 0x00000400 */
-#define DCMIPP_P0SCSZR_HSIZE_11           (0x800UL << DCMIPP_P0SCSZR_HSIZE_Pos)          /*!< 0x00000800 */
-#define DCMIPP_P0SCSZR_VSIZE_Pos          (16U)
-#define DCMIPP_P0SCSZR_VSIZE_Msk          (0xFFFUL << DCMIPP_P0SCSZR_VSIZE_Pos)          /*!< 0x0FFF0000 */
-#define DCMIPP_P0SCSZR_VSIZE              DCMIPP_P0SCSZR_VSIZE_Msk                      /*!< vertical size, from 0 to 4094 pixels high. If the value is maintained at 0 when enabling the crop thanks to the ENABLE bit, the value is forced internally at 0x3FF which is the maximum value. */
-#define DCMIPP_P0SCSZR_VSIZE_0            (0x1UL << DCMIPP_P0SCSZR_VSIZE_Pos)        /*!< 0x00010000 */
-#define DCMIPP_P0SCSZR_VSIZE_1            (0x2UL << DCMIPP_P0SCSZR_VSIZE_Pos)        /*!< 0x00020000 */
-#define DCMIPP_P0SCSZR_VSIZE_2            (0x4UL << DCMIPP_P0SCSZR_VSIZE_Pos)        /*!< 0x00040000 */
-#define DCMIPP_P0SCSZR_VSIZE_3            (0x8UL << DCMIPP_P0SCSZR_VSIZE_Pos)        /*!< 0x00080000 */
-#define DCMIPP_P0SCSZR_VSIZE_4            (0x10UL << DCMIPP_P0SCSZR_VSIZE_Pos)       /*!< 0x00100000 */
-#define DCMIPP_P0SCSZR_VSIZE_5            (0x20UL << DCMIPP_P0SCSZR_VSIZE_Pos)       /*!< 0x00200000 */
-#define DCMIPP_P0SCSZR_VSIZE_6            (0x40UL << DCMIPP_P0SCSZR_VSIZE_Pos)       /*!< 0x00400000 */
-#define DCMIPP_P0SCSZR_VSIZE_7            (0x80UL << DCMIPP_P0SCSZR_VSIZE_Pos)       /*!< 0x00800000 */
-#define DCMIPP_P0SCSZR_VSIZE_8            (0x100UL << DCMIPP_P0SCSZR_VSIZE_Pos)      /*!< 0x01000000 */
-#define DCMIPP_P0SCSZR_VSIZE_9            (0x200UL << DCMIPP_P0SCSZR_VSIZE_Pos)      /*!< 0x02000000 */
-#define DCMIPP_P0SCSZR_VSIZE_10           (0x400UL << DCMIPP_P0SCSZR_VSIZE_Pos)      /*!< 0x04000000 */
-#define DCMIPP_P0SCSZR_VSIZE_11           (0x800UL << DCMIPP_P0SCSZR_VSIZE_Pos)      /*!< 0x08000000 */
-#define DCMIPP_P0SCSZR_POSNEG_Pos         (30U)
-#define DCMIPP_P0SCSZR_POSNEG_Msk         (0x1UL << DCMIPP_P0SCSZR_POSNEG_Pos)           /*!< 0x40000000 */
-#define DCMIPP_P0SCSZR_POSNEG             DCMIPP_P0SCSZR_POSNEG_Msk                     /*!< This bit is set and cleared by software. It has a meaning only if ENABLE bit is set. */
-#define DCMIPP_P0SCSZR_ENABLE_Pos         (31U)
-#define DCMIPP_P0SCSZR_ENABLE_Msk         (0x1UL << DCMIPP_P0SCSZR_ENABLE_Pos)           /*!< 0x80000000 */
-#define DCMIPP_P0SCSZR_ENABLE             DCMIPP_P0SCSZR_ENABLE_Msk                     /*!< This bit is set and cleared by software. */
-
-/***************  Bit definition for DCMIPP_P0DCCNTR register  ****************/
-#define DCMIPP_P0DCCNTR_CNT_Pos           (0U)
-#define DCMIPP_P0DCCNTR_CNT_Msk           (0x3FFFFFFUL << DCMIPP_P0DCCNTR_CNT_Pos)       /*!< 0x03FFFFFF */
-#define DCMIPP_P0DCCNTR_CNT               DCMIPP_P0DCCNTR_CNT_Msk                       /*!< number of data dumped during the frame. The size of the data is expressed in bytes. It counts only the data selected thanks to the CROP 2D function. The counter satures at 0x3FFFFF. Granularity is 32-bit for all the formats except for the byte stream format (JPEG for instance...) having a byte granularity. */
-#define DCMIPP_P0DCCNTR_CNT_0             (0x1UL << DCMIPP_P0DCCNTR_CNT_Pos)             /*!< 0x00000001 */
-#define DCMIPP_P0DCCNTR_CNT_1             (0x2UL << DCMIPP_P0DCCNTR_CNT_Pos)             /*!< 0x00000002 */
-#define DCMIPP_P0DCCNTR_CNT_2             (0x4UL << DCMIPP_P0DCCNTR_CNT_Pos)             /*!< 0x00000004 */
-#define DCMIPP_P0DCCNTR_CNT_3             (0x8UL << DCMIPP_P0DCCNTR_CNT_Pos)             /*!< 0x00000008 */
-#define DCMIPP_P0DCCNTR_CNT_4             (0x10UL << DCMIPP_P0DCCNTR_CNT_Pos)            /*!< 0x00000010 */
-#define DCMIPP_P0DCCNTR_CNT_5             (0x20UL << DCMIPP_P0DCCNTR_CNT_Pos)            /*!< 0x00000020 */
-#define DCMIPP_P0DCCNTR_CNT_6             (0x40UL << DCMIPP_P0DCCNTR_CNT_Pos)            /*!< 0x00000040 */
-#define DCMIPP_P0DCCNTR_CNT_7             (0x80UL << DCMIPP_P0DCCNTR_CNT_Pos)            /*!< 0x00000080 */
-#define DCMIPP_P0DCCNTR_CNT_8             (0x100UL << DCMIPP_P0DCCNTR_CNT_Pos)           /*!< 0x00000100 */
-#define DCMIPP_P0DCCNTR_CNT_9             (0x200UL << DCMIPP_P0DCCNTR_CNT_Pos)           /*!< 0x00000200 */
-#define DCMIPP_P0DCCNTR_CNT_10            (0x400UL << DCMIPP_P0DCCNTR_CNT_Pos)           /*!< 0x00000400 */
-#define DCMIPP_P0DCCNTR_CNT_11            (0x800UL << DCMIPP_P0DCCNTR_CNT_Pos)           /*!< 0x00000800 */
-#define DCMIPP_P0DCCNTR_CNT_12            (0x1000UL << DCMIPP_P0DCCNTR_CNT_Pos)          /*!< 0x00001000 */
-#define DCMIPP_P0DCCNTR_CNT_13            (0x2000UL << DCMIPP_P0DCCNTR_CNT_Pos)          /*!< 0x00002000 */
-#define DCMIPP_P0DCCNTR_CNT_14            (0x4000UL << DCMIPP_P0DCCNTR_CNT_Pos)          /*!< 0x00004000 */
-#define DCMIPP_P0DCCNTR_CNT_15            (0x8000UL << DCMIPP_P0DCCNTR_CNT_Pos)          /*!< 0x00008000 */
-#define DCMIPP_P0DCCNTR_CNT_16            (0x10000UL << DCMIPP_P0DCCNTR_CNT_Pos)         /*!< 0x00010000 */
-#define DCMIPP_P0DCCNTR_CNT_17            (0x20000UL << DCMIPP_P0DCCNTR_CNT_Pos)         /*!< 0x00020000 */
-#define DCMIPP_P0DCCNTR_CNT_18            (0x40000UL << DCMIPP_P0DCCNTR_CNT_Pos)         /*!< 0x00040000 */
-#define DCMIPP_P0DCCNTR_CNT_19            (0x80000UL << DCMIPP_P0DCCNTR_CNT_Pos)         /*!< 0x00080000 */
-#define DCMIPP_P0DCCNTR_CNT_20            (0x100000UL << DCMIPP_P0DCCNTR_CNT_Pos)        /*!< 0x00100000 */
-#define DCMIPP_P0DCCNTR_CNT_21            (0x200000UL << DCMIPP_P0DCCNTR_CNT_Pos)        /*!< 0x00200000 */
-#define DCMIPP_P0DCCNTR_CNT_22            (0x400000UL << DCMIPP_P0DCCNTR_CNT_Pos)        /*!< 0x00400000 */
-#define DCMIPP_P0DCCNTR_CNT_23            (0x800000UL << DCMIPP_P0DCCNTR_CNT_Pos)        /*!< 0x00800000 */
-#define DCMIPP_P0DCCNTR_CNT_24            (0x1000000UL << DCMIPP_P0DCCNTR_CNT_Pos)       /*!< 0x01000000 */
-#define DCMIPP_P0DCCNTR_CNT_25            (0x2000000UL << DCMIPP_P0DCCNTR_CNT_Pos)       /*!< 0x02000000 */
-
-/***************  Bit definition for DCMIPP_P0DCLMTR register  ****************/
-#define DCMIPP_P0DCLMTR_LIMIT_Pos         (0U)
-#define DCMIPP_P0DCLMTR_LIMIT_Msk         (0xFFFFFFUL << DCMIPP_P0DCLMTR_LIMIT_Pos)      /*!< 0x00FFFFFF */
-#define DCMIPP_P0DCLMTR_LIMIT             DCMIPP_P0DCLMTR_LIMIT_Msk                     /*!< maximum number of 32bit data that can be dumped during a frame, after the crop 2D operation. */
-#define DCMIPP_P0DCLMTR_LIMIT_0           (0x1UL << DCMIPP_P0DCLMTR_LIMIT_Pos)           /*!< 0x00000001 */
-#define DCMIPP_P0DCLMTR_LIMIT_1           (0x2UL << DCMIPP_P0DCLMTR_LIMIT_Pos)           /*!< 0x00000002 */
-#define DCMIPP_P0DCLMTR_LIMIT_2           (0x4UL << DCMIPP_P0DCLMTR_LIMIT_Pos)           /*!< 0x00000004 */
-#define DCMIPP_P0DCLMTR_LIMIT_3           (0x8UL << DCMIPP_P0DCLMTR_LIMIT_Pos)           /*!< 0x00000008 */
-#define DCMIPP_P0DCLMTR_LIMIT_4           (0x10UL << DCMIPP_P0DCLMTR_LIMIT_Pos)          /*!< 0x00000010 */
-#define DCMIPP_P0DCLMTR_LIMIT_5           (0x20UL << DCMIPP_P0DCLMTR_LIMIT_Pos)          /*!< 0x00000020 */
-#define DCMIPP_P0DCLMTR_LIMIT_6           (0x40UL << DCMIPP_P0DCLMTR_LIMIT_Pos)          /*!< 0x00000040 */
-#define DCMIPP_P0DCLMTR_LIMIT_7           (0x80UL << DCMIPP_P0DCLMTR_LIMIT_Pos)          /*!< 0x00000080 */
-#define DCMIPP_P0DCLMTR_LIMIT_8           (0x100UL << DCMIPP_P0DCLMTR_LIMIT_Pos)         /*!< 0x00000100 */
-#define DCMIPP_P0DCLMTR_LIMIT_9           (0x200UL << DCMIPP_P0DCLMTR_LIMIT_Pos)         /*!< 0x00000200 */
-#define DCMIPP_P0DCLMTR_LIMIT_10          (0x400UL << DCMIPP_P0DCLMTR_LIMIT_Pos)         /*!< 0x00000400 */
-#define DCMIPP_P0DCLMTR_LIMIT_11          (0x800UL << DCMIPP_P0DCLMTR_LIMIT_Pos)         /*!< 0x00000800 */
-#define DCMIPP_P0DCLMTR_LIMIT_12          (0x1000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)        /*!< 0x00001000 */
-#define DCMIPP_P0DCLMTR_LIMIT_13          (0x2000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)        /*!< 0x00002000 */
-#define DCMIPP_P0DCLMTR_LIMIT_14          (0x4000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)        /*!< 0x00004000 */
-#define DCMIPP_P0DCLMTR_LIMIT_15          (0x8000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)        /*!< 0x00008000 */
-#define DCMIPP_P0DCLMTR_LIMIT_16          (0x10000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)       /*!< 0x00010000 */
-#define DCMIPP_P0DCLMTR_LIMIT_17          (0x20000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)       /*!< 0x00020000 */
-#define DCMIPP_P0DCLMTR_LIMIT_18          (0x40000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)       /*!< 0x00040000 */
-#define DCMIPP_P0DCLMTR_LIMIT_19          (0x80000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)       /*!< 0x00080000 */
-#define DCMIPP_P0DCLMTR_LIMIT_20          (0x100000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)      /*!< 0x00100000 */
-#define DCMIPP_P0DCLMTR_LIMIT_21          (0x200000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)      /*!< 0x00200000 */
-#define DCMIPP_P0DCLMTR_LIMIT_22          (0x400000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)      /*!< 0x00400000 */
-#define DCMIPP_P0DCLMTR_LIMIT_23          (0x800000UL << DCMIPP_P0DCLMTR_LIMIT_Pos)      /*!< 0x00800000 */
-#define DCMIPP_P0DCLMTR_ENABLE_Pos        (31U)
-#define DCMIPP_P0DCLMTR_ENABLE_Msk        (0x1UL << DCMIPP_P0DCLMTR_ENABLE_Pos)
-#define DCMIPP_P0DCLMTR_ENABLE            DCMIPP_P0DCLMTR_ENABLE_Msk
-
-/****************  Bit definition for DCMIPP_P0PPCR register  *****************/
-#define DCMIPP_P0PPCR_PAD_Pos             (5U)
-#define DCMIPP_P0PPCR_PAD_Msk             (0x1UL << DCMIPP_P0PPCR_PAD_Pos)               /*!< 0x00000020 */
-#define DCMIPP_P0PPCR_PAD                 DCMIPP_P0PPCR_PAD_Msk                         /*!< Pad mode for Monochrome and RawBayer 10/12/14bpp: Msb vs Lsb alignment. */
-#define DCMIPP_P0PPCR_BSM_Pos             (7U)
-#define DCMIPP_P0PPCR_BSM_Msk             (0x3UL << DCMIPP_P0PPCR_BSM_Pos)               /*!< 0x00000180 */
-#define DCMIPP_P0PPCR_BSM                 DCMIPP_P0PPCR_BSM_Msk                         /*!< Byte Select mode */
-#define DCMIPP_P0PPCR_BSM_0               (0x1UL << DCMIPP_P0PPCR_BSM_Pos)              /*!< 0x00000080 */
-#define DCMIPP_P0PPCR_BSM_1               (0x2UL << DCMIPP_P0PPCR_BSM_Pos)             /*!< 0x00000100 */
-#define DCMIPP_P0PPCR_OEBS_Pos            (9U)
-#define DCMIPP_P0PPCR_OEBS_Msk            (0x1UL << DCMIPP_P0PPCR_OEBS_Pos)              /*!< 0x00000200 */
-#define DCMIPP_P0PPCR_OEBS                DCMIPP_P0PPCR_OEBS_Msk                        /*!< Odd/Even Byte Select (Byte Select Start) */
-#define DCMIPP_P0PPCR_LSM_Pos             (10U)
-#define DCMIPP_P0PPCR_LSM_Msk             (0x1UL << DCMIPP_P0PPCR_LSM_Pos)               /*!< 0x00000400 */
-#define DCMIPP_P0PPCR_LSM                 DCMIPP_P0PPCR_LSM_Msk                         /*!< Line Select mode */
-#define DCMIPP_P0PPCR_OELS_Pos            (11U)
-#define DCMIPP_P0PPCR_OELS_Msk            (0x1UL << DCMIPP_P0PPCR_OELS_Pos)              /*!< 0x00000800 */
-#define DCMIPP_P0PPCR_OELS                DCMIPP_P0PPCR_OELS_Msk                        /*!< Odd/Even Line Select (Line Select Start) */
-#define DCMIPP_P0PPCR_LINEMULT_Pos        (13U)
-#define DCMIPP_P0PPCR_LINEMULT_Msk        (0x7UL << DCMIPP_P0PPCR_LINEMULT_Pos)          /*!< 0x0000E000 */
-#define DCMIPP_P0PPCR_LINEMULT            DCMIPP_P0PPCR_LINEMULT_Msk                    /*!< amount of capture completed lines for LINE Event and Interrupt */
-#define DCMIPP_P0PPCR_LINEMULT_0          (0x1UL << DCMIPP_P0PPCR_LINEMULT_Pos)       /*!< 0x00002000 */
-#define DCMIPP_P0PPCR_LINEMULT_1          (0x2UL << DCMIPP_P0PPCR_LINEMULT_Pos)       /*!< 0x00004000 */
-#define DCMIPP_P0PPCR_LINEMULT_2          (0x4UL << DCMIPP_P0PPCR_LINEMULT_Pos)       /*!< 0x00008000 */
-#define DCMIPP_P0PPCR_DBM_Pos             (16U)
-#define DCMIPP_P0PPCR_DBM_Msk             (0x1UL << DCMIPP_P0PPCR_DBM_Pos)               /*!< 0x00010000 */
-#define DCMIPP_P0PPCR_DBM                 DCMIPP_P0PPCR_DBM_Msk                         /*!< Double buffer mode */
-
-/***************  Bit definition for DCMIPP_P0PPM0AR1 register  ***************/
-#define DCMIPP_P0PPM0AR1_M0A_Pos          (0U)
-#define DCMIPP_P0PPM0AR1_M0A_Msk          (0xFFFFFFFFUL << DCMIPP_P0PPM0AR1_M0A_Pos)     /*!< 0xFFFFFFFF */
-#define DCMIPP_P0PPM0AR1_M0A              DCMIPP_P0PPM0AR1_M0A_Msk                      /*!< memory 0 address */
-#define DCMIPP_P0PPM0AR1_M0A_0            (0x1UL << DCMIPP_P0PPM0AR1_M0A_Pos)            /*!< 0x00000001 */
-#define DCMIPP_P0PPM0AR1_M0A_1            (0x2UL << DCMIPP_P0PPM0AR1_M0A_Pos)            /*!< 0x00000002 */
-#define DCMIPP_P0PPM0AR1_M0A_2            (0x4UL << DCMIPP_P0PPM0AR1_M0A_Pos)            /*!< 0x00000004 */
-#define DCMIPP_P0PPM0AR1_M0A_3            (0x8UL << DCMIPP_P0PPM0AR1_M0A_Pos)            /*!< 0x00000008 */
-#define DCMIPP_P0PPM0AR1_M0A_4            (0x10UL << DCMIPP_P0PPM0AR1_M0A_Pos)           /*!< 0x00000010 */
-#define DCMIPP_P0PPM0AR1_M0A_5            (0x20UL << DCMIPP_P0PPM0AR1_M0A_Pos)           /*!< 0x00000020 */
-#define DCMIPP_P0PPM0AR1_M0A_6            (0x40UL << DCMIPP_P0PPM0AR1_M0A_Pos)           /*!< 0x00000040 */
-#define DCMIPP_P0PPM0AR1_M0A_7            (0x80UL << DCMIPP_P0PPM0AR1_M0A_Pos)           /*!< 0x00000080 */
-#define DCMIPP_P0PPM0AR1_M0A_8            (0x100UL << DCMIPP_P0PPM0AR1_M0A_Pos)          /*!< 0x00000100 */
-#define DCMIPP_P0PPM0AR1_M0A_9            (0x200UL << DCMIPP_P0PPM0AR1_M0A_Pos)          /*!< 0x00000200 */
-#define DCMIPP_P0PPM0AR1_M0A_10           (0x400UL << DCMIPP_P0PPM0AR1_M0A_Pos)          /*!< 0x00000400 */
-#define DCMIPP_P0PPM0AR1_M0A_11           (0x800UL << DCMIPP_P0PPM0AR1_M0A_Pos)          /*!< 0x00000800 */
-#define DCMIPP_P0PPM0AR1_M0A_12           (0x1000UL << DCMIPP_P0PPM0AR1_M0A_Pos)         /*!< 0x00001000 */
-#define DCMIPP_P0PPM0AR1_M0A_13           (0x2000UL << DCMIPP_P0PPM0AR1_M0A_Pos)         /*!< 0x00002000 */
-#define DCMIPP_P0PPM0AR1_M0A_14           (0x4000UL << DCMIPP_P0PPM0AR1_M0A_Pos)         /*!< 0x00004000 */
-#define DCMIPP_P0PPM0AR1_M0A_15           (0x8000UL << DCMIPP_P0PPM0AR1_M0A_Pos)         /*!< 0x00008000 */
-#define DCMIPP_P0PPM0AR1_M0A_16           (0x10000UL << DCMIPP_P0PPM0AR1_M0A_Pos)        /*!< 0x00010000 */
-#define DCMIPP_P0PPM0AR1_M0A_17           (0x20000UL << DCMIPP_P0PPM0AR1_M0A_Pos)        /*!< 0x00020000 */
-#define DCMIPP_P0PPM0AR1_M0A_18           (0x40000UL << DCMIPP_P0PPM0AR1_M0A_Pos)        /*!< 0x00040000 */
-#define DCMIPP_P0PPM0AR1_M0A_19           (0x80000UL << DCMIPP_P0PPM0AR1_M0A_Pos)        /*!< 0x00080000 */
-#define DCMIPP_P0PPM0AR1_M0A_20           (0x100000UL << DCMIPP_P0PPM0AR1_M0A_Pos)       /*!< 0x00100000 */
-#define DCMIPP_P0PPM0AR1_M0A_21           (0x200000UL << DCMIPP_P0PPM0AR1_M0A_Pos)       /*!< 0x00200000 */
-#define DCMIPP_P0PPM0AR1_M0A_22           (0x400000UL << DCMIPP_P0PPM0AR1_M0A_Pos)       /*!< 0x00400000 */
-#define DCMIPP_P0PPM0AR1_M0A_23           (0x800000UL << DCMIPP_P0PPM0AR1_M0A_Pos)       /*!< 0x00800000 */
-#define DCMIPP_P0PPM0AR1_M0A_24           (0x1000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)      /*!< 0x01000000 */
-#define DCMIPP_P0PPM0AR1_M0A_25           (0x2000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)      /*!< 0x02000000 */
-#define DCMIPP_P0PPM0AR1_M0A_26           (0x4000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)      /*!< 0x04000000 */
-#define DCMIPP_P0PPM0AR1_M0A_27           (0x8000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)      /*!< 0x08000000 */
-#define DCMIPP_P0PPM0AR1_M0A_28           (0x10000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)     /*!< 0x10000000 */
-#define DCMIPP_P0PPM0AR1_M0A_29           (0x20000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)     /*!< 0x20000000 */
-#define DCMIPP_P0PPM0AR1_M0A_30           (0x40000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)     /*!< 0x40000000 */
-#define DCMIPP_P0PPM0AR1_M0A_31           (0x80000000UL << DCMIPP_P0PPM0AR1_M0A_Pos)     /*!< 0x80000000 */
-
-/***************  Bit definition for DCMIPP_P0PPM0AR2 register  ***************/
-#define DCMIPP_P0PPM0AR2_M0A_Pos          (0U)
-#define DCMIPP_P0PPM0AR2_M0A_Msk          (0xFFFFFFFFUL << DCMIPP_P0PPM0AR2_M0A_Pos)     /*!< 0xFFFFFFFF */
-#define DCMIPP_P0PPM0AR2_M0A              DCMIPP_P0PPM0AR2_M0A_Msk                      /*!< memory 0 address */
-#define DCMIPP_P0PPM0AR2_M0A_0            (0x1UL << DCMIPP_P0PPM0AR2_M0A_Pos)            /*!< 0x00000001 */
-#define DCMIPP_P0PPM0AR2_M0A_1            (0x2UL << DCMIPP_P0PPM0AR2_M0A_Pos)            /*!< 0x00000002 */
-#define DCMIPP_P0PPM0AR2_M0A_2            (0x4UL << DCMIPP_P0PPM0AR2_M0A_Pos)            /*!< 0x00000004 */
-#define DCMIPP_P0PPM0AR2_M0A_3            (0x8UL << DCMIPP_P0PPM0AR2_M0A_Pos)            /*!< 0x00000008 */
-#define DCMIPP_P0PPM0AR2_M0A_4            (0x10UL << DCMIPP_P0PPM0AR2_M0A_Pos)           /*!< 0x00000010 */
-#define DCMIPP_P0PPM0AR2_M0A_5            (0x20UL << DCMIPP_P0PPM0AR2_M0A_Pos)           /*!< 0x00000020 */
-#define DCMIPP_P0PPM0AR2_M0A_6            (0x40UL << DCMIPP_P0PPM0AR2_M0A_Pos)           /*!< 0x00000040 */
-#define DCMIPP_P0PPM0AR2_M0A_7            (0x80UL << DCMIPP_P0PPM0AR2_M0A_Pos)           /*!< 0x00000080 */
-#define DCMIPP_P0PPM0AR2_M0A_8            (0x100UL << DCMIPP_P0PPM0AR2_M0A_Pos)          /*!< 0x00000100 */
-#define DCMIPP_P0PPM0AR2_M0A_9            (0x200UL << DCMIPP_P0PPM0AR2_M0A_Pos)          /*!< 0x00000200 */
-#define DCMIPP_P0PPM0AR2_M0A_10           (0x400UL << DCMIPP_P0PPM0AR2_M0A_Pos)          /*!< 0x00000400 */
-#define DCMIPP_P0PPM0AR2_M0A_11           (0x800UL << DCMIPP_P0PPM0AR2_M0A_Pos)          /*!< 0x00000800 */
-#define DCMIPP_P0PPM0AR2_M0A_12           (0x1000UL << DCMIPP_P0PPM0AR2_M0A_Pos)         /*!< 0x00001000 */
-#define DCMIPP_P0PPM0AR2_M0A_13           (0x2000UL << DCMIPP_P0PPM0AR2_M0A_Pos)         /*!< 0x00002000 */
-#define DCMIPP_P0PPM0AR2_M0A_14           (0x4000UL << DCMIPP_P0PPM0AR2_M0A_Pos)         /*!< 0x00004000 */
-#define DCMIPP_P0PPM0AR2_M0A_15           (0x8000UL << DCMIPP_P0PPM0AR2_M0A_Pos)         /*!< 0x00008000 */
-#define DCMIPP_P0PPM0AR2_M0A_16           (0x10000UL << DCMIPP_P0PPM0AR2_M0A_Pos)        /*!< 0x00010000 */
-#define DCMIPP_P0PPM0AR2_M0A_17           (0x20000UL << DCMIPP_P0PPM0AR2_M0A_Pos)        /*!< 0x00020000 */
-#define DCMIPP_P0PPM0AR2_M0A_18           (0x40000UL << DCMIPP_P0PPM0AR2_M0A_Pos)        /*!< 0x00040000 */
-#define DCMIPP_P0PPM0AR2_M0A_19           (0x80000UL << DCMIPP_P0PPM0AR2_M0A_Pos)        /*!< 0x00080000 */
-#define DCMIPP_P0PPM0AR2_M0A_20           (0x100000UL << DCMIPP_P0PPM0AR2_M0A_Pos)       /*!< 0x00100000 */
-#define DCMIPP_P0PPM0AR2_M0A_21           (0x200000UL << DCMIPP_P0PPM0AR2_M0A_Pos)       /*!< 0x00200000 */
-#define DCMIPP_P0PPM0AR2_M0A_22           (0x400000UL << DCMIPP_P0PPM0AR2_M0A_Pos)       /*!< 0x00400000 */
-#define DCMIPP_P0PPM0AR2_M0A_23           (0x800000UL << DCMIPP_P0PPM0AR2_M0A_Pos)       /*!< 0x00800000 */
-#define DCMIPP_P0PPM0AR2_M0A_24           (0x1000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)      /*!< 0x01000000 */
-#define DCMIPP_P0PPM0AR2_M0A_25           (0x2000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)      /*!< 0x02000000 */
-#define DCMIPP_P0PPM0AR2_M0A_26           (0x4000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)      /*!< 0x04000000 */
-#define DCMIPP_P0PPM0AR2_M0A_27           (0x8000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)      /*!< 0x08000000 */
-#define DCMIPP_P0PPM0AR2_M0A_28           (0x10000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)     /*!< 0x10000000 */
-#define DCMIPP_P0PPM0AR2_M0A_29           (0x20000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)     /*!< 0x20000000 */
-#define DCMIPP_P0PPM0AR2_M0A_30           (0x40000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)     /*!< 0x40000000 */
-#define DCMIPP_P0PPM0AR2_M0A_31           (0x80000000UL << DCMIPP_P0PPM0AR2_M0A_Pos)     /*!< 0x80000000 */
-
-/*****************  Bit definition for DCMIPP_P0IER register  *****************/
-#define DCMIPP_P0IER_LINEIE_Pos           (0U)
-#define DCMIPP_P0IER_LINEIE_Msk           (0x1UL << DCMIPP_P0IER_LINEIE_Pos)             /*!< 0x00000001 */
-#define DCMIPP_P0IER_LINEIE               DCMIPP_P0IER_LINEIE_Msk                       /*!< multi-Line Capture completed interrupt enable */
-#define DCMIPP_P0IER_FRAMEIE_Pos          (1U)
-#define DCMIPP_P0IER_FRAMEIE_Msk          (0x1UL << DCMIPP_P0IER_FRAMEIE_Pos)            /*!< 0x00000002 */
-#define DCMIPP_P0IER_FRAMEIE              DCMIPP_P0IER_FRAMEIE_Msk                      /*!< Frame Capture completed interrupt enable */
-#define DCMIPP_P0IER_VSYNCIE_Pos          (2U)
-#define DCMIPP_P0IER_VSYNCIE_Msk          (0x1UL << DCMIPP_P0IER_VSYNCIE_Pos)            /*!< 0x00000004 */
-#define DCMIPP_P0IER_VSYNCIE              DCMIPP_P0IER_VSYNCIE_Msk                      /*!< VSYNC interrupt enable */
-#define DCMIPP_P0IER_LIMITIE_Pos          (6U)
-#define DCMIPP_P0IER_LIMITIE_Msk          (0x1UL << DCMIPP_P0IER_LIMITIE_Pos)            /*!< 0x00000040 */
-#define DCMIPP_P0IER_LIMITIE              DCMIPP_P0IER_LIMITIE_Msk                      /*!< Limit interrupt enable */
-#define DCMIPP_P0IER_OVRIE_Pos            (7U)
-#define DCMIPP_P0IER_OVRIE_Msk            (0x1UL << DCMIPP_P0IER_OVRIE_Pos)              /*!< 0x00000080 */
-#define DCMIPP_P0IER_OVRIE                DCMIPP_P0IER_OVRIE_Msk                        /*!< Overrun interrupt enable */
-
-/*****************  Bit definition for DCMIPP_P0SR register  ******************/
-#define DCMIPP_P0SR_LINEF_Pos             (0U)
-#define DCMIPP_P0SR_LINEF_Msk             (0x1UL << DCMIPP_P0SR_LINEF_Pos)               /*!< 0x00000001 */
-#define DCMIPP_P0SR_LINEF                 DCMIPP_P0SR_LINEF_Msk                         /*!< multi-Line Capture completed raw interrupt status */
-#define DCMIPP_P0SR_FRAMEF_Pos            (1U)
-#define DCMIPP_P0SR_FRAMEF_Msk            (0x1UL << DCMIPP_P0SR_FRAMEF_Pos)              /*!< 0x00000002 */
-#define DCMIPP_P0SR_FRAMEF                DCMIPP_P0SR_FRAMEF_Msk                        /*!< Frame Capture completed raw interrupt status */
-#define DCMIPP_P0SR_VSYNCF_Pos            (2U)
-#define DCMIPP_P0SR_VSYNCF_Msk            (0x1UL << DCMIPP_P0SR_VSYNCF_Pos)              /*!< 0x00000004 */
-#define DCMIPP_P0SR_VSYNCF                DCMIPP_P0SR_VSYNCF_Msk                        /*!< VSYNC raw interrupt status */
-#define DCMIPP_P0SR_LIMITF_Pos            (6U)
-#define DCMIPP_P0SR_LIMITF_Msk            (0x1UL << DCMIPP_P0SR_LIMITF_Pos)              /*!< 0x00000040 */
-#define DCMIPP_P0SR_LIMITF                DCMIPP_P0SR_LIMITF_Msk                        /*!< Limit raw interrupt status */
-#define DCMIPP_P0SR_OVRF_Pos              (7U)
-#define DCMIPP_P0SR_OVRF_Msk              (0x1UL << DCMIPP_P0SR_OVRF_Pos)                /*!< 0x00000080 */
-#define DCMIPP_P0SR_OVRF                  DCMIPP_P0SR_OVRF_Msk                          /*!< Overrun raw interrupt status */
-#define DCMIPP_P0SR_LSTLINE_Pos           (16U)
-#define DCMIPP_P0SR_LSTLINE_Msk           (0x1UL << DCMIPP_P0SR_LSTLINE_Pos)             /*!< 0x00010000 */
-#define DCMIPP_P0SR_LSTLINE               DCMIPP_P0SR_LSTLINE_Msk                       /*!< Last Line Lsb bit, sampled at Frame Capture complete event. */
-#define DCMIPP_P0SR_CPTACT_Pos            (23U)
-#define DCMIPP_P0SR_CPTACT_Msk            (0x1UL << DCMIPP_P0SR_CPTACT_Pos)              /*!< 0x00800000 */
-#define DCMIPP_P0SR_CPTACT                DCMIPP_P0SR_CPTACT_Msk                        /*!< Capture immediate status */
-
-/*****************  Bit definition for DCMIPP_P0FCR register  *****************/
-#define DCMIPP_P0FCR_CLINEF_Pos           (0U)
-#define DCMIPP_P0FCR_CLINEF_Msk           (0x1UL << DCMIPP_P0FCR_CLINEF_Pos)             /*!< 0x00000001 */
-#define DCMIPP_P0FCR_CLINEF               DCMIPP_P0FCR_CLINEF_Msk                       /*!< multi-Line Capture complete interrupt status clear */
-#define DCMIPP_P0FCR_CFRAMEF_Pos          (1U)
-#define DCMIPP_P0FCR_CFRAMEF_Msk          (0x1UL << DCMIPP_P0FCR_CFRAMEF_Pos)            /*!< 0x00000002 */
-#define DCMIPP_P0FCR_CFRAMEF              DCMIPP_P0FCR_CFRAMEF_Msk                      /*!< Frame Capture complete interrupt status clear */
-#define DCMIPP_P0FCR_CVSYNCF_Pos          (2U)
-#define DCMIPP_P0FCR_CVSYNCF_Msk          (0x1UL << DCMIPP_P0FCR_CVSYNCF_Pos)            /*!< 0x00000004 */
-#define DCMIPP_P0FCR_CVSYNCF              DCMIPP_P0FCR_CVSYNCF_Msk                      /*!< Vertical synch interrupt status clear */
-#define DCMIPP_P0FCR_CLIMITF_Pos          (6U)
-#define DCMIPP_P0FCR_CLIMITF_Msk          (0x1UL << DCMIPP_P0FCR_CLIMITF_Pos)            /*!< 0x00000040 */
-#define DCMIPP_P0FCR_CLIMITF              DCMIPP_P0FCR_CLIMITF_Msk                      /*!< limit interrupt status clear */
-#define DCMIPP_P0FCR_COVRF_Pos            (7U)
-#define DCMIPP_P0FCR_COVRF_Msk            (0x1UL << DCMIPP_P0FCR_COVRF_Pos)              /*!< 0x00000080 */
-#define DCMIPP_P0FCR_COVRF                DCMIPP_P0FCR_COVRF_Msk                        /*!< Overrun interrupt status clear */
-
-/***************  Bit definition for DCMIPP_P0CFCTCR register  ****************/
-#define DCMIPP_P0CFCTCR_FRATE_Pos         (0U)
-#define DCMIPP_P0CFCTCR_FRATE_Msk         (0x3UL << DCMIPP_P0CFCTCR_FRATE_Pos)           /*!< 0x00000003 */
-#define DCMIPP_P0CFCTCR_FRATE             DCMIPP_P0CFCTCR_FRATE_Msk                     /*!< Frame capture rate control */
-#define DCMIPP_P0CFCTCR_FRATE_0           (0x1UL << DCMIPP_P0CFCTCR_FRATE_Pos)           /*!< 0x00000001 */
-#define DCMIPP_P0CFCTCR_FRATE_1           (0x2UL << DCMIPP_P0CFCTCR_FRATE_Pos)           /*!< 0x00000002 */
-#define DCMIPP_P0CFCTCR_CPTMODE_Pos       (2U)
-#define DCMIPP_P0CFCTCR_CPTMODE_Msk       (0x1UL << DCMIPP_P0CFCTCR_CPTMODE_Pos)         /*!< 0x00000004 */
-#define DCMIPP_P0CFCTCR_CPTMODE           DCMIPP_P0CFCTCR_CPTMODE_Msk                   /*!< Capture mode */
-#define DCMIPP_P0CFCTCR_CPTREQ_Pos        (3U)
-#define DCMIPP_P0CFCTCR_CPTREQ_Msk        (0x1UL << DCMIPP_P0CFCTCR_CPTREQ_Pos)          /*!< 0x00000008 */
-#define DCMIPP_P0CFCTCR_CPTREQ            DCMIPP_P0CFCTCR_CPTREQ_Msk                    /*!< Capture requested */
-
-/***************  Bit definition for DCMIPP_P0CSCSTR register  ****************/
-#define DCMIPP_P0CSCSTR_HSTART_Pos        (0U)
-#define DCMIPP_P0CSCSTR_HSTART_Msk        (0xFFFUL << DCMIPP_P0CSCSTR_HSTART_Pos)        /*!< 0x00000FFF */
-#define DCMIPP_P0CSCSTR_HSTART            DCMIPP_P0CSCSTR_HSTART_Msk                    /*!< current horizontal start, from 0 to 4094 words wide */
-#define DCMIPP_P0CSCSTR_HSTART_0          (0x1UL << DCMIPP_P0CSCSTR_HSTART_Pos)          /*!< 0x00000001 */
-#define DCMIPP_P0CSCSTR_HSTART_1          (0x2UL << DCMIPP_P0CSCSTR_HSTART_Pos)          /*!< 0x00000002 */
-#define DCMIPP_P0CSCSTR_HSTART_2          (0x4UL << DCMIPP_P0CSCSTR_HSTART_Pos)          /*!< 0x00000004 */
-#define DCMIPP_P0CSCSTR_HSTART_3          (0x8UL << DCMIPP_P0CSCSTR_HSTART_Pos)          /*!< 0x00000008 */
-#define DCMIPP_P0CSCSTR_HSTART_4          (0x10UL << DCMIPP_P0CSCSTR_HSTART_Pos)         /*!< 0x00000010 */
-#define DCMIPP_P0CSCSTR_HSTART_5          (0x20UL << DCMIPP_P0CSCSTR_HSTART_Pos)         /*!< 0x00000020 */
-#define DCMIPP_P0CSCSTR_HSTART_6          (0x40UL << DCMIPP_P0CSCSTR_HSTART_Pos)         /*!< 0x00000040 */
-#define DCMIPP_P0CSCSTR_HSTART_7          (0x80UL << DCMIPP_P0CSCSTR_HSTART_Pos)         /*!< 0x00000080 */
-#define DCMIPP_P0CSCSTR_HSTART_8          (0x100UL << DCMIPP_P0CSCSTR_HSTART_Pos)        /*!< 0x00000100 */
-#define DCMIPP_P0CSCSTR_HSTART_9          (0x200UL << DCMIPP_P0CSCSTR_HSTART_Pos)        /*!< 0x00000200 */
-#define DCMIPP_P0CSCSTR_HSTART_10         (0x400UL << DCMIPP_P0CSCSTR_HSTART_Pos)        /*!< 0x00000400 */
-#define DCMIPP_P0CSCSTR_HSTART_11         (0x800UL << DCMIPP_P0CSCSTR_HSTART_Pos)        /*!< 0x00000800 */
-#define DCMIPP_P0CSCSTR_VSTART_Pos        (16U)
-#define DCMIPP_P0CSCSTR_VSTART_Msk        (0xFFFUL << DCMIPP_P0CSCSTR_VSTART_Pos)        /*!< 0x0FFF0000 */
-#define DCMIPP_P0CSCSTR_VSTART            DCMIPP_P0CSCSTR_VSTART_Msk                    /*!< current vertical start, from 0 to 4094 pixels high. */
-#define DCMIPP_P0CSCSTR_VSTART_0          (0x1UL << DCMIPP_P0CSCSTR_VSTART_Pos)      /*!< 0x00010000 */
-#define DCMIPP_P0CSCSTR_VSTART_1          (0x2UL << DCMIPP_P0CSCSTR_VSTART_Pos)      /*!< 0x00020000 */
-#define DCMIPP_P0CSCSTR_VSTART_2          (0x4UL << DCMIPP_P0CSCSTR_VSTART_Pos)      /*!< 0x00040000 */
-#define DCMIPP_P0CSCSTR_VSTART_3          (0x8UL << DCMIPP_P0CSCSTR_VSTART_Pos)      /*!< 0x00080000 */
-#define DCMIPP_P0CSCSTR_VSTART_4          (0x10UL << DCMIPP_P0CSCSTR_VSTART_Pos)     /*!< 0x00100000 */
-#define DCMIPP_P0CSCSTR_VSTART_5          (0x20UL << DCMIPP_P0CSCSTR_VSTART_Pos)     /*!< 0x00200000 */
-#define DCMIPP_P0CSCSTR_VSTART_6          (0x40UL << DCMIPP_P0CSCSTR_VSTART_Pos)     /*!< 0x00400000 */
-#define DCMIPP_P0CSCSTR_VSTART_7          (0x80UL << DCMIPP_P0CSCSTR_VSTART_Pos)     /*!< 0x00800000 */
-#define DCMIPP_P0CSCSTR_VSTART_8          (0x100UL << DCMIPP_P0CSCSTR_VSTART_Pos)    /*!< 0x01000000 */
-#define DCMIPP_P0CSCSTR_VSTART_9          (0x200UL << DCMIPP_P0CSCSTR_VSTART_Pos)    /*!< 0x02000000 */
-#define DCMIPP_P0CSCSTR_VSTART_10         (0x400UL << DCMIPP_P0CSCSTR_VSTART_Pos)    /*!< 0x04000000 */
-#define DCMIPP_P0CSCSTR_VSTART_11         (0x800UL << DCMIPP_P0CSCSTR_VSTART_Pos)    /*!< 0x08000000 */
-
-/***************  Bit definition for DCMIPP_P0CSCSZR register  ****************/
-#define DCMIPP_P0CSCSZR_HSIZE_Pos         (0U)
-#define DCMIPP_P0CSCSZR_HSIZE_Msk         (0xFFFUL << DCMIPP_P0CSCSZR_HSIZE_Pos)         /*!< 0x00000FFF */
-#define DCMIPP_P0CSCSZR_HSIZE             DCMIPP_P0CSCSZR_HSIZE_Msk                     /*!< current horizontal size, from 0 to 4094 word wide (data 32-bit). If the value is maintained at 0 when enabling the crop thanks to the ENABLE bit, the value is forced internally at 0x3FF which is the maximum value. */
-#define DCMIPP_P0CSCSZR_HSIZE_0           (0x1UL << DCMIPP_P0CSCSZR_HSIZE_Pos)           /*!< 0x00000001 */
-#define DCMIPP_P0CSCSZR_HSIZE_1           (0x2UL << DCMIPP_P0CSCSZR_HSIZE_Pos)           /*!< 0x00000002 */
-#define DCMIPP_P0CSCSZR_HSIZE_2           (0x4UL << DCMIPP_P0CSCSZR_HSIZE_Pos)           /*!< 0x00000004 */
-#define DCMIPP_P0CSCSZR_HSIZE_3           (0x8UL << DCMIPP_P0CSCSZR_HSIZE_Pos)           /*!< 0x00000008 */
-#define DCMIPP_P0CSCSZR_HSIZE_4           (0x10UL << DCMIPP_P0CSCSZR_HSIZE_Pos)          /*!< 0x00000010 */
-#define DCMIPP_P0CSCSZR_HSIZE_5           (0x20UL << DCMIPP_P0CSCSZR_HSIZE_Pos)          /*!< 0x00000020 */
-#define DCMIPP_P0CSCSZR_HSIZE_6           (0x40UL << DCMIPP_P0CSCSZR_HSIZE_Pos)          /*!< 0x00000040 */
-#define DCMIPP_P0CSCSZR_HSIZE_7           (0x80UL << DCMIPP_P0CSCSZR_HSIZE_Pos)          /*!< 0x00000080 */
-#define DCMIPP_P0CSCSZR_HSIZE_8           (0x100UL << DCMIPP_P0CSCSZR_HSIZE_Pos)         /*!< 0x00000100 */
-#define DCMIPP_P0CSCSZR_HSIZE_9           (0x200UL << DCMIPP_P0CSCSZR_HSIZE_Pos)         /*!< 0x00000200 */
-#define DCMIPP_P0CSCSZR_HSIZE_10          (0x400UL << DCMIPP_P0CSCSZR_HSIZE_Pos)         /*!< 0x00000400 */
-#define DCMIPP_P0CSCSZR_HSIZE_11          (0x800UL << DCMIPP_P0CSCSZR_HSIZE_Pos)         /*!< 0x00000800 */
-#define DCMIPP_P0CSCSZR_VSIZE_Pos         (16U)
-#define DCMIPP_P0CSCSZR_VSIZE_Msk         (0xFFFUL << DCMIPP_P0CSCSZR_VSIZE_Pos)         /*!< 0x0FFF0000 */
-#define DCMIPP_P0CSCSZR_VSIZE             DCMIPP_P0CSCSZR_VSIZE_Msk                     /*!< current vertical size, from 0 to 4094 pixels high.If the value is maintained at 0 when enabling the crop thanks to the ENABLE bit, the value is forced internally at 0x3FF which is the maximum value. */
-#define DCMIPP_P0CSCSZR_VSIZE_0           (0x1UL << DCMIPP_P0CSCSZR_VSIZE_Pos)       /*!< 0x00010000 */
-#define DCMIPP_P0CSCSZR_VSIZE_1           (0x2UL << DCMIPP_P0CSCSZR_VSIZE_Pos)       /*!< 0x00020000 */
-#define DCMIPP_P0CSCSZR_VSIZE_2           (0x4UL << DCMIPP_P0CSCSZR_VSIZE_Pos)       /*!< 0x00040000 */
-#define DCMIPP_P0CSCSZR_VSIZE_3           (0x8UL << DCMIPP_P0CSCSZR_VSIZE_Pos)       /*!< 0x00080000 */
-#define DCMIPP_P0CSCSZR_VSIZE_4           (0x10UL << DCMIPP_P0CSCSZR_VSIZE_Pos)      /*!< 0x00100000 */
-#define DCMIPP_P0CSCSZR_VSIZE_5           (0x20UL << DCMIPP_P0CSCSZR_VSIZE_Pos)      /*!< 0x00200000 */
-#define DCMIPP_P0CSCSZR_VSIZE_6           (0x40UL << DCMIPP_P0CSCSZR_VSIZE_Pos)      /*!< 0x00400000 */
-#define DCMIPP_P0CSCSZR_VSIZE_7           (0x80UL << DCMIPP_P0CSCSZR_VSIZE_Pos)      /*!< 0x00800000 */
-#define DCMIPP_P0CSCSZR_VSIZE_8           (0x100UL << DCMIPP_P0CSCSZR_VSIZE_Pos)     /*!< 0x01000000 */
-#define DCMIPP_P0CSCSZR_VSIZE_9           (0x200UL << DCMIPP_P0CSCSZR_VSIZE_Pos)     /*!< 0x02000000 */
-#define DCMIPP_P0CSCSZR_VSIZE_10          (0x400UL << DCMIPP_P0CSCSZR_VSIZE_Pos)     /*!< 0x04000000 */
-#define DCMIPP_P0CSCSZR_VSIZE_11          (0x800UL << DCMIPP_P0CSCSZR_VSIZE_Pos)     /*!< 0x08000000 */
-#define DCMIPP_P0CSCSZR_POSNEG_Pos        (30U)
-#define DCMIPP_P0CSCSZR_POSNEG_Msk        (0x1UL << DCMIPP_P0CSCSZR_POSNEG_Pos)          /*!< 0x40000000 */
-#define DCMIPP_P0CSCSZR_POSNEG            DCMIPP_P0CSCSZR_POSNEG_Msk                    /*!< This bit has a meaning only if ENABLE bit is set. */
-#define DCMIPP_P0CSCSZR_ENABLE_Pos        (31U)
-#define DCMIPP_P0CSCSZR_ENABLE_Msk        (0x1UL << DCMIPP_P0CSCSZR_ENABLE_Pos)          /*!< 0x80000000 */
-#define DCMIPP_P0CSCSZR_ENABLE            DCMIPP_P0CSCSZR_ENABLE_Msk                    /*!< It is the current value of the ENABLE bit. */
-
-/****************  Bit definition for DCMIPP_P0CPPCR register  ****************/
-#define DCMIPP_P0CPPCR_PAD_Pos            (5U)
-#define DCMIPP_P0CPPCR_PAD_Msk            (0x1UL << DCMIPP_P0CPPCR_PAD_Pos)              /*!< 0x00000020 */
-#define DCMIPP_P0CPPCR_PAD                DCMIPP_P0CPPCR_PAD_Msk                        /*!< Current Pad mode for Monochrome and RawBayer 10/12/14bpp: Msb vs Lsb alignment. */
-#define DCMIPP_P0CPPCR_BSM_Pos            (7U)
-#define DCMIPP_P0CPPCR_BSM_Msk            (0x3UL << DCMIPP_P0CPPCR_BSM_Pos)              /*!< 0x00000180 */
-#define DCMIPP_P0CPPCR_BSM                DCMIPP_P0CPPCR_BSM_Msk                        /*!< Current Byte Select mode */
-#define DCMIPP_P0CPPCR_BSM_0              (0x1UL << DCMIPP_P0CPPCR_BSM_Pos)             /*!< 0x00000080 */
-#define DCMIPP_P0CPPCR_BSM_1              (0x2UL << DCMIPP_P0CPPCR_BSM_Pos)            /*!< 0x00000100 */
-#define DCMIPP_P0CPPCR_OEBS_Pos           (9U)
-#define DCMIPP_P0CPPCR_OEBS_Msk           (0x1UL << DCMIPP_P0CPPCR_OEBS_Pos)             /*!< 0x00000200 */
-#define DCMIPP_P0CPPCR_OEBS               DCMIPP_P0CPPCR_OEBS_Msk                       /*!< Current Odd/Even Byte Select (Byte Select Start) */
-#define DCMIPP_P0CPPCR_LSM_Pos            (10U)
-#define DCMIPP_P0CPPCR_LSM_Msk            (0x1UL << DCMIPP_P0CPPCR_LSM_Pos)              /*!< 0x00000400 */
-#define DCMIPP_P0CPPCR_LSM                DCMIPP_P0CPPCR_LSM_Msk                        /*!< Current Line Select mode */
-#define DCMIPP_P0CPPCR_OELS_Pos           (11U)
-#define DCMIPP_P0CPPCR_OELS_Msk           (0x1UL << DCMIPP_P0CPPCR_OELS_Pos)             /*!< 0x00000800 */
-#define DCMIPP_P0CPPCR_OELS               DCMIPP_P0CPPCR_OELS_Msk                       /*!< Current Odd/Even Line Select (Line Select Start) */
-#define DCMIPP_P0CPPCR_LINEMULT_Pos       (13U)
-#define DCMIPP_P0CPPCR_LINEMULT_Msk       (0x7UL << DCMIPP_P0CPPCR_LINEMULT_Pos)         /*!< 0x0000E000 */
-#define DCMIPP_P0CPPCR_LINEMULT           DCMIPP_P0CPPCR_LINEMULT_Msk                   /*!< current amount of capture completed lines for LINE Event and Interrupt */
-#define DCMIPP_P0CPPCR_LINEMULT_0         (0x1UL << DCMIPP_P0CPPCR_LINEMULT_Pos)      /*!< 0x00002000 */
-#define DCMIPP_P0CPPCR_LINEMULT_1         (0x2UL << DCMIPP_P0CPPCR_LINEMULT_Pos)      /*!< 0x00004000 */
-#define DCMIPP_P0CPPCR_LINEMULT_2         (0x4UL << DCMIPP_P0CPPCR_LINEMULT_Pos)      /*!< 0x00008000 */
-#define DCMIPP_P0CPPCR_DBM_Pos            (16U)
-#define DCMIPP_P0CPPCR_DBM_Msk            (0x1UL << DCMIPP_P0CPPCR_DBM_Pos)              /*!< 0x00010000 */
-#define DCMIPP_P0CPPCR_DBM                DCMIPP_P0CPPCR_DBM_Msk                        /*!< Double buffer mode */
-
-/**************  Bit definition for DCMIPP_P0CPPM0AR1 register  ***************/
-#define DCMIPP_P0CPPM0AR1_M0A_Pos         (0U)
-#define DCMIPP_P0CPPM0AR1_M0A_Msk         (0xFFFFFFFFUL << DCMIPP_P0CPPM0AR1_M0A_Pos)    /*!< 0xFFFFFFFF */
-#define DCMIPP_P0CPPM0AR1_M0A             DCMIPP_P0CPPM0AR1_M0A_Msk                     /*!< memory 0 address */
-#define DCMIPP_P0CPPM0AR1_M0A_0           (0x1UL << DCMIPP_P0CPPM0AR1_M0A_Pos)           /*!< 0x00000001 */
-#define DCMIPP_P0CPPM0AR1_M0A_1           (0x2UL << DCMIPP_P0CPPM0AR1_M0A_Pos)           /*!< 0x00000002 */
-#define DCMIPP_P0CPPM0AR1_M0A_2           (0x4UL << DCMIPP_P0CPPM0AR1_M0A_Pos)           /*!< 0x00000004 */
-#define DCMIPP_P0CPPM0AR1_M0A_3           (0x8UL << DCMIPP_P0CPPM0AR1_M0A_Pos)           /*!< 0x00000008 */
-#define DCMIPP_P0CPPM0AR1_M0A_4           (0x10UL << DCMIPP_P0CPPM0AR1_M0A_Pos)          /*!< 0x00000010 */
-#define DCMIPP_P0CPPM0AR1_M0A_5           (0x20UL << DCMIPP_P0CPPM0AR1_M0A_Pos)          /*!< 0x00000020 */
-#define DCMIPP_P0CPPM0AR1_M0A_6           (0x40UL << DCMIPP_P0CPPM0AR1_M0A_Pos)          /*!< 0x00000040 */
-#define DCMIPP_P0CPPM0AR1_M0A_7           (0x80UL << DCMIPP_P0CPPM0AR1_M0A_Pos)          /*!< 0x00000080 */
-#define DCMIPP_P0CPPM0AR1_M0A_8           (0x100UL << DCMIPP_P0CPPM0AR1_M0A_Pos)         /*!< 0x00000100 */
-#define DCMIPP_P0CPPM0AR1_M0A_9           (0x200UL << DCMIPP_P0CPPM0AR1_M0A_Pos)         /*!< 0x00000200 */
-#define DCMIPP_P0CPPM0AR1_M0A_10          (0x400UL << DCMIPP_P0CPPM0AR1_M0A_Pos)         /*!< 0x00000400 */
-#define DCMIPP_P0CPPM0AR1_M0A_11          (0x800UL << DCMIPP_P0CPPM0AR1_M0A_Pos)         /*!< 0x00000800 */
-#define DCMIPP_P0CPPM0AR1_M0A_12          (0x1000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)        /*!< 0x00001000 */
-#define DCMIPP_P0CPPM0AR1_M0A_13          (0x2000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)        /*!< 0x00002000 */
-#define DCMIPP_P0CPPM0AR1_M0A_14          (0x4000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)        /*!< 0x00004000 */
-#define DCMIPP_P0CPPM0AR1_M0A_15          (0x8000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)        /*!< 0x00008000 */
-#define DCMIPP_P0CPPM0AR1_M0A_16          (0x10000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)       /*!< 0x00010000 */
-#define DCMIPP_P0CPPM0AR1_M0A_17          (0x20000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)       /*!< 0x00020000 */
-#define DCMIPP_P0CPPM0AR1_M0A_18          (0x40000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)       /*!< 0x00040000 */
-#define DCMIPP_P0CPPM0AR1_M0A_19          (0x80000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)       /*!< 0x00080000 */
-#define DCMIPP_P0CPPM0AR1_M0A_20          (0x100000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)      /*!< 0x00100000 */
-#define DCMIPP_P0CPPM0AR1_M0A_21          (0x200000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)      /*!< 0x00200000 */
-#define DCMIPP_P0CPPM0AR1_M0A_22          (0x400000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)      /*!< 0x00400000 */
-#define DCMIPP_P0CPPM0AR1_M0A_23          (0x800000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)      /*!< 0x00800000 */
-#define DCMIPP_P0CPPM0AR1_M0A_24          (0x1000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)     /*!< 0x01000000 */
-#define DCMIPP_P0CPPM0AR1_M0A_25          (0x2000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)     /*!< 0x02000000 */
-#define DCMIPP_P0CPPM0AR1_M0A_26          (0x4000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)     /*!< 0x04000000 */
-#define DCMIPP_P0CPPM0AR1_M0A_27          (0x8000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)     /*!< 0x08000000 */
-#define DCMIPP_P0CPPM0AR1_M0A_28          (0x10000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)    /*!< 0x10000000 */
-#define DCMIPP_P0CPPM0AR1_M0A_29          (0x20000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)    /*!< 0x20000000 */
-#define DCMIPP_P0CPPM0AR1_M0A_30          (0x40000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)    /*!< 0x40000000 */
-#define DCMIPP_P0CPPM0AR1_M0A_31          (0x80000000UL << DCMIPP_P0CPPM0AR1_M0A_Pos)    /*!< 0x80000000 */
-
-/**************  Bit definition for DCMIPP_P0CPPM0AR2 register  ***************/
-#define DCMIPP_P0CPPM0AR2_M0A_Pos         (0U)
-#define DCMIPP_P0CPPM0AR2_M0A_Msk         (0xFFFFFFFFUL << DCMIPP_P0CPPM0AR2_M0A_Pos)    /*!< 0xFFFFFFFF */
-#define DCMIPP_P0CPPM0AR2_M0A             DCMIPP_P0CPPM0AR2_M0A_Msk                     /*!< memory 0 address */
-#define DCMIPP_P0CPPM0AR2_M0A_0           (0x1UL << DCMIPP_P0CPPM0AR2_M0A_Pos)           /*!< 0x00000001 */
-#define DCMIPP_P0CPPM0AR2_M0A_1           (0x2UL << DCMIPP_P0CPPM0AR2_M0A_Pos)           /*!< 0x00000002 */
-#define DCMIPP_P0CPPM0AR2_M0A_2           (0x4UL << DCMIPP_P0CPPM0AR2_M0A_Pos)           /*!< 0x00000004 */
-#define DCMIPP_P0CPPM0AR2_M0A_3           (0x8UL << DCMIPP_P0CPPM0AR2_M0A_Pos)           /*!< 0x00000008 */
-#define DCMIPP_P0CPPM0AR2_M0A_4           (0x10UL << DCMIPP_P0CPPM0AR2_M0A_Pos)          /*!< 0x00000010 */
-#define DCMIPP_P0CPPM0AR2_M0A_5           (0x20UL << DCMIPP_P0CPPM0AR2_M0A_Pos)          /*!< 0x00000020 */
-#define DCMIPP_P0CPPM0AR2_M0A_6           (0x40UL << DCMIPP_P0CPPM0AR2_M0A_Pos)          /*!< 0x00000040 */
-#define DCMIPP_P0CPPM0AR2_M0A_7           (0x80UL << DCMIPP_P0CPPM0AR2_M0A_Pos)          /*!< 0x00000080 */
-#define DCMIPP_P0CPPM0AR2_M0A_8           (0x100UL << DCMIPP_P0CPPM0AR2_M0A_Pos)         /*!< 0x00000100 */
-#define DCMIPP_P0CPPM0AR2_M0A_9           (0x200UL << DCMIPP_P0CPPM0AR2_M0A_Pos)         /*!< 0x00000200 */
-#define DCMIPP_P0CPPM0AR2_M0A_10          (0x400UL << DCMIPP_P0CPPM0AR2_M0A_Pos)         /*!< 0x00000400 */
-#define DCMIPP_P0CPPM0AR2_M0A_11          (0x800UL << DCMIPP_P0CPPM0AR2_M0A_Pos)         /*!< 0x00000800 */
-#define DCMIPP_P0CPPM0AR2_M0A_12          (0x1000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)        /*!< 0x00001000 */
-#define DCMIPP_P0CPPM0AR2_M0A_13          (0x2000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)        /*!< 0x00002000 */
-#define DCMIPP_P0CPPM0AR2_M0A_14          (0x4000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)        /*!< 0x00004000 */
-#define DCMIPP_P0CPPM0AR2_M0A_15          (0x8000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)        /*!< 0x00008000 */
-#define DCMIPP_P0CPPM0AR2_M0A_16          (0x10000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)       /*!< 0x00010000 */
-#define DCMIPP_P0CPPM0AR2_M0A_17          (0x20000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)       /*!< 0x00020000 */
-#define DCMIPP_P0CPPM0AR2_M0A_18          (0x40000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)       /*!< 0x00040000 */
-#define DCMIPP_P0CPPM0AR2_M0A_19          (0x80000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)       /*!< 0x00080000 */
-#define DCMIPP_P0CPPM0AR2_M0A_20          (0x100000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)      /*!< 0x00100000 */
-#define DCMIPP_P0CPPM0AR2_M0A_21          (0x200000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)      /*!< 0x00200000 */
-#define DCMIPP_P0CPPM0AR2_M0A_22          (0x400000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)      /*!< 0x00400000 */
-#define DCMIPP_P0CPPM0AR2_M0A_23          (0x800000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)      /*!< 0x00800000 */
-#define DCMIPP_P0CPPM0AR2_M0A_24          (0x1000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)     /*!< 0x01000000 */
-#define DCMIPP_P0CPPM0AR2_M0A_25          (0x2000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)     /*!< 0x02000000 */
-#define DCMIPP_P0CPPM0AR2_M0A_26          (0x4000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)     /*!< 0x04000000 */
-#define DCMIPP_P0CPPM0AR2_M0A_27          (0x8000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)     /*!< 0x08000000 */
-#define DCMIPP_P0CPPM0AR2_M0A_28          (0x10000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)    /*!< 0x10000000 */
-#define DCMIPP_P0CPPM0AR2_M0A_29          (0x20000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)    /*!< 0x20000000 */
-#define DCMIPP_P0CPPM0AR2_M0A_30          (0x40000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)    /*!< 0x40000000 */
-#define DCMIPP_P0CPPM0AR2_M0A_31          (0x80000000UL << DCMIPP_P0CPPM0AR2_M0A_Pos)    /*!< 0x80000000 */
-
-/****************  Bit definition for DCMIPP_HWCFGR register  *****************/
-
-/*****************  Bit definition for DCMIPP_VERR register  ******************/
-#define DCMIPP_VERR_MINREV_Pos            (0U)
-#define DCMIPP_VERR_MINREV_Msk            (0xFUL << DCMIPP_VERR_MINREV_Pos)              /*!< 0x0000000F */
-#define DCMIPP_VERR_MINREV                DCMIPP_VERR_MINREV_Msk                        /*!< Minor Revision of the IP */
-#define DCMIPP_VERR_MINREV_0              (0x1UL << DCMIPP_VERR_MINREV_Pos)              /*!< 0x00000001 */
-#define DCMIPP_VERR_MINREV_1              (0x2UL << DCMIPP_VERR_MINREV_Pos)              /*!< 0x00000002 */
-#define DCMIPP_VERR_MINREV_2              (0x4UL << DCMIPP_VERR_MINREV_Pos)              /*!< 0x00000004 */
-#define DCMIPP_VERR_MINREV_3              (0x8UL << DCMIPP_VERR_MINREV_Pos)              /*!< 0x00000008 */
-#define DCMIPP_VERR_MAJREV_Pos            (4U)
-#define DCMIPP_VERR_MAJREV_Msk            (0xFUL << DCMIPP_VERR_MAJREV_Pos)              /*!< 0x000000F0 */
-#define DCMIPP_VERR_MAJREV                DCMIPP_VERR_MAJREV_Msk                        /*!< Major Revision of the IP */
-#define DCMIPP_VERR_MAJREV_0              (0x1UL << DCMIPP_VERR_MAJREV_Pos)             /*!< 0x00000010 */
-#define DCMIPP_VERR_MAJREV_1              (0x2UL << DCMIPP_VERR_MAJREV_Pos)             /*!< 0x00000020 */
-#define DCMIPP_VERR_MAJREV_2              (0x4UL << DCMIPP_VERR_MAJREV_Pos)             /*!< 0x00000040 */
-#define DCMIPP_VERR_MAJREV_3              (0x8UL << DCMIPP_VERR_MAJREV_Pos)             /*!< 0x00000080 */
-
-/*****************  Bit definition for DCMIPP_IPIDR register  *****************/
-#define DCMIPP_IPIDR_IDR_Pos              (0U)
-#define DCMIPP_IPIDR_IDR_Msk              (0xFFFFFFFFUL << DCMIPP_IPIDR_IDR_Pos)         /*!< 0xFFFFFFFF */
-#define DCMIPP_IPIDR_IDR                  DCMIPP_IPIDR_IDR_Msk                          /*!< Parallel Camera Interface (DCMI) &amp; optional Pixel Processing (PP) */
-#define DCMIPP_IPIDR_IDR_0                (0x1UL << DCMIPP_IPIDR_IDR_Pos)                /*!< 0x00000001 */
-#define DCMIPP_IPIDR_IDR_1                (0x2UL << DCMIPP_IPIDR_IDR_Pos)                /*!< 0x00000002 */
-#define DCMIPP_IPIDR_IDR_2                (0x4UL << DCMIPP_IPIDR_IDR_Pos)                /*!< 0x00000004 */
-#define DCMIPP_IPIDR_IDR_3                (0x8UL << DCMIPP_IPIDR_IDR_Pos)                /*!< 0x00000008 */
-#define DCMIPP_IPIDR_IDR_4                (0x10UL << DCMIPP_IPIDR_IDR_Pos)               /*!< 0x00000010 */
-#define DCMIPP_IPIDR_IDR_5                (0x20UL << DCMIPP_IPIDR_IDR_Pos)               /*!< 0x00000020 */
-#define DCMIPP_IPIDR_IDR_6                (0x40UL << DCMIPP_IPIDR_IDR_Pos)               /*!< 0x00000040 */
-#define DCMIPP_IPIDR_IDR_7                (0x80UL << DCMIPP_IPIDR_IDR_Pos)               /*!< 0x00000080 */
-#define DCMIPP_IPIDR_IDR_8                (0x100UL << DCMIPP_IPIDR_IDR_Pos)              /*!< 0x00000100 */
-#define DCMIPP_IPIDR_IDR_9                (0x200UL << DCMIPP_IPIDR_IDR_Pos)              /*!< 0x00000200 */
-#define DCMIPP_IPIDR_IDR_10               (0x400UL << DCMIPP_IPIDR_IDR_Pos)              /*!< 0x00000400 */
-#define DCMIPP_IPIDR_IDR_11               (0x800UL << DCMIPP_IPIDR_IDR_Pos)              /*!< 0x00000800 */
-#define DCMIPP_IPIDR_IDR_12               (0x1000UL << DCMIPP_IPIDR_IDR_Pos)             /*!< 0x00001000 */
-#define DCMIPP_IPIDR_IDR_13               (0x2000UL << DCMIPP_IPIDR_IDR_Pos)             /*!< 0x00002000 */
-#define DCMIPP_IPIDR_IDR_14               (0x4000UL << DCMIPP_IPIDR_IDR_Pos)             /*!< 0x00004000 */
-#define DCMIPP_IPIDR_IDR_15               (0x8000UL << DCMIPP_IPIDR_IDR_Pos)             /*!< 0x00008000 */
-#define DCMIPP_IPIDR_IDR_16               (0x10000UL << DCMIPP_IPIDR_IDR_Pos)            /*!< 0x00010000 */
-#define DCMIPP_IPIDR_IDR_17               (0x20000UL << DCMIPP_IPIDR_IDR_Pos)            /*!< 0x00020000 */
-#define DCMIPP_IPIDR_IDR_18               (0x40000UL << DCMIPP_IPIDR_IDR_Pos)            /*!< 0x00040000 */
-#define DCMIPP_IPIDR_IDR_19               (0x80000UL << DCMIPP_IPIDR_IDR_Pos)            /*!< 0x00080000 */
-#define DCMIPP_IPIDR_IDR_20               (0x100000UL << DCMIPP_IPIDR_IDR_Pos)           /*!< 0x00100000 */
-#define DCMIPP_IPIDR_IDR_21               (0x200000UL << DCMIPP_IPIDR_IDR_Pos)           /*!< 0x00200000 */
-#define DCMIPP_IPIDR_IDR_22               (0x400000UL << DCMIPP_IPIDR_IDR_Pos)           /*!< 0x00400000 */
-#define DCMIPP_IPIDR_IDR_23               (0x800000UL << DCMIPP_IPIDR_IDR_Pos)           /*!< 0x00800000 */
-#define DCMIPP_IPIDR_IDR_24               (0x1000000UL << DCMIPP_IPIDR_IDR_Pos)          /*!< 0x01000000 */
-#define DCMIPP_IPIDR_IDR_25               (0x2000000UL << DCMIPP_IPIDR_IDR_Pos)          /*!< 0x02000000 */
-#define DCMIPP_IPIDR_IDR_26               (0x4000000UL << DCMIPP_IPIDR_IDR_Pos)          /*!< 0x04000000 */
-#define DCMIPP_IPIDR_IDR_27               (0x8000000UL << DCMIPP_IPIDR_IDR_Pos)          /*!< 0x08000000 */
-#define DCMIPP_IPIDR_IDR_28               (0x10000000UL << DCMIPP_IPIDR_IDR_Pos)         /*!< 0x10000000 */
-#define DCMIPP_IPIDR_IDR_29               (0x20000000UL << DCMIPP_IPIDR_IDR_Pos)         /*!< 0x20000000 */
-#define DCMIPP_IPIDR_IDR_30               (0x40000000UL << DCMIPP_IPIDR_IDR_Pos)         /*!< 0x40000000 */
-#define DCMIPP_IPIDR_IDR_31               (0x80000000UL << DCMIPP_IPIDR_IDR_Pos)         /*!< 0x80000000 */
-
-/*****************  Bit definition for DCMIPP_SIDR register  ******************/
-#define DCMIPP_SIDR_SID_Pos               (0U)
-#define DCMIPP_SIDR_SID_Msk               (0xFFFFFFFFUL << DCMIPP_SIDR_SID_Pos)          /*!< 0xFFFFFFFF */
-#define DCMIPP_SIDR_SID                   DCMIPP_SIDR_SID_Msk                           /*!< 4KB decoding space */
-#define DCMIPP_SIDR_SID_0                 (0x1UL << DCMIPP_SIDR_SID_Pos)                 /*!< 0x00000001 */
-#define DCMIPP_SIDR_SID_1                 (0x2UL << DCMIPP_SIDR_SID_Pos)                 /*!< 0x00000002 */
-#define DCMIPP_SIDR_SID_2                 (0x4UL << DCMIPP_SIDR_SID_Pos)                 /*!< 0x00000004 */
-#define DCMIPP_SIDR_SID_3                 (0x8UL << DCMIPP_SIDR_SID_Pos)                 /*!< 0x00000008 */
-#define DCMIPP_SIDR_SID_4                 (0x10UL << DCMIPP_SIDR_SID_Pos)                /*!< 0x00000010 */
-#define DCMIPP_SIDR_SID_5                 (0x20UL << DCMIPP_SIDR_SID_Pos)                /*!< 0x00000020 */
-#define DCMIPP_SIDR_SID_6                 (0x40UL << DCMIPP_SIDR_SID_Pos)                /*!< 0x00000040 */
-#define DCMIPP_SIDR_SID_7                 (0x80UL << DCMIPP_SIDR_SID_Pos)                /*!< 0x00000080 */
-#define DCMIPP_SIDR_SID_8                 (0x100UL << DCMIPP_SIDR_SID_Pos)               /*!< 0x00000100 */
-#define DCMIPP_SIDR_SID_9                 (0x200UL << DCMIPP_SIDR_SID_Pos)               /*!< 0x00000200 */
-#define DCMIPP_SIDR_SID_10                (0x400UL << DCMIPP_SIDR_SID_Pos)               /*!< 0x00000400 */
-#define DCMIPP_SIDR_SID_11                (0x800UL << DCMIPP_SIDR_SID_Pos)               /*!< 0x00000800 */
-#define DCMIPP_SIDR_SID_12                (0x1000UL << DCMIPP_SIDR_SID_Pos)              /*!< 0x00001000 */
-#define DCMIPP_SIDR_SID_13                (0x2000UL << DCMIPP_SIDR_SID_Pos)              /*!< 0x00002000 */
-#define DCMIPP_SIDR_SID_14                (0x4000UL << DCMIPP_SIDR_SID_Pos)              /*!< 0x00004000 */
-#define DCMIPP_SIDR_SID_15                (0x8000UL << DCMIPP_SIDR_SID_Pos)              /*!< 0x00008000 */
-#define DCMIPP_SIDR_SID_16                (0x10000UL << DCMIPP_SIDR_SID_Pos)             /*!< 0x00010000 */
-#define DCMIPP_SIDR_SID_17                (0x20000UL << DCMIPP_SIDR_SID_Pos)             /*!< 0x00020000 */
-#define DCMIPP_SIDR_SID_18                (0x40000UL << DCMIPP_SIDR_SID_Pos)             /*!< 0x00040000 */
-#define DCMIPP_SIDR_SID_19                (0x80000UL << DCMIPP_SIDR_SID_Pos)             /*!< 0x00080000 */
-#define DCMIPP_SIDR_SID_20                (0x100000UL << DCMIPP_SIDR_SID_Pos)            /*!< 0x00100000 */
-#define DCMIPP_SIDR_SID_21                (0x200000UL << DCMIPP_SIDR_SID_Pos)            /*!< 0x00200000 */
-#define DCMIPP_SIDR_SID_22                (0x400000UL << DCMIPP_SIDR_SID_Pos)            /*!< 0x00400000 */
-#define DCMIPP_SIDR_SID_23                (0x800000UL << DCMIPP_SIDR_SID_Pos)            /*!< 0x00800000 */
-#define DCMIPP_SIDR_SID_24                (0x1000000UL << DCMIPP_SIDR_SID_Pos)           /*!< 0x01000000 */
-#define DCMIPP_SIDR_SID_25                (0x2000000UL << DCMIPP_SIDR_SID_Pos)           /*!< 0x02000000 */
-#define DCMIPP_SIDR_SID_26                (0x4000000UL << DCMIPP_SIDR_SID_Pos)           /*!< 0x04000000 */
-#define DCMIPP_SIDR_SID_27                (0x8000000UL << DCMIPP_SIDR_SID_Pos)           /*!< 0x08000000 */
-#define DCMIPP_SIDR_SID_28                (0x10000000UL << DCMIPP_SIDR_SID_Pos)          /*!< 0x10000000 */
-#define DCMIPP_SIDR_SID_29                (0x20000000UL << DCMIPP_SIDR_SID_Pos)          /*!< 0x20000000 */
-#define DCMIPP_SIDR_SID_30                (0x40000000UL << DCMIPP_SIDR_SID_Pos)          /*!< 0x40000000 */
-#define DCMIPP_SIDR_SID_31                (0x80000000UL << DCMIPP_SIDR_SID_Pos)          /*!< 0x80000000 */
 
 /**
   * @brief Analog to Digital Converter
@@ -2408,77 +1318,48 @@ typedef struct
   __IO uint32_t SIDR;     /*!< IWDG size identification register,     Address offset: 0x3FC */
 } IWDG_TypeDef;
 
-/**
-  * @brief LCD-TFT Display Controller
-  */
-
-typedef struct
-{
-  __IO uint32_t IDR;            /*!< LTDC identification register Address offset: 0x0 */
-  __IO uint32_t LCR;            /*!< LDTC layer count register Address offset: 0x4 */
-  __IO uint32_t SSCR;           /*!< LTDC synchronization size configuration register Address offset: 0x8 */
-  __IO uint32_t BPCR;           /*!< LTDC back porch configuration register Address offset: 0xc */
-  __IO uint32_t AWCR;           /*!< LTDC active width configuration register Address offset: 0x10 */
-  __IO uint32_t TWCR;           /*!< LTDC total width configuration register Address offset: 0x14 */
-  __IO uint32_t GCR;            /*!< LTDC global control register Address offset: 0x18 */
-  __IO uint32_t GC1R;           /*!< LTDC global configuration 1 register Address offset: 0x1c */
-  __IO uint32_t GC2R;           /*!< LTDC global configuration 2 register Address offset: 0x20 */
-  __IO uint32_t SRCR;           /*!< LTDC shadow reload configuration register Address offset: 0x24 */
-  __IO uint32_t GCCR;           /*!< LTDC gamma correction configuration register Address offset: 0x28 */
-  __IO uint32_t BCCR;           /*!< LTDC background color configuration register Address offset: 0x2c */
-       uint32_t RESERVED0;      /*!< Reserved Address offset: 0x30 */
-  __IO uint32_t IER;            /*!< LTDC interrupt enable register Address offset: 0x34 */
-  __IO uint32_t ISR;            /*!< LTDC interrupt status register Address offset: 0x38 */
-  __IO uint32_t ICR;            /*!< LTDC Interrupt Clear Register Address offset: 0x3c */
-  __IO uint32_t LIPCR;          /*!< LTDC line interrupt position configuration register Address offset: 0x40 */
-  __IO uint32_t CPSR;           /*!< LTDC current position status register Address offset: 0x44 */
-  __IO uint32_t CDSR;           /*!< LTDC current display status register Address offset: 0x48 */
-       uint32_t RESERVED1[5];   /*!< Reserved Address offset: 0x4c */
-  __IO uint32_t EDCR;           /*!< LTDC external display control register Address offset: 0x60 */
-  __IO uint32_t IER2;           /*!< LTDC interrupt enable register 2 Address offset: 0x64 */
-  __IO uint32_t ISR2;           /*!< LTDC interrupt status register 2 Address offset: 0x68 */
-  __IO uint32_t ICR2;           /*!< LTDC Interrupt Clear Register 2 Address offset: 0x6c */
-  __IO uint32_t LIPCR2;         /*!< LTDC line interrupt position configuration register 2 Address offset: 0x70 */
-       uint32_t RESERVED2;      /*!< Reserved Address offset: 0x74 */
-  __IO uint32_t ECRCR;          /*!< LTDC expected CRC register Address offset: 0x78 */
-  __IO uint32_t CCRCR;          /*!< LTDC computed CRC register Address offset: 0x7c */
-       uint32_t RESERVED3[4];   /*!< Reserved Address offset: 0x80 */
-  __IO uint32_t FUTR;           /*!< LTDC FIFO underrun threshold register Address offset: 0x90 */
-} LTDC_TypeDef;
 
 /**
-  * @brief LCD-TFT Display layer x Controller
+  * @brief SAES hardware accelerator
   */
-
 typedef struct
 {
-  __IO uint32_t C0R;          /*!< LTDC layer x configuration 0 register Address offset: 0x100 */
-  __IO uint32_t C1R;          /*!< LTDC layer x configuration 1 register Address offset: 0x104 */
-  __IO uint32_t RCR;          /*!< LTDC layer x reload control register Address offset: 0x108 */
-  __IO uint32_t CR;           /*!< LTDC layer x control register Address offset: 0x10c */
-  __IO uint32_t WHPCR;        /*!< LTDC layer x window horizontal position configuration register Address offset: 0x110 */
-  __IO uint32_t WVPCR;        /*!< LTDC layer x window vertical position configuration register Address offset: 0x114 */
-  __IO uint32_t CKCR;         /*!< LTDC layer x color keying configuration register Address offset: 0x118 */
-  __IO uint32_t PFCR;         /*!< LTDC layer x pixel format configuration register Address offset: 0x11c */
-  __IO uint32_t CACR;         /*!< LTDC layer x constant alpha configuration register Address offset: 0x120 */
-  __IO uint32_t DCCR;         /*!< LTDC layer x default color configuration register Address offset: 0x124 */
-  __IO uint32_t BFCR;         /*!< LTDC layer x blending factors configuration register Address offset: 0x128 */
-  __IO uint32_t BLCR;         /*!< LTDC layer x burst length configuration register Address offset: 0x12c */
-  __IO uint32_t PCR;          /*!< LTDC layer x planar configuration register Address offset: 0x130 */
-  __IO uint32_t CFBAR;        /*!< LTDC layer x color frame buffer address register Address offset: 0x134 */
-  __IO uint32_t CFBLR;        /*!< LTDC layer x color frame buffer length register Address offset: 0x138 */
-  __IO uint32_t CFBLNR;       /*!< LTDC layer x color frame buffer line number register Address offset: 0x13c */
-  __IO uint32_t AFBA0R;       /*!< LTDC layer x auxiliary frame buffer address 0 register Address offset: 0x140 */
-  __IO uint32_t AFBA1R;       /*!< LTDC layer x auxiliary frame buffer address 1 register Address offset: 0x144 */
-  __IO uint32_t AFBLR;        /*!< LTDC layer x auxiliary frame buffer length register Address offset: 0x148 */
-  __IO uint32_t AFBLNR;       /*!< LTDC layer x auxiliary frame buffer line number register Address offset: 0x14c */
-  __IO uint32_t CLUTWR;       /*!< LTDC layer x CLUT write register Address offset: 0x150 */
-       uint32_t RESERVED[6];  /*!< Reserved Address offset: 0x154 */
-  __IO uint32_t CYR0R;        /*!< LTDC layer x Conversion YCbCr RGB 0 register Address offset: 0x16c */
-  __IO uint32_t CYR1R;        /*!< LTDC layer x Conversion YCbCr RGB 1 register Address offset: 0x170 */
-  __IO uint32_t FPF0R;        /*!< LTDC layer x Flexible Pixel Format 0 register Address offset: 0x174 */
-  __IO uint32_t FPF1R;        /*!< LTDC layer x Flexible Pixel Format 1 register Address offset: 0x178 */
-} LTDC_Layer_TypeDef;
+  __IO uint32_t CR;          /*!< SAES control register,                        Address offset: 0x00 */
+  __IO uint32_t SR;          /*!< SAES status register,                         Address offset: 0x04 */
+  __IO uint32_t DINR;        /*!< SAES data input register,                     Address offset: 0x08 */
+  __IO uint32_t DOUTR;       /*!< SAES data output register,                    Address offset: 0x0C */
+  __IO uint32_t KEYR0;       /*!< SAES key register 0,                          Address offset: 0x10 */
+  __IO uint32_t KEYR1;       /*!< SAES key register 1,                          Address offset: 0x14 */
+  __IO uint32_t KEYR2;       /*!< SAES key register 2,                          Address offset: 0x18 */
+  __IO uint32_t KEYR3;       /*!< SAES key register 3,                          Address offset: 0x1C */
+  __IO uint32_t IVR0;        /*!< SAES initialization vector register 0,        Address offset: 0x20 */
+  __IO uint32_t IVR1;        /*!< SAES initialization vector register 1,        Address offset: 0x24 */
+  __IO uint32_t IVR2;        /*!< SAES initialization vector register 2,        Address offset: 0x28 */
+  __IO uint32_t IVR3;        /*!< SAES initialization vector register 3,        Address offset: 0x2C */
+  __IO uint32_t KEYR4;       /*!< SAES key register 4,                          Address offset: 0x30 */
+  __IO uint32_t KEYR5;       /*!< SAES key register 5,                          Address offset: 0x34 */
+  __IO uint32_t KEYR6;       /*!< SAES key register 6,                          Address offset: 0x38 */
+  __IO uint32_t KEYR7;       /*!< SAES key register 7,                          Address offset: 0x3C */
+  __IO uint32_t SUSP0R;      /*!< SAES suspend registers 0,                     Address offset: 0x40 */
+  __IO uint32_t SUSP1R;      /*!< SAES suspend registers 1,                     Address offset: 0x44 */
+  __IO uint32_t SUSP2R;      /*!< SAES suspend registers 2,                     Address offset: 0x48 */
+  __IO uint32_t SUSP3R;      /*!< SAES suspend registers 3,                     Address offset: 0x4c */
+  __IO uint32_t SUSP4R;      /*!< SAES suspend registers 4,                     Address offset: 0x50 */
+  __IO uint32_t SUSP5R;      /*!< SAES suspend registers 5,                     Address offset: 0x54 */
+  __IO uint32_t SUSP6R;      /*!< SAES suspend registers 6,                     Address offset: 0x58 */
+  __IO uint32_t SUSP7R;      /*!< SAES suspend registers 7,                     Address offset: 0x5c */
+  uint32_t RESERVED1[40];    /*!< Reserved,                                     Address offset: 0x60 -- 0xFC */
+  __IO uint32_t DPACFGR;     /*!< SAES IP DPACFGR register,                     Address offset: 0x0100 */
+  uint32_t RESERVED2[127];   /*!< Reserved,                                     Address offset: 0x104 -- 0x2FC */
+  __IO uint32_t IER;         /*!< SAES Interrupt Enable Register,               Address offset: 0x0300 */
+  __IO uint32_t ISR;         /*!< SAES Interrupt Status Register,               Address offset: 0x0304 */
+  __IO uint32_t ICR;         /*!< SAES Interrupt Clear Register,                Address offset: 0x0308 */
+  uint32_t RESERVED3[57];   /*!< Reserved,                                      Address offset: 0x30C -- 0x3EC */
+  __IO uint32_t HWCFGR;      /*!< SAES HW Configuration Register,               Address offset: 0x3F0 */
+  __IO uint32_t VERR;        /*!< SAES Version Register,                        Address offset: 0x3F4 */
+  __IO uint32_t IPIDR;       /*!< SAES Identification Register,                 Address offset: 0x3F8 */
+  __IO uint32_t SIDR;        /*!< SAES Size ID Register,                        Address offset: 0x3FC */
+} SAES_TypeDef;
 
  
  /**
@@ -2498,6 +1379,35 @@ typedef struct
   __IO uint32_t ID;          /*!< PKA ID register,                      Address offset: 0x1FF8 */
 } PKA_TypeDef;
 
+/**
+  * @brief MCE Memory Cipher Engine
+  */
+typedef struct
+{
+  __IO uint32_t CR;                        /*!< MCE Configuration Register,               Address offset: 0x000 */
+  __IO uint32_t SR;                        /*!< MCE Status Register,                      Address offset: 0x004 */
+  __IO uint32_t IASR;                      /*!< MCE Illegal Access Status Register,       Address offset: 0x008 */
+  __IO uint32_t IACR;                      /*!< MCE Illegal Access Clear Register,        Address offset: 0x00C */
+  __IO uint32_t IAIER;                     /*!< MCE Illegal Interrupt Enable Register,    Address offset: 0x010 */
+  uint32_t RESERVED0[2];                   /*! Reserved                                   Address offset: 0x014 - 0x018 */
+  __IO uint32_t PRIVCFGR;                  /*!< MCE Privileged Configuration Register,    Address offset: 0x01C */
+  uint32_t RESERVED1[8];                   /*! Reserved                                   Address offset: 0x020 - 0x03C */
+  __IO uint32_t REGCR;                     /*!< MCE Region X Configuration Register,      Address offset: 0x040 */
+  __IO uint32_t SADDR;                     /*!< MCE Start Address For Region X Register,  Address offset: 0x044 */
+  __IO uint32_t EADDR;                     /*!< MCE End Address For Region X Register,    Address offset: 0x048 */
+  uint32_t RESERVED2[109];                 /*! Reserved                                   Address offset: 0x04C - 0x1FC */
+  __IO uint32_t MKEYR0;                    /*!< MCE Master Key 0 Register,                Address offset: 0x200 */
+  __IO uint32_t MKEYR1;                    /*!< MCE Master Key 1 Register,                Address offset: 0x204 */
+  __IO uint32_t MKEYR2;                    /*!< MCE Master Key 2 Register,                Address offset: 0x208 */
+  __IO uint32_t MKEYR3;                    /*!< MCE Master Key 3 Register,                Address offset: 0x20C */
+  uint32_t RESERVED3[118];                 /*! Reserved                                   Address offset: 0x210 - 0x3E4 */
+  __IO uint32_t HWCFGR3;                   /*!< MCE Version Register,                     Address offset: 0x3E8 */
+  __IO uint32_t HWCFGR2;                   /*!< MCE Version Register,                     Address offset: 0x3EC */
+  __IO uint32_t HWCFGR1;                   /*!< MCE Version Register,                     Address offset: 0x3F0 */
+  __IO uint32_t VERR;                      /*!< MCE Version Register,                     Address offset: 0x3F4 */
+  __IO uint32_t IPIDR;                     /*!< MCE Identification Register,              Address offset: 0x3F8 */
+  __IO uint32_t SIDR;                      /*!< MCE Size ID Register,                     Address offset: 0x3FC */
+} MCE_TypeDef;
 
 /**
   * @brief USBPHYC  USB HS PHY Control
@@ -3379,6 +2289,54 @@ typedef struct
 } SWPMI_TypeDef;
 
 /**
+  * @brief Crypto Processor
+  */
+
+typedef struct
+{
+  __IO uint32_t CR;         /*!< CRYP control register,                                    Address offset: 0x00 */
+  __IO uint32_t SR;         /*!< CRYP status register,                                     Address offset: 0x04 */
+  __IO uint32_t DIN;        /*!< CRYP data input register,                                 Address offset: 0x08 */
+  __IO uint32_t DOUT;       /*!< CRYP data output register,                                Address offset: 0x0C */
+  __IO uint32_t DMACR;      /*!< CRYP DMA control register,                                Address offset: 0x10 */
+  __IO uint32_t IMSCR;      /*!< CRYP interrupt mask set/clear register,                   Address offset: 0x14 */
+  __IO uint32_t RISR;       /*!< CRYP raw interrupt status register,                       Address offset: 0x18 */
+  __IO uint32_t MISR;       /*!< CRYP masked interrupt status register,                    Address offset: 0x1C */
+  __IO uint32_t K0LR;       /*!< CRYP key left  register 0,                                Address offset: 0x20 */
+  __IO uint32_t K0RR;       /*!< CRYP key right register 0,                                Address offset: 0x24 */
+  __IO uint32_t K1LR;       /*!< CRYP key left  register 1,                                Address offset: 0x28 */
+  __IO uint32_t K1RR;       /*!< CRYP key right register 1,                                Address offset: 0x2C */
+  __IO uint32_t K2LR;       /*!< CRYP key left  register 2,                                Address offset: 0x30 */
+  __IO uint32_t K2RR;       /*!< CRYP key right register 2,                                Address offset: 0x34 */
+  __IO uint32_t K3LR;       /*!< CRYP key left  register 3,                                Address offset: 0x38 */
+  __IO uint32_t K3RR;       /*!< CRYP key right register 3,                                Address offset: 0x3C */
+  __IO uint32_t IV0LR;      /*!< CRYP initialization vector left-word  register 0,         Address offset: 0x40 */
+  __IO uint32_t IV0RR;      /*!< CRYP initialization vector right-word register 0,         Address offset: 0x44 */
+  __IO uint32_t IV1LR;      /*!< CRYP initialization vector left-word  register 1,         Address offset: 0x48 */
+  __IO uint32_t IV1RR;      /*!< CRYP initialization vector right-word register 1,         Address offset: 0x4C */
+  __IO uint32_t CSGCMCCM0R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 0,        Address offset: 0x50 */
+  __IO uint32_t CSGCMCCM1R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 1,        Address offset: 0x54 */
+  __IO uint32_t CSGCMCCM2R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 2,        Address offset: 0x58 */
+  __IO uint32_t CSGCMCCM3R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 3,        Address offset: 0x5C */
+  __IO uint32_t CSGCMCCM4R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 4,        Address offset: 0x60 */
+  __IO uint32_t CSGCMCCM5R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 5,        Address offset: 0x64 */
+  __IO uint32_t CSGCMCCM6R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 6,        Address offset: 0x68 */
+  __IO uint32_t CSGCMCCM7R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 7,        Address offset: 0x6C */
+  __IO uint32_t CSGCM0R;    /*!< CRYP GCM/GMAC context swap register 0,                    Address offset: 0x70 */
+  __IO uint32_t CSGCM1R;    /*!< CRYP GCM/GMAC context swap register 1,                    Address offset: 0x74 */
+  __IO uint32_t CSGCM2R;    /*!< CRYP GCM/GMAC context swap register 2,                    Address offset: 0x78 */
+  __IO uint32_t CSGCM3R;    /*!< CRYP GCM/GMAC context swap register 3,                    Address offset: 0x7C */
+  __IO uint32_t CSGCM4R;    /*!< CRYP GCM/GMAC context swap register 4,                    Address offset: 0x80 */
+  __IO uint32_t CSGCM5R;    /*!< CRYP GCM/GMAC context swap register 5,                    Address offset: 0x84 */
+  __IO uint32_t CSGCM6R;    /*!< CRYP GCM/GMAC context swap register 6,                    Address offset: 0x88 */
+  __IO uint32_t CSGCM7R;    /*!< CRYP GCM/GMAC context swap register 7,                    Address offset: 0x8C */
+  uint32_t RESERVED[216];
+  __IO uint32_t HWCFGR;     /*!< CRYP HW Configuration,                                    Address offset: 0x3F0 */
+  __IO uint32_t VERR;       /*!< CRYP version register ,                                   Address offset: 0x3F4 */
+  __IO uint32_t IPIDR;      /*!< CRYP Identification register,                             Address offset: 0x3F8 */
+  __IO uint32_t MID;        /*!< CRYP HW Magic ID register,                                Address offset: 0x3FC */
+} CRYP_TypeDef;
+/**
   * @brief HASH
   */
 /* HASH (c7amba_hash1@v4.0) */
@@ -3710,15 +2668,18 @@ typedef struct
 
 /*!< AHB5 */
 #define BKPSRAM_BASE          (AHB5_PERIPH_BASE + 0x0000UL)
+#define CRYP1_BASE            (AHB5_PERIPH_BASE + 0x2000UL)
 #define HASH1_BASE            (AHB5_PERIPH_BASE + 0x3000UL)
 #define HASH1_DIGEST_BASE     (AHB5_PERIPH_BASE + 0x3310UL)
 #define RNG1_BASE             (AHB5_PERIPH_BASE + 0x4000UL)
+#define SAES_BASE             (AHB5_PERIPH_BASE + 0x5000UL)
 #define PKA_BASE              (AHB5_PERIPH_BASE + 0x6000UL)
 
 /*!< GPV */
 
 /*!< MPU_AHB6 */
 #define MDMA_BASE               (AHB6_PERIPH_BASE + 0x0000UL)
+#define MCE_BASE                (AHB6_PERIPH_BASE + 0x1000UL)
 #define FMC_R_BASE              (AHB6_PERIPH_BASE + 0x2000UL)
 #define QSPI_R_BASE             (AHB6_PERIPH_BASE + 0x3000UL)
 #define DLYB_QSPI_BASE          (AHB6_PERIPH_BASE + 0x4000UL)
@@ -3734,10 +2695,6 @@ typedef struct
 #define ETH2_BASE               (AHB6_PERIPH_BASE + 0xE000UL)
 
 /*!< MPU_APB4 */
-#define DCMIPP_BASE           (APB4_PERIPH_BASE + 0x0000UL)
-#define LTDC_BASE             (APB4_PERIPH_BASE + 0x1000UL)
-#define LTDC_Layer1_BASE      (LTDC_BASE + 0x100UL)
-#define LTDC_Layer2_BASE      (LTDC_BASE + 0x200UL)
 #define IWDG2_BASE            (APB4_PERIPH_BASE + 0x2000UL)
 #define DDRCTRL_BASE          (APB4_PERIPH_BASE + 0x3000UL)
 #define DDRPHYC_BASE          (APB4_PERIPH_BASE + 0x4000UL)
@@ -3983,11 +2940,13 @@ typedef struct
 #define ADC1_COMMON        ((ADC_Common_TypeDef *) ADC1_COMMON_BASE)
 #define ADC2_COMMON        ((ADC_Common_TypeDef *) ADC2_COMMON_BASE)
 
+#define CRYP1               ((CRYP_TypeDef *) CRYP1_BASE)
 #define HASH1               ((HASH_TypeDef *) HASH1_BASE)
 #define HASH1_DIGEST        ((HASH_DIGEST_TypeDef *) HASH1_DIGEST_BASE)
 #define HASH                ((HASH_TypeDef *) HASH1)
 #define HASH_DIGEST         ((HASH_DIGEST_TypeDef *) HASH1_DIGEST)
 #define RNG1                ((RNG_TypeDef *) RNG1_BASE)
+#define SAES                ((SAES_TypeDef *) SAES_BASE)
 #define PKA                 ((PKA_TypeDef *) PKA_BASE)
 #define SDMMC2              ((SDMMC_TypeDef *) SDMMC2_BASE)
 
@@ -4083,10 +3042,7 @@ typedef struct
 #define DDRCTRL             ((DDRCTRL_TypeDef *) DDRCTRL_BASE)
 #define DDRPERFM            ((DDRPERFM_TypeDef *) DDRPERFM_BASE)
 #define DDRPHYC             ((DDRPHYC_TypeDef *)DDRPHYC_BASE)
-#define LTDC                ((LTDC_TypeDef *)LTDC_BASE)
-#define LTDC_Layer1         ((LTDC_Layer_TypeDef *)LTDC_Layer1_BASE)
-#define LTDC_Layer2         ((LTDC_Layer_TypeDef *)LTDC_Layer2_BASE)
-#define DCMIPP              ((DCMIPP_TypeDef *) DCMIPP_BASE)
+#define MCE                 ((MCE_TypeDef *)MCE_BASE)
 #define TZC                 ((TZC_TypeDef *)TZC_BASE)
 #define ETZPC               ((ETZPC_TypeDef *)ETZPC_BASE)
 #define STGENC              ((STGENC_TypeDef *)STGENC_BASE)
@@ -7012,6 +5968,166 @@ typedef struct
 #define CRS_ICR_ESYNCC_Msk        (0x1UL << CRS_ICR_ESYNCC_Pos)                 /*!< 0x00000008 */
 #define CRS_ICR_ESYNCC            CRS_ICR_ESYNCC_Msk                           /*!< Expected SYNC clear flag */
 
+/******************************************************************************/
+/*                                                                            */
+/*                            Crypto Processor                                */
+/*                                                                            */
+/******************************************************************************/
+/******************* Bits definition for CRYP_CR register  ********************/
+#define CRYP_CR_ALGODIR_Pos              (2U)
+#define CRYP_CR_ALGODIR_Msk              (0x1UL << CRYP_CR_ALGODIR_Pos)         /*!< 0x00000004 */
+#define CRYP_CR_ALGODIR                  CRYP_CR_ALGODIR_Msk
+
+#define CRYP_CR_ALGOMODE_Pos             (3U)
+#define CRYP_CR_ALGOMODE_Msk             (0x10007UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00080038 */
+#define CRYP_CR_ALGOMODE                 CRYP_CR_ALGOMODE_Msk
+#define CRYP_CR_ALGOMODE_0               (0x00001UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00000008 */
+#define CRYP_CR_ALGOMODE_1               (0x00002UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00000010 */
+#define CRYP_CR_ALGOMODE_2               (0x00004UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00000020 */
+#define CRYP_CR_ALGOMODE_TDES_ECB        ((uint32_t)0x00000000)
+#define CRYP_CR_ALGOMODE_TDES_CBC_Pos    (3U)
+#define CRYP_CR_ALGOMODE_TDES_CBC_Msk    (0x1UL << CRYP_CR_ALGOMODE_TDES_CBC_Pos) /*!< 0x00000008 */
+#define CRYP_CR_ALGOMODE_TDES_CBC        CRYP_CR_ALGOMODE_TDES_CBC_Msk
+#define CRYP_CR_ALGOMODE_DES_ECB_Pos     (4U)
+#define CRYP_CR_ALGOMODE_DES_ECB_Msk     (0x1UL << CRYP_CR_ALGOMODE_DES_ECB_Pos) /*!< 0x00000010 */
+#define CRYP_CR_ALGOMODE_DES_ECB         CRYP_CR_ALGOMODE_DES_ECB_Msk
+#define CRYP_CR_ALGOMODE_DES_CBC_Pos     (3U)
+#define CRYP_CR_ALGOMODE_DES_CBC_Msk     (0x3UL << CRYP_CR_ALGOMODE_DES_CBC_Pos) /*!< 0x00000018 */
+#define CRYP_CR_ALGOMODE_DES_CBC         CRYP_CR_ALGOMODE_DES_CBC_Msk
+#define CRYP_CR_ALGOMODE_AES_ECB_Pos     (5U)
+#define CRYP_CR_ALGOMODE_AES_ECB_Msk     (0x1UL << CRYP_CR_ALGOMODE_AES_ECB_Pos) /*!< 0x00000020 */
+#define CRYP_CR_ALGOMODE_AES_ECB         CRYP_CR_ALGOMODE_AES_ECB_Msk
+#define CRYP_CR_ALGOMODE_AES_CBC_Pos     (3U)
+#define CRYP_CR_ALGOMODE_AES_CBC_Msk     (0x5UL << CRYP_CR_ALGOMODE_AES_CBC_Pos) /*!< 0x00000028 */
+#define CRYP_CR_ALGOMODE_AES_CBC         CRYP_CR_ALGOMODE_AES_CBC_Msk
+#define CRYP_CR_ALGOMODE_AES_CTR_Pos     (4U)
+#define CRYP_CR_ALGOMODE_AES_CTR_Msk     (0x3UL << CRYP_CR_ALGOMODE_AES_CTR_Pos) /*!< 0x00000030 */
+#define CRYP_CR_ALGOMODE_AES_CTR         CRYP_CR_ALGOMODE_AES_CTR_Msk
+#define CRYP_CR_ALGOMODE_AES_GCM_Pos     (19U)
+#define CRYP_CR_ALGOMODE_AES_GCM_Msk     (0x1UL << CRYP_CR_ALGOMODE_AES_GCM_Pos) /*!< 0x00080000 */
+#define CRYP_CR_ALGOMODE_AES_GCM         CRYP_CR_ALGOMODE_AES_GCM_Msk
+#define CRYP_CR_ALGOMODE_AES_CCM_Pos     (3U)
+#define CRYP_CR_ALGOMODE_AES_CCM_Msk     (0x10001UL << CRYP_CR_ALGOMODE_AES_CCM_Pos) /*!< 0x00080008 */
+#define CRYP_CR_ALGOMODE_AES_CCM         CRYP_CR_ALGOMODE_AES_CCM_Msk
+#define CRYP_CR_ALGOMODE_AES_KEY_Pos     (3U)
+#define CRYP_CR_ALGOMODE_AES_KEY_Msk     (0x7UL << CRYP_CR_ALGOMODE_AES_KEY_Pos) /*!< 0x00000038 */
+#define CRYP_CR_ALGOMODE_AES_KEY         CRYP_CR_ALGOMODE_AES_KEY_Msk
+
+#define CRYP_CR_DATATYPE_Pos             (6U)
+#define CRYP_CR_DATATYPE_Msk             (0x3UL << CRYP_CR_DATATYPE_Pos)        /*!< 0x000000C0 */
+#define CRYP_CR_DATATYPE                 CRYP_CR_DATATYPE_Msk
+#define CRYP_CR_DATATYPE_0               (0x1UL << CRYP_CR_DATATYPE_Pos)        /*!< 0x00000040 */
+#define CRYP_CR_DATATYPE_1               (0x2UL << CRYP_CR_DATATYPE_Pos)        /*!< 0x00000080 */
+#define CRYP_CR_KEYSIZE_Pos              (8U)
+#define CRYP_CR_KEYSIZE_Msk              (0x3UL << CRYP_CR_KEYSIZE_Pos)         /*!< 0x00000300 */
+#define CRYP_CR_KEYSIZE                  CRYP_CR_KEYSIZE_Msk
+#define CRYP_CR_KEYSIZE_0                (0x1UL << CRYP_CR_KEYSIZE_Pos)         /*!< 0x00000100 */
+#define CRYP_CR_KEYSIZE_1                (0x2UL << CRYP_CR_KEYSIZE_Pos)         /*!< 0x00000200 */
+#define CRYP_CR_FFLUSH_Pos               (14U)
+#define CRYP_CR_FFLUSH_Msk               (0x1UL << CRYP_CR_FFLUSH_Pos)          /*!< 0x00004000 */
+#define CRYP_CR_FFLUSH                   CRYP_CR_FFLUSH_Msk
+#define CRYP_CR_CRYPEN_Pos               (15U)
+#define CRYP_CR_CRYPEN_Msk               (0x1UL << CRYP_CR_CRYPEN_Pos)          /*!< 0x00008000 */
+#define CRYP_CR_CRYPEN                   CRYP_CR_CRYPEN_Msk
+
+#define CRYP_CR_GCM_CCMPH_Pos            (16U)
+#define CRYP_CR_GCM_CCMPH_Msk            (0x3UL << CRYP_CR_GCM_CCMPH_Pos)       /*!< 0x00030000 */
+#define CRYP_CR_GCM_CCMPH                CRYP_CR_GCM_CCMPH_Msk
+#define CRYP_CR_GCM_CCMPH_0              (0x1UL << CRYP_CR_GCM_CCMPH_Pos)       /*!< 0x00010000 */
+#define CRYP_CR_GCM_CCMPH_1              (0x2UL << CRYP_CR_GCM_CCMPH_Pos)       /*!< 0x00020000 */
+#define CRYP_CR_ALGOMODE_3               ((uint32_t)0x00080000)
+#define CRYP_CR_NPBLB_Pos                (20U)
+#define CRYP_CR_NPBLB_Msk                (0xFUL << CRYP_CR_NPBLB_Pos)           /*!< 0x00F00000 */
+#define CRYP_CR_NPBLB                    CRYP_CR_NPBLB_Msk
+
+#define CRYP_CR_KMOD_Pos                 (24U)
+#define CRYP_CR_KMOD_Msk                 (0x3UL << CRYP_CR_KMOD_Pos)            /*!< 0x03000000 */
+#define CRYP_CR_KMOD                     CRYP_CR_KMOD_Msk
+#define CRYP_CR_KMOD_0                   (0x1UL << CRYP_CR_KMOD_Pos)            /*!< 0x01000000 */
+#define CRYP_CR_KMOD_1                   (0x2UL << CRYP_CR_KMOD_Pos)            /*!< 0x02000000 */
+
+#define CRYP_CR_IPRST_Pos                (31U)
+#define CRYP_CR_IPRST_Msk                (0xFUL << CRYP_CR_IPRST_Pos)           /*!< 0xF0000000 */
+#define CRYP_CR_IPRST                    CRYP_CR_IPRST_Msk
+/****************** Bits definition for CRYP_SR register  *********************/
+#define CRYP_SR_IFEM_Pos                 (0U)
+#define CRYP_SR_IFEM_Msk                 (0x1UL << CRYP_SR_IFEM_Pos)            /*!< 0x00000001 */
+#define CRYP_SR_IFEM                     CRYP_SR_IFEM_Msk
+#define CRYP_SR_IFNF_Pos                 (1U)
+#define CRYP_SR_IFNF_Msk                 (0x1UL << CRYP_SR_IFNF_Pos)            /*!< 0x00000002 */
+#define CRYP_SR_IFNF                     CRYP_SR_IFNF_Msk
+#define CRYP_SR_OFNE_Pos                 (2U)
+#define CRYP_SR_OFNE_Msk                 (0x1UL << CRYP_SR_OFNE_Pos)            /*!< 0x00000004 */
+#define CRYP_SR_OFNE                     CRYP_SR_OFNE_Msk
+#define CRYP_SR_OFFU_Pos                 (3U)
+#define CRYP_SR_OFFU_Msk                 (0x1UL << CRYP_SR_OFFU_Pos)            /*!< 0x00000008 */
+#define CRYP_SR_OFFU                     CRYP_SR_OFFU_Msk
+#define CRYP_SR_BUSY_Pos                 (4U)
+#define CRYP_SR_BUSY_Msk                 (0x1UL << CRYP_SR_BUSY_Pos)            /*!< 0x00000010 */
+#define CRYP_SR_BUSY                     CRYP_SR_BUSY_Msk
+#define CRYP_SR_KERF_Pos                 (6U)
+#define CRYP_SR_KERF_Msk                 (0x1UL << CRYP_SR_KERF_Pos)            /*!< 0x00000040 */
+#define CRYP_SR_KERF                     CRYP_SR_KERF_Msk
+#define CRYP_SR_KEYVALID_Pos             (7U)
+#define CRYP_SR_KEYVALID_Msk             (0x1UL << CRYP_SR_KEYVALID_Pos)        /*!< 0x00000080 */
+#define CRYP_SR_KEYVALID                 CRYP_SR_KEYVALID_Msk
+/****************** Bits definition for CRYP_DMACR register  ******************/
+#define CRYP_DMACR_DIEN_Pos              (0U)
+#define CRYP_DMACR_DIEN_Msk              (0x1UL << CRYP_DMACR_DIEN_Pos)         /*!< 0x00000001 */
+#define CRYP_DMACR_DIEN                  CRYP_DMACR_DIEN_Msk
+#define CRYP_DMACR_DOEN_Pos              (1U)
+#define CRYP_DMACR_DOEN_Msk              (0x1UL << CRYP_DMACR_DOEN_Pos)         /*!< 0x00000002 */
+#define CRYP_DMACR_DOEN                  CRYP_DMACR_DOEN_Msk
+/*****************  Bits definition for CRYP_IMSCR register  ******************/
+#define CRYP_IMSCR_INIM_Pos              (0U)
+#define CRYP_IMSCR_INIM_Msk              (0x1UL << CRYP_IMSCR_INIM_Pos)         /*!< 0x00000001 */
+#define CRYP_IMSCR_INIM                  CRYP_IMSCR_INIM_Msk
+#define CRYP_IMSCR_OUTIM_Pos             (1U)
+#define CRYP_IMSCR_OUTIM_Msk             (0x1UL << CRYP_IMSCR_OUTIM_Pos)        /*!< 0x00000002 */
+#define CRYP_IMSCR_OUTIM                 CRYP_IMSCR_OUTIM_Msk
+/****************** Bits definition for CRYP_RISR register  *******************/
+#define CRYP_RISR_OUTRIS_Pos             (0U)
+#define CRYP_RISR_OUTRIS_Msk             (0x1UL << CRYP_RISR_OUTRIS_Pos)        /*!< 0x00000001 */
+#define CRYP_RISR_OUTRIS                 CRYP_RISR_OUTRIS_Msk
+#define CRYP_RISR_INRIS_Pos              (1U)
+#define CRYP_RISR_INRIS_Msk              (0x1UL << CRYP_RISR_INRIS_Pos)         /*!< 0x00000002 */
+#define CRYP_RISR_INRIS                  CRYP_RISR_INRIS_Msk
+/****************** Bits definition for CRYP_MISR register  *******************/
+#define CRYP_MISR_INMIS_Pos              (0U)
+#define CRYP_MISR_INMIS_Msk              (0x1UL << CRYP_MISR_INMIS_Pos)         /*!< 0x00000001 */
+#define CRYP_MISR_INMIS                  CRYP_MISR_INMIS_Msk
+#define CRYP_MISR_OUTMIS_Pos             (1U)
+#define CRYP_MISR_OUTMIS_Msk             (0x1UL << CRYP_MISR_OUTMIS_Pos)        /*!< 0x00000002 */
+#define CRYP_MISR_OUTMIS                 CRYP_MISR_OUTMIS_Msk
+
+/**********************  Bit definition for CRYP_HWCFGR register  ***************/
+#define CRYP_HWCFGR_CFG1_Pos  (0U)
+#define CRYP_HWCFGR_CFG1_Msk  (0xFUL << CRYP_HWCFGR_CFG1_Pos)          /*!< 0x0000000F */
+#define CRYP_HWCFGR_CFG1      CRYP_HWCFGR_CFG1_Msk                    /*!< HW Generic 1 */
+#define CRYP_HWCFGR_CFG2_Pos  (4U)
+#define CRYP_HWCFGR_CFG2_Msk  (0xFUL << CRYP_HWCFGR_CFG2_Pos)          /*!< 0x000000F0 */
+#define CRYP_HWCFGR_CFG2      CRYP_HWCFGR_CFG2_Msk                    /*!< HW Generic 2 */
+#define CRYP_HWCFGR_CFG3_Pos  (8U)
+#define CRYP_HWCFGR_CFG3_Msk  (0xFUL << CRYP_HWCFGR_CFG3_Pos)          /*!< 0x00000F00 */
+#define CRYP_HWCFGR_CFG3      CRYP_HWCFGR_CFG3_Msk                    /*!< HW Generic 3 */
+#define CRYP_HWCFGR_CFG4_Pos  (12U)
+#define CRYP_HWCFGR_CFG4_Msk  (0xFUL << CRYP_HWCFGR_CFG4_Pos)          /*!< 0x0000F000 */
+#define CRYP_HWCFGR_CFG4      CRYP_HWCFGR_CFG4_Msk                    /*!< HW Generic 4 */
+
+/**********************  Bit definition for CRYP_VERR register  *****************/
+#define CRYP_VERR_VER_Pos      (0U)
+#define CRYP_VERR_VER_Msk      (0xFFUL << CRYP_VERR_VER_Pos)               /*!< 0x000000FF */
+#define CRYP_VERR_VER          CRYP_VERR_VER_Msk                         /*!< Revision number */
+
+/**********************  Bit definition for CRYP_IPIDR register  ****************/
+#define CRYP_IPIDR_IPID_Pos       (0U)
+#define CRYP_IPIDR_IPID_Msk       (0xFFFFFFFFUL << CRYP_IPIDR_IPID_Pos)         /*!< 0xFFFFFFFF */
+#define CRYP_IPIDR_IPID           CRYP_IPIDR_IPID_Msk                          /*!< IP Identification */
+
+/**********************  Bit definition for CRYP_SIDR register  *****************/
+#define CRYP_MID_MID_Pos         (0U)
+#define CRYP_MID_MID_Msk         (0xFFFFFFFFUL << CRYP_MID_MID_Pos)           /*!< 0xFFFFFFFF */
+#define CRYP_MID_MID             CRYP_MID_MID_Msk                            /*!< IP size identification */
 
 /******************************************************************************/
 /*                                                                            */
@@ -20569,6 +19685,270 @@ typedef struct
 
 /******************************************************************************/
 /*                                                                            */
+/*               Secure Advanced Encryption Standard (SAES)                   */
+/*                                                                            */
+/******************************************************************************/
+/*******************  Bit definition for SAES_CR register  *********************/
+#define SAES_CR_EN_Pos                      (0U)
+#define SAES_CR_EN_Msk                      (0x1UL << SAES_CR_EN_Pos)               /*!< 0x00000001 */
+#define SAES_CR_EN                          SAES_CR_EN_Msk                          /*!< SAES Enable */
+#define SAES_CR_DATATYPE_Pos                (1U)
+#define SAES_CR_DATATYPE_Msk                (0x3UL << SAES_CR_DATATYPE_Pos)         /*!< 0x00000006 */
+#define SAES_CR_DATATYPE                    SAES_CR_DATATYPE_Msk                    /*!< Data type selection */
+#define SAES_CR_DATATYPE_0                  (0x1UL << SAES_CR_DATATYPE_Pos)         /*!< 0x00000002 */
+#define SAES_CR_DATATYPE_1                  (0x2UL << SAES_CR_DATATYPE_Pos)         /*!< 0x00000004 */
+#define SAES_CR_MODE_Pos                    (3U)
+#define SAES_CR_MODE_Msk                    (0x3UL << SAES_CR_MODE_Pos)             /*!< 0x00000018 */
+#define SAES_CR_MODE                        SAES_CR_MODE_Msk                        /*!< SAES Mode Of Operation */
+#define SAES_CR_MODE_0                      (0x1UL << SAES_CR_MODE_Pos)             /*!< 0x00000008 */
+#define SAES_CR_MODE_1                      (0x2UL << SAES_CR_MODE_Pos)             /*!< 0x00000010 */
+#define SAES_CR_CHMOD_Pos                   (5U)
+#define SAES_CR_CHMOD_Msk                   (0x803UL << SAES_CR_CHMOD_Pos)          /*!< 0x00010060 */
+#define SAES_CR_CHMOD                       SAES_CR_CHMOD_Msk                       /*!< SAES Chaining Mode */
+#define SAES_CR_CHMOD_0                     (0x001UL << SAES_CR_CHMOD_Pos)          /*!< 0x00000020 */
+#define SAES_CR_CHMOD_1                     (0x002UL << SAES_CR_CHMOD_Pos)          /*!< 0x00000040 */
+#define SAES_CR_CHMOD_2                     (0x800UL << SAES_CR_CHMOD_Pos)          /*!< 0x00010000 */
+#define SAES_CR_ALGOMODE_AES_ECB            ((uint32_t)0x00000000)
+#define SAES_CR_ALGOMODE_AES_CBC_Pos        (5U)
+#define SAES_CR_ALGOMODE_AES_CBC_Msk        (0x1UL << SAES_CR_ALGOMODE_AES_CBC_Pos) /*!< 0x00000020 */
+#define SAES_CR_ALGOMODE_AES_CBC            SAES_CR_ALGOMODE_AES_CBC_Msk
+#define SAES_CR_ALGOMODE_AES_CTR_Pos        (6U)
+#define SAES_CR_ALGOMODE_AES_CTR_Msk        (0x1UL << SAES_CR_ALGOMODE_AES_CTR_Pos) /*!< 0x00000040 */
+#define SAES_CR_ALGOMODE_AES_CTR            SAES_CR_ALGOMODE_AES_CTR_Msk
+#define SAES_CR_ALGOMODE_AES_GCM_Pos        (5U)
+#define SAES_CR_ALGOMODE_AES_GCM_Msk        (0x3UL << SAES_CR_ALGOMODE_AES_GCM_Pos) /*!< 0x00000060 */
+#define SAES_CR_ALGOMODE_AES_GCM            SAES_CR_ALGOMODE_AES_GCM_Msk
+#define SAES_CR_ALGOMODE_AES_CCM_Pos        (16U)
+#define SAES_CR_ALGOMODE_AES_CCM_Msk        (0x1UL << SAES_CR_ALGOMODE_AES_CCM_Pos) /*!< 0x00010000 */
+#define SAES_CR_ALGOMODE_AES_CCM            SAES_CR_ALGOMODE_AES_CCM_Msk
+#define SAES_CR_DMAINEN_Pos                 (11U)
+#define SAES_CR_DMAINEN_Msk                 (0x1UL << SAES_CR_DMAINEN_Pos)          /*!< 0x00000800 */
+#define SAES_CR_DMAINEN                     SAES_CR_DMAINEN_Msk                     /*!< Enable data input phase DMA management  */
+#define SAES_CR_DMAOUTEN_Pos                (12U)
+#define SAES_CR_DMAOUTEN_Msk                (0x1UL << SAES_CR_DMAOUTEN_Pos)         /*!< 0x00001000 */
+#define SAES_CR_DMAOUTEN                    SAES_CR_DMAOUTEN_Msk                    /*!< Enable data output phase DMA management */
+#define SAES_CR_GCMPH_Pos                   (13U)
+#define SAES_CR_GCMPH_Msk                   (0x3UL << SAES_CR_GCMPH_Pos)            /*!< 0x00006000 */
+#define SAES_CR_GCMPH                       SAES_CR_GCMPH_Msk                       /*!< GCM Phase */
+#define SAES_CR_GCMPH_0                     (0x1UL << SAES_CR_GCMPH_Pos)            /*!< 0x00002000 */
+#define SAES_CR_GCMPH_1                     (0x2UL << SAES_CR_GCMPH_Pos)            /*!< 0x00004000 */
+#define SAES_CR_KEYSIZE_Pos                 (18U)
+#define SAES_CR_KEYSIZE_Msk                 (0x1UL << SAES_CR_KEYSIZE_Pos)          /*!< 0x00040000 */
+#define SAES_CR_KEYSIZE                     SAES_CR_KEYSIZE_Msk                     /*!< Key size selection */
+#define SAES_CR_NPBLB_Pos                   (20U)
+#define SAES_CR_NPBLB_Msk                   (0xFUL << SAES_CR_NPBLB_Pos)            /*!< 0x00F00000 */
+#define SAES_CR_NPBLB                       SAES_CR_NPBLB_Msk                       /*!< Number of padding bytes in payload last block */
+#define SAES_CR_NPBLB_0                     (0x1UL << SAES_CR_NPBLB_Pos)            /*!< 0x00100000 */
+#define SAES_CR_NPBLB_1                     (0x2UL << SAES_CR_NPBLB_Pos)            /*!< 0x00200000 */
+#define SAES_CR_NPBLB_2                     (0x4UL << SAES_CR_NPBLB_Pos)            /*!< 0x00400000 */
+#define SAES_CR_NPBLB_3                     (0x8UL << SAES_CR_NPBLB_Pos)            /*!< 0x00800000 */
+#define SAES_CR_KEYPROT_Pos                 (19U)
+#define SAES_CR_KEYPROT_Msk                 (0x1UL << SAES_CR_KEYPROT_Pos)          /*!< 0x00040000 */
+#define SAES_CR_KEYPROT                     SAES_CR_KEYPROT_Msk                     /*!<  Key protection */
+#define SAES_CR_KMOD_Pos                    (24U)
+#define SAES_CR_KMOD_Msk                    (0x3UL << SAES_CR_KMOD_Pos)             /*!< 0x00000006 */
+#define SAES_CR_KMOD                        SAES_CR_KMOD_Msk                        /*!< Key mode selection */
+#define SAES_CR_KMOD_0                      (0x1UL << SAES_CR_KMOD_Pos)             /*!< 0x02000000 */
+#define SAES_CR_KMOD_1                      (0x2UL << SAES_CR_KMOD_Pos)             /*!< 0x02000000 */
+#define SAES_CR_KSHAREID_Pos                (26U)
+#define SAES_CR_KSHAREID_Msk                (0x3UL << SAES_CR_KSHAREID_Pos)         /*!< 0x00000006 */
+#define SAES_CR_KSHAREID                    SAES_CR_KSHAREID_Msk                    /*!< Key Shared ID */
+#define SAES_CR_KEYSEL_Pos                  (28U)
+#define SAES_CR_KEYSEL_Msk                  (0x7UL << SAES_CR_KEYSEL_Pos)           /*!< 0x00000006 */
+#define SAES_CR_KEYSEL                      SAES_CR_KEYSEL_Msk                      /*!< Key Selection */
+#define SAES_CR_KEYSEL_0                    (0x1UL << SAES_CR_KEYSEL_Pos)           /*!< 0x02000000 */
+#define SAES_CR_KEYSEL_1                    (0x2UL << SAES_CR_KEYSEL_Pos)           /*!< 0x02000000 */
+#define SAES_CR_KEYSEL_2                    (0x4UL << SAES_CR_KEYSEL_Pos)           /*!< 0x02000000 */
+#define SAES_CR_IPRST_Pos                   (31U)
+#define SAES_CR_IPRST_Msk                   (0x1UL << SAES_CR_IPRST_Pos)            /*!< 0x80000001 */
+#define SAES_CR_IPRST                       SAES_CR_IPRST_Msk                       /*!< SAES IP software reset */
+
+/*******************  Bit definition for SAES_SR register  *********************/
+#define SAES_SR_CCF_Pos                     (0U)
+#define SAES_SR_CCF_Msk                     (0x1UL << SAES_SR_CCF_Pos)              /*!< 0x00000001 */
+#define SAES_SR_CCF                         SAES_SR_CCF_Msk                         /*!< Computation Complete Flag */
+#define SAES_SR_RDERR_Pos                   (1U)
+#define SAES_SR_RDERR_Msk                   (0x1UL << SAES_SR_RDERR_Pos)            /*!< 0x00000002 */
+#define SAES_SR_RDERR                       SAES_SR_RDERR_Msk                       /*!< Read Error Flag */
+#define SAES_SR_WRERR_Pos                   (2U)
+#define SAES_SR_WRERR_Msk                   (0x1UL << SAES_SR_WRERR_Pos)            /*!< 0x00000004 */
+#define SAES_SR_WRERR                       SAES_SR_WRERR_Msk                       /*!< Write Error Flag */
+#define SAES_SR_BUSY_Pos                    (3U)
+#define SAES_SR_BUSY_Msk                    (0x1UL << SAES_SR_BUSY_Pos)             /*!< 0x00000008 */
+#define SAES_SR_BUSY                        SAES_SR_BUSY_Msk                        /*!< Busy Flag */
+#define SAES_SR_KEYVALID_Pos                (7U)
+#define SAES_SR_KEYVALID_Msk                (0x1UL << SAES_SR_KEYVALID_Pos)         /*!< 0x00000008 */
+#define SAES_SR_KEYVALID                    SAES_SR_KEYVALID_Msk                    /*!< KEYVALID Flag */
+
+/*******************  Bit definition for SAES_DINR register  *******************/
+#define SAES_DINR_Pos                       (0U)
+#define SAES_DINR_Msk                       (0xFFFFFFFFUL << SAES_DINR_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_DINR                           SAES_DINR_Msk                           /*!< SAES Data Input Register */
+
+/*******************  Bit definition for SAES_DOUTR register  ******************/
+#define SAES_DOUTR_Pos                      (0U)
+#define SAES_DOUTR_Msk                      (0xFFFFFFFFUL << SAES_DOUTR_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_DOUTR                          SAES_DOUTR_Msk                          /*!< SAES Data Output Register */
+
+/*******************  Bit definition for SAES_KEYR0 register  ******************/
+#define SAES_KEYR0_Pos                      (0U)
+#define SAES_KEYR0_Msk                      (0xFFFFFFFFUL << SAES_KEYR0_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR0                          SAES_KEYR0_Msk                          /*!< SAES Key Register 0 */
+
+/*******************  Bit definition for SAES_KEYR1 register  ******************/
+#define SAES_KEYR1_Pos                      (0U)
+#define SAES_KEYR1_Msk                      (0xFFFFFFFFUL << SAES_KEYR1_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR1                          SAES_KEYR1_Msk                          /*!< SAES Key Register 1 */
+
+/*******************  Bit definition for SAES_KEYR2 register  ******************/
+#define SAES_KEYR2_Pos                      (0U)
+#define SAES_KEYR2_Msk                      (0xFFFFFFFFUL << SAES_KEYR2_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR2                          SAES_KEYR2_Msk                          /*!< SAES Key Register 2 */
+
+/*******************  Bit definition for SAES_KEYR3 register  ******************/
+#define SAES_KEYR3_Pos                      (0U)
+#define SAES_KEYR3_Msk                      (0xFFFFFFFFUL << SAES_KEYR3_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR3                          SAES_KEYR3_Msk                          /*!< SAES Key Register 3 */
+
+/*******************  Bit definition for SAES_KEYR4 register  ******************/
+#define SAES_KEYR4_Pos                      (0U)
+#define SAES_KEYR4_Msk                      (0xFFFFFFFFUL << SAES_KEYR4_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR4                          SAES_KEYR4_Msk                          /*!< SAES Key Register 4 */
+
+/*******************  Bit definition for SAES_KEYR5 register  ******************/
+#define SAES_KEYR5_Pos                      (0U)
+#define SAES_KEYR5_Msk                      (0xFFFFFFFFUL << SAES_KEYR5_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR5                          SAES_KEYR5_Msk                          /*!< SAES Key Register 5 */
+
+/*******************  Bit definition for SAES_KEYR6 register  ******************/
+#define SAES_KEYR6_Pos                      (0U)
+#define SAES_KEYR6_Msk                      (0xFFFFFFFFUL << SAES_KEYR6_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR6                          SAES_KEYR6_Msk                          /*!< SAES Key Register 6 */
+
+/*******************  Bit definition for SAES_KEYR7 register  ******************/
+#define SAES_KEYR7_Pos                      (0U)
+#define SAES_KEYR7_Msk                      (0xFFFFFFFFUL << SAES_KEYR7_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR7                          SAES_KEYR7_Msk                          /*!< SAES Key Register 7 */
+
+/*******************  Bit definition for SAES_IVR0 register   ******************/
+#define SAES_IVR0_Pos                       (0U)
+#define SAES_IVR0_Msk                       (0xFFFFFFFFUL << SAES_IVR0_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR0                           SAES_IVR0_Msk                           /*!< SAES Initialization Vector Register 0 */
+
+/*******************  Bit definition for SAES_IVR1 register   ******************/
+#define SAES_IVR1_Pos                       (0U)
+#define SAES_IVR1_Msk                       (0xFFFFFFFFUL << SAES_IVR1_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR1                           SAES_IVR1_Msk                           /*!< SAES Initialization Vector Register 1 */
+
+/*******************  Bit definition for SAES_IVR2 register   ******************/
+#define SAES_IVR2_Pos                       (0U)
+#define SAES_IVR2_Msk                       (0xFFFFFFFFUL << SAES_IVR2_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR2                           SAES_IVR2_Msk                           /*!< SAES Initialization Vector Register 2 */
+
+/*******************  Bit definition for SAES_IVR3 register   ******************/
+#define SAES_IVR3_Pos                       (0U)
+#define SAES_IVR3_Msk                       (0xFFFFFFFFUL << SAES_IVR3_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR3                           SAES_IVR3_Msk                           /*!< SAES Initialization Vector Register 3 */
+
+/*******************  Bit definition for SAES_DPACFGR register  ******************/
+#define SAES_REDCFG_Pos                     (0U)
+#define SAES_REDCFG_Msk                     (0x3UL << SAES_REDCFG_Pos)
+#define SAES_REDCFG                         SAES_REDCFG_Msk                         /*!< SAES Redundancy configuration */
+#define SAES_REDCFG_0                       (0x1UL << SAES_REDCFG_Pos)
+#define SAES_REDCFG_1                       (0x2UL << SAES_REDCFG_Pos)
+#define SAES_RESEED_Pos                     (2U)
+#define SAES_RESEED_Msk                     (0x1UL << SAES_RESEED_Pos)
+#define SAES_RESEED                         SAES_RESEED_Msk                         /*!< SAES Automatic reseed */
+#define SAES_TRIMCFG_Pos                    (3U)
+#define SAES_TRIMCFG_Msk                    (0x3UL << SAES_TRIMCFG_Pos)
+#define SAES_TRIMCFG                        SAES_TRIMCFG_Msk                        /*!< SAES Clock trimming */
+#define SAES_TRIMCFG_0                      (0x1UL << SAES_TRIMCFG_Pos)
+#define SAES_TRIMCFG_1                      (0x2UL << SAES_TRIMCFG_Pos)
+#define SAES_CONFIGLOCK_Pos                 (31U)
+#define SAES_CONFIGLOCK_Msk                 (0x1UL << SAES_CONFIGLOCK_Pos)
+#define SAES_CONFIGLOCK                     SAES_CONFIGLOCK_Msk                     /*!< SAES DPA configuration lock*/
+
+/*******************  Bit definition for SAES_IER register     ******************/
+#define SAES_IER_CCFIE_Pos                  (0U)
+#define SAES_IER_CCFIE_Msk                  (0x1UL << SAES_IER_CCFIE_Pos)           /*!< 0x00000001 */
+#define SAES_IER_CCFIE                      SAES_IER_CCFIE_Msk                      /*!< Computation complete flag interrupt enable */
+#define SAES_IER_RWEIE_Pos                  (1U)
+#define SAES_IER_RWEIE_Msk                  (0x1UL << SAES_IER_RWEIE_Pos)           /*!< 0x00000002 */
+#define SAES_IER_RWEIE                      SAES_IER_RWEIE_Msk                      /*!< Read or write error Interrupt Enable */
+#define SAES_IER_KEIE_Pos                   (2U)
+#define SAES_IER_KEIE_Msk                   (0x1UL << SAES_IER_KEIE_Pos)            /*!< 0x00000004 */
+#define SAES_IER_KEIE                       SAES_IER_KEIE_Msk                       /*!< Key error interrupt enable */
+#define SAES_IER_RNGEIE_Pos                 (3U)
+#define SAES_IER_RNGEIE_Msk                 (0x1UL << SAES_IER_RNGEIE_Pos)          /*!< RNG error interrupt enable */
+#define SAES_IER_RNGEIE                     SAES_IER_RNGEIE_Msk
+
+/*******************  Bit definition for SAES_ISR register     ******************/
+#define SAES_ISR_CCF_Pos                    (0U)
+#define SAES_ISR_CCF_Msk                    (0x1UL << SAES_ISR_CCF_Pos)             /*!< 0x00000001 */
+#define SAES_ISR_CCF                        SAES_ISR_CCF_Msk                        /*!< Computation complete flag */
+#define SAES_ISR_RWEIF_Pos                  (1U)
+#define SAES_ISR_RWEIF_Msk                  (0x1UL << SAES_ISR_RWEIF_Pos)           /*!< 0x00000002 */
+#define SAES_ISR_RWEIF                      SAES_ISR_RWEIF_Msk                      /*!< Read or write error Interrupt flag */
+#define SAES_ISR_KEIF_Pos                   (2U)
+#define SAES_ISR_KEIF_Msk                   (0x1UL << SAES_ISR_KEIF_Pos)            /*!< 0x00000004 */
+#define SAES_ISR_KEIF                       SAES_ISR_KEIF_Msk                       /*!< Key error interrupt flag */
+#define SAES_ISR_RNGEIF_Pos                 (3U)
+#define SAES_ISR_RNGEIF_Msk                 (0x1UL << SAES_ISR_RNGEIF_Pos)          /*!< 0x00000004 */
+#define SAES_ISR_RNGEIF                     SAES_ISR_RNGEIF_Msk                     /*!< RNG error interrupt flag*/
+
+/*******************  Bit definition for SAES_ICR register     ******************/
+#define SAES_ICR_CCF_Pos                    (0U)
+#define SAES_ICR_CCF_Msk                    (0x1UL << SAES_ICR_CCF_Pos)             /*!< 0x00000001 */
+#define SAES_ICR_CCF                        SAES_ICR_CCF_Msk                        /*!< Computation complete flag clear */
+#define SAES_ICR_RWEIF_Pos                  (1U)
+#define SAES_ICR_RWEIF_Msk                  (0x1UL << SAES_ICR_RWEIF_Pos)           /*!< 0x00000002 */
+#define SAES_ICR_RWEIF                      SAES_ICR_RWEIF_Msk                      /*!< Read or write error Interrupt flag clear */
+#define SAES_ICR_KEIF_Pos                   (2U)
+#define SAES_ICR_KEIF_Msk                   (0x1UL << SAES_ICR_KEIF_Pos)            /*!< 0x00000004 */
+#define SAES_ICR_KEIF                       SAES_ICR_KEIF_Msk                       /*!< Key error interrupt flag clear */
+#define SAES_ICR_RNGEIF_Pos                 (3U)
+#define SAES_ICR_RNGEIF_Msk                 (0x1UL << SAES_ICR_RNGEIF_Pos)          /*!< 0x00000004 */
+#define SAES_ICR_RNGEIF                     SAES_ICR_RNGEIF_Msk                     /*!< RNG error interrupt flag clear */
+
+/**********************  Bit definition for SAES_HWCFGR register  ***************/
+#define SAES_HWCFGR_CFG1_Pos               (0U)
+#define SAES_HWCFGR_CFG1_Msk               (0xFUL << SAES_HWCFGR_CFG1_Pos)          /*!< 0x0000000F */
+#define SAES_HWCFGR_CFG1                   SAES_HWCFGR_CFG1_Msk                    /*!< HW Generic 1 */
+#define SAES_HWCFGR_CFG2_Pos               (4U)
+#define SAES_HWCFGR_CFG2_Msk               (0xFUL << SAES_HWCFGR_CFG2_Pos)          /*!< 0x000000F0 */
+#define SAES_HWCFGR_CFG2                   SAES_HWCFGR_CFG2_Msk                    /*!< HW Generic 2 */
+#define SAES_HWCFGR_CFG3_Pos               (8U)
+#define SAES_HWCFGR_CFG3_Msk               (0xFUL << SAES_HWCFGR_CFG3_Pos)          /*!< 0x00000F00 */
+#define SAES_HWCFGR_CFG3                   SAES_HWCFGR_CFG3_Msk                    /*!< HW Generic 3 */
+
+/********************  Bits definition for SAES_VERR register  ****************/
+#define SAES_VERR_MAJREV_Pos               (4U)
+#define SAES_VERR_MAJREV_Msk               (0xFUL << SAES_VERR_MAJREV_Pos)        /*!< 0x000000F0 */
+#define SAES_VERR_MAJREV                   SAES_VERR_MAJREV_Msk
+#define SAES_VERR_MAJREV_0                 (0x1UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000010 */
+#define SAES_VERR_MAJREV_1                 (0x2UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000020 */
+#define SAES_VERR_MAJREV_2                 (0x4UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000040 */
+#define SAES_VERR_MAJREV_3                 (0x8UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000080 */
+#define SAES_VERR_MINREV_Pos               (0U)
+#define SAES_VERR_MINREV_Msk               (0xFUL << SAES_VERR_MINREV_Pos)        /*!< 0x0000000F */
+#define SAES_VERR_MINREV                   SAES_VERR_MINREV_Msk
+#define SAES_VERR_MINREV_0                 (0x1UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000001 */
+#define SAES_VERR_MINREV_1                 (0x2UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000002 */
+#define SAES_VERR_MINREV_2                 (0x4UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000004 */
+#define SAES_VERR_MINREV_3                 (0x8UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000008 */
+
+/********************  Bits definition for SAES_IPIDR register  ****************/
+#define SAES_IPIDR_ID_Pos                  (0U)
+#define SAES_IPIDR_ID_Msk                  (0xFFFFFFFFUL << SAES_IPIDR_ID_Pos)    /*!< 0xFFFFFFFF */
+#define SAES_IPIDR_ID                      SAES_IPIDR_ID_Msk
+
+/********************  Bits definition for SAES_SIDR register  ****************/
+#define SAES_SIDR_SID_Pos                  (0U)
+#define SAES_SIDR_SID_Msk                  (0xFFFFFFFFUL << SAES_SIDR_SID_Pos)    /*!< 0xFFFFFFFF */
+#define SAES_SIDR_SID                      SAES_SIDR_SID_Msk
+
+/******************************************************************************/
+/*                                                                            */
 /*                      Inter-integrated Circuit Interface (I2C)              */
 /*                                                                            */
 /******************************************************************************/
@@ -20962,748 +20342,6 @@ typedef struct
 #define IWDG_SIDR_SID_Msk         (0xFFFFFFFFUL << IWDG_SIDR_SID_Pos)           /*!< 0xFFFFFFFF */
 #define IWDG_SIDR_SID             IWDG_SIDR_SID_Msk                            /*!< IP size identification */
 
-/******************************************************************************/
-/*                                                                            */
-/*                      LCD-TFT Display Controller (LTDC)                     */
-/*                                                                            */
-/******************************************************************************/
-
-/* Bit fields for LTDC_IDR register */
-#define LTDC_IDR_REV_Pos                 (0U)
-#define LTDC_IDR_REV_Msk                 (0xffUL << LTDC_IDR_REV_Pos)
-#define LTDC_IDR_REV                     LTDC_IDR_REV_Msk  /*!< revision */
-#define LTDC_IDR_MINVER_Pos              (8U)
-#define LTDC_IDR_MINVER_Msk              (0xffUL << LTDC_IDR_MINVER_Pos)
-#define LTDC_IDR_MINVER                  LTDC_IDR_MINVER_Msk  /*!< minor version */
-#define LTDC_IDR_MAJVER_Pos              (16U)
-#define LTDC_IDR_MAJVER_Msk              (0xffUL << LTDC_IDR_MAJVER_Pos)
-#define LTDC_IDR_MAJVER                  LTDC_IDR_MAJVER_Msk  /*!< major version */
-
-/* Bit fields for LTDC_LCR register */
-#define LTDC_LCR_LNBR_Pos                (0U)
-#define LTDC_LCR_LNBR_Msk                (0xffUL << LTDC_LCR_LNBR_Pos)
-#define LTDC_LCR_LNBR                    LTDC_LCR_LNBR_Msk  /*!< number of layers */
-
-/* Bit fields for LTDC_SSCR register */
-#define LTDC_SSCR_VSH_Pos                (0U)
-#define LTDC_SSCR_VSH_Msk                (0xffffUL << LTDC_SSCR_VSH_Pos)
-#define LTDC_SSCR_VSH                    LTDC_SSCR_VSH_Msk  /*!< vertical synchronization height (in units of horizontal scan line)These bits define the vertical Synchronization height minus 1. It represents the number of horizontal synchronization lines. */
-#define LTDC_SSCR_HSW_Pos                (16U)
-#define LTDC_SSCR_HSW_Msk                (0xffffUL << LTDC_SSCR_HSW_Pos)
-#define LTDC_SSCR_HSW                    LTDC_SSCR_HSW_Msk  /*!< horizontal synchronization width (in units of pixel clock period)These bits define the number of Horizontal Synchronization pixel minus 1. */
-
-/* Bit fields for LTDC_BPCR register */
-#define LTDC_BPCR_AVBP_Pos               (0U)
-#define LTDC_BPCR_AVBP_Msk               (0xffffUL << LTDC_BPCR_AVBP_Pos)
-#define LTDC_BPCR_AVBP                   LTDC_BPCR_AVBP_Msk  /*!< accumulated Vertical back porch (in units of horizontal scan line)These bits define the accumulated vertical back porch width that includes the vertical synchronization and vertical back porch lines minus 1.The vertical back porch is the number of horizontal scan lines at a start of frame to the start of the first active scan line of the next frame. */
-#define LTDC_BPCR_AHBP_Pos               (16U)
-#define LTDC_BPCR_AHBP_Msk               (0xffffUL << LTDC_BPCR_AHBP_Pos)
-#define LTDC_BPCR_AHBP                   LTDC_BPCR_AHBP_Msk  /*!< accumulated horizontal back porch (in units of pixel clock period)These bits define the accumulated horizontal back porch width that includes the horizontal synchronization and horizontal back porch pixels minus 1.The horizontal back porch is the period between horizontal synchronization going inactive and the start of the active display part of the next scan line. */
-
-/* Bit fields for LTDC_AWCR register */
-#define LTDC_AWCR_AAH_Pos                (0U)
-#define LTDC_AWCR_AAH_Msk                (0xffffUL << LTDC_AWCR_AAH_Pos)
-#define LTDC_AWCR_AAH                    LTDC_AWCR_AAH_Msk  /*!< accumulated active height (in units of horizontal scan line)These bits define the accumulated height which includes the vertical synchronization, vertical back porch and the active height lines minus 1. The active height is the number of active lines in the panel.Refer to device datasheet for maximum active height supported following maximum pixel clock. */
-#define LTDC_AWCR_AAW_Pos                (16U)
-#define LTDC_AWCR_AAW_Msk                (0xffffUL << LTDC_AWCR_AAW_Pos)
-#define LTDC_AWCR_AAW                    LTDC_AWCR_AAW_Msk  /*!< accumulated active width (in units of pixel clock period)These bits define the accumulated active width which includes the horizontal synchronization, horizontal back porch and active pixels minus 1.The active width is the number of pixels in active display area of the panel scan line.Refer to device datasheet for maximum active width supported following maximum pixel clock. */
-
-/* Bit fields for LTDC_TWCR register */
-#define LTDC_TWCR_TOTALH_Pos             (0U)
-#define LTDC_TWCR_TOTALH_Msk             (0xffffUL << LTDC_TWCR_TOTALH_Pos)
-#define LTDC_TWCR_TOTALH                 LTDC_TWCR_TOTALH_Msk  /*!< total height (in units of horizontal scan line)These bits defines the accumulated height which includes the vertical synchronization, vertical back porch, the active height and vertical front porch height lines minus 1. */
-#define LTDC_TWCR_TOTALW_Pos             (16U)
-#define LTDC_TWCR_TOTALW_Msk             (0xffffUL << LTDC_TWCR_TOTALW_Pos)
-#define LTDC_TWCR_TOTALW                 LTDC_TWCR_TOTALW_Msk  /*!< total width (in units of pixel clock period)These bits defines the accumulated total width which includes the horizontal synchronization, horizontal back porch, active width and horizontal front porch pixels minus 1. */
-
-/* Bit fields for LTDC_GCR register */
-#define LTDC_GCR_LTDCEN_Pos              (0U)
-#define LTDC_GCR_LTDCEN_Msk              (0x1UL << LTDC_GCR_LTDCEN_Pos)
-#define LTDC_GCR_LTDCEN                  LTDC_GCR_LTDCEN_Msk  /*!< LCD-TFT controller enableThis bit is set and cleared by software.- 0: LTDC disable- 1: LTDC enable */
-#define LTDC_GCR_GAMEN_Pos               (1U)
-#define LTDC_GCR_GAMEN_Msk               (0x1UL << LTDC_GCR_GAMEN_Pos)
-#define LTDC_GCR_GAMEN                   LTDC_GCR_GAMEN_Msk  /*!< LCD-TFT controller enableThis bit is set and cleared by software.- 0: GammaCorrection disable (pixels bypass the gamma operator)- 1: Gamma Correction enable */
-#define LTDC_GCR_ROTEN_Pos               (2U)
-#define LTDC_GCR_ROTEN_Msk               (0x1UL << LTDC_GCR_ROTEN_Pos)
-#define LTDC_GCR_ROTEN                   LTDC_GCR_ROTEN_Msk  /*!< LCD-TFT controller enableThis bit is set and cleared by software.- 0: Rotation disable- 1: Rotation enable (for a pure visual rotation, the mirroring has to be activated) */
-#define LTDC_GCR_DBW_Pos                 (4U)
-#define LTDC_GCR_DBW_Msk                 (0x7UL << LTDC_GCR_DBW_Pos)
-#define LTDC_GCR_DBW                     LTDC_GCR_DBW_Msk  /*!< dither blue widthThese bits return the dither blue bits. */
-#define LTDC_GCR_DGW_Pos                 (8U)
-#define LTDC_GCR_DGW_Msk                 (0x7UL << LTDC_GCR_DGW_Pos)
-#define LTDC_GCR_DGW                     LTDC_GCR_DGW_Msk  /*!< dither green widthThese bits return the dither green bits. */
-#define LTDC_GCR_DRW_Pos                 (12U)
-#define LTDC_GCR_DRW_Msk                 (0x7UL << LTDC_GCR_DRW_Pos)
-#define LTDC_GCR_DRW                     LTDC_GCR_DRW_Msk  /*!< dither red widthThese bits return the Dither Red Bits. */
-#define LTDC_GCR_DEN_Pos                 (16U)
-#define LTDC_GCR_DEN_Msk                 (0x1UL << LTDC_GCR_DEN_Pos)
-#define LTDC_GCR_DEN                     LTDC_GCR_DEN_Msk  /*!< dither enableThis bit is set and cleared by software.- 0: dither disable- 1: dither enable */
-#define LTDC_GCR_BCKEN_Pos               (17U)
-#define LTDC_GCR_BCKEN_Msk               (0x1UL << LTDC_GCR_BCKEN_Pos)
-#define LTDC_GCR_BCKEN                   LTDC_GCR_BCKEN_Msk  /*!< backgroundlayer enableThis bit is set and cleared by software.- 0: backgrounddisable- 1: background enable */
-#define LTDC_GCR_CRCEN_Pos               (19U)
-#define LTDC_GCR_CRCEN_Msk               (0x1UL << LTDC_GCR_CRCEN_Pos)
-#define LTDC_GCR_CRCEN                   LTDC_GCR_CRCEN_Msk  /*!< CRC enableThis bit is set and cleared by software.- 0: CRC disable- 1: CRC enable */
-#define LTDC_GCR_SFEN_Pos                (24U)
-#define LTDC_GCR_SFEN_Msk                (0x1UL << LTDC_GCR_SFEN_Pos)
-#define LTDC_GCR_SFEN                    LTDC_GCR_SFEN_Msk  /*!< single-frame mode: mode enableThis bit is set and cleared by software.- 0: single-frame disable:a trigger (on SFSW or External) will generate a continuous flow.- 1: single-frame enable: a trigger (on SFSW or External) will generate a single frame. */
-#define LTDC_GCR_SFSWTR_Pos              (25U)
-#define LTDC_GCR_SFSWTR_Msk              (0x1UL << LTDC_GCR_SFSWTR_Pos)
-#define LTDC_GCR_SFSWTR                  LTDC_GCR_SFSWTR_Msk  /*!< single-frame mode: software triggerThis bit is set by software and cleared by hardware.- 0: no action- 1: triggers one frame */
-#define LTDC_GCR_SFEXEN_Pos              (26U)
-#define LTDC_GCR_SFEXEN_Msk              (0x1UL << LTDC_GCR_SFEXEN_Pos)
-#define LTDC_GCR_SFEXEN                  LTDC_GCR_SFEXEN_Msk  /*!< single-frame mode: external trigger enableThis bit is set and cleared by software.- 0: external trigger disable- 1: external trigger enable: a trigger on the external trigger will generate one single frame. */
-#define LTDC_GCR_PCPOL_Pos               (28U)
-#define LTDC_GCR_PCPOL_Msk               (0x1UL << LTDC_GCR_PCPOL_Pos)
-#define LTDC_GCR_PCPOL                   LTDC_GCR_PCPOL_Msk  /*!< pixel clock polarityThis bit is set and cleared by software.- 0: pixel clock polarity is active low.- 1: pixel clock is active high. */
-#define LTDC_GCR_DEPOL_Pos               (29U)
-#define LTDC_GCR_DEPOL_Msk               (0x1UL << LTDC_GCR_DEPOL_Pos)
-#define LTDC_GCR_DEPOL                   LTDC_GCR_DEPOL_Msk  /*!< blanking (=no data/pixel) polarityThis bit is set and cleared by software.- 0: blanking (no data/pixel) polarity is active low.- 1: blanking (no data/pixel) polarity is active high. */
-#define LTDC_GCR_VSPOL_Pos               (30U)
-#define LTDC_GCR_VSPOL_Msk               (0x1UL << LTDC_GCR_VSPOL_Pos)
-#define LTDC_GCR_VSPOL                   LTDC_GCR_VSPOL_Msk  /*!< vertical synchronization polarityThis bit is set and cleared by software.- 0: vertical synchronization is active low.- 1: vertical synchronization is active high. */
-#define LTDC_GCR_HSPOL_Pos               (31U)
-#define LTDC_GCR_HSPOL_Msk               (0x1UL << LTDC_GCR_HSPOL_Pos)
-#define LTDC_GCR_HSPOL                   LTDC_GCR_HSPOL_Msk  /*!< horizontal synchronization polarityThis bit is set and cleared by software.- 0: horizontal synchronization polarity is active low.- 1: horizontal synchronization polarity is active high. */
-
-/* Bit fields for LTDC_GC1R register */
-#define LTDC_GC1R_WBCH_Pos               (0U)
-#define LTDC_GC1R_WBCH_Msk               (0xfUL << LTDC_GC1R_WBCH_Pos)
-#define LTDC_GC1R_WBCH                   LTDC_GC1R_WBCH_Msk  /*!< width of blue channel output */
-#define LTDC_GC1R_WGCH_Pos               (4U)
-#define LTDC_GC1R_WGCH_Msk               (0xfUL << LTDC_GC1R_WGCH_Pos)
-#define LTDC_GC1R_WGCH                   LTDC_GC1R_WGCH_Msk  /*!< width of green channel output */
-#define LTDC_GC1R_WRCH_Pos               (8U)
-#define LTDC_GC1R_WRCH_Msk               (0xfUL << LTDC_GC1R_WRCH_Pos)
-#define LTDC_GC1R_WRCH                   LTDC_GC1R_WRCH_Msk  /*!< width of red channel output */
-#define LTDC_GC1R_PRBA_Pos               (12U)
-#define LTDC_GC1R_PRBA_Msk               (0x1UL << LTDC_GC1R_PRBA_Pos)
-#define LTDC_GC1R_PRBA                   LTDC_GC1R_PRBA_Msk  /*!< precise blending ability */
-#define LTDC_GC1R_DT_Pos                 (14U)
-#define LTDC_GC1R_DT_Msk                 (0x3UL << LTDC_GC1R_DT_Pos)
-#define LTDC_GC1R_DT                     LTDC_GC1R_DT_Msk  /*!< dithering technique implemented- 0: no dithering- 1: ordered 4x4 bayer- 2: ordered 4x4 custom- 3: pseudo-random LFSR */
-#define LTDC_GC1R_GCT_Pos                (17U)
-#define LTDC_GC1R_GCT_Msk                (0x7UL << LTDC_GC1R_GCT_Pos)
-#define LTDC_GC1R_GCT                    LTDC_GC1R_GCT_Msk  /*!< gamma correction technique implemented- 0: no gamma- 1: gamma with 256 samples- 2: gamma with 8 interpolated segments3..7: reserved */
-#define LTDC_GC1R_SHRA_Pos               (21U)
-#define LTDC_GC1R_SHRA_Msk               (0x1UL << LTDC_GC1R_SHRA_Pos)
-#define LTDC_GC1R_SHRA                   LTDC_GC1R_SHRA_Msk  /*!< shadow registers ability */
-#define LTDC_GC1R_BCP_Pos                (22U)
-#define LTDC_GC1R_BCP_Msk                (0x1UL << LTDC_GC1R_BCP_Pos)
-#define LTDC_GC1R_BCP                    LTDC_GC1R_BCP_Msk  /*!< background color programmability (unique color blended as background) */
-#define LTDC_GC1R_BBA_Pos                (23U)
-#define LTDC_GC1R_BBA_Msk                (0x1UL << LTDC_GC1R_BBA_Pos)
-#define LTDC_GC1R_BBA                    LTDC_GC1R_BBA_Msk  /*!< background blending ability */
-#define LTDC_GC1R_LNIP_Pos               (24U)
-#define LTDC_GC1R_LNIP_Msk               (0x1UL << LTDC_GC1R_LNIP_Pos)
-#define LTDC_GC1R_LNIP                   LTDC_GC1R_LNIP_Msk  /*!< line-IRQ: line position programmability */
-#define LTDC_GC1R_TP_Pos                 (25U)
-#define LTDC_GC1R_TP_Msk                 (0x1UL << LTDC_GC1R_TP_Pos)
-#define LTDC_GC1R_TP                     LTDC_GC1R_TP_Msk  /*!< timing programmability */
-#define LTDC_GC1R_SPP_Pos                (27U)
-#define LTDC_GC1R_SPP_Msk                (0x1UL << LTDC_GC1R_SPP_Pos)
-#define LTDC_GC1R_SPP                    LTDC_GC1R_SPP_Msk  /*!< sync polarity programmability */
-#define LTDC_GC1R_DWP_Pos                (28U)
-#define LTDC_GC1R_DWP_Msk                (0x1UL << LTDC_GC1R_DWP_Pos)
-#define LTDC_GC1R_DWP                    LTDC_GC1R_DWP_Msk  /*!< dither width programmability */
-#define LTDC_GC1R_STRA_Pos               (29U)
-#define LTDC_GC1R_STRA_Msk               (0x1UL << LTDC_GC1R_STRA_Pos)
-#define LTDC_GC1R_STRA                   LTDC_GC1R_STRA_Msk  /*!< status register ability */
-#define LTDC_GC1R_CRMA_Pos               (30U)
-#define LTDC_GC1R_CRMA_Msk               (0x1UL << LTDC_GC1R_CRMA_Pos)
-#define LTDC_GC1R_CRMA                   LTDC_GC1R_CRMA_Msk  /*!< configuration reading mode ability */
-#define LTDC_GC1R_BMA_Pos                (31U)
-#define LTDC_GC1R_BMA_Msk                (0x1UL << LTDC_GC1R_BMA_Pos)
-#define LTDC_GC1R_BMA                    LTDC_GC1R_BMA_Msk  /*!< blind mode ability */
-
-/* Bit fields for LTDC_GC2R register */
-#define LTDC_GC2R_BLA_Pos                (0U)
-#define LTDC_GC2R_BLA_Msk                (0x1UL << LTDC_GC2R_BLA_Pos)
-#define LTDC_GC2R_BLA                    LTDC_GC2R_BLA_Msk  /*!< background layer ability (pixels of background layer would be read from memory) */
-#define LTDC_GC2R_STSA_Pos               (1U)
-#define LTDC_GC2R_STSA_Msk               (0x1UL << LTDC_GC2R_STSA_Pos)
-#define LTDC_GC2R_STSA                   LTDC_GC2R_STSA_Msk  /*!< slave timings synchronization ability */
-#define LTDC_GC2R_DVA_Pos                (2U)
-#define LTDC_GC2R_DVA_Msk                (0x1UL << LTDC_GC2R_DVA_Pos)
-#define LTDC_GC2R_DVA                    LTDC_GC2R_DVA_Msk  /*!< dual-view ability */
-#define LTDC_GC2R_DPA_Pos                (3U)
-#define LTDC_GC2R_DPA_Msk                (0x1UL << LTDC_GC2R_DPA_Pos)
-#define LTDC_GC2R_DPA                    LTDC_GC2R_DPA_Msk  /*!< secondary RGB output port ability */
-#define LTDC_GC2R_BW_Pos                 (4U)
-#define LTDC_GC2R_BW_Msk                 (0x7UL << LTDC_GC2R_BW_Pos)
-#define LTDC_GC2R_BW                     LTDC_GC2R_BW_Msk  /*!< bus width (log2 of number of bytes)- 2: 32bit bus- 3: 64bit bus- 4: 128bit bus */
-#define LTDC_GC2R_EDCA_Pos               (7U)
-#define LTDC_GC2R_EDCA_Msk               (0x1UL << LTDC_GC2R_EDCA_Pos)
-#define LTDC_GC2R_EDCA                   LTDC_GC2R_EDCA_Msk  /*!< external display control ability */
-#define LTDC_GC2R_OCA_Pos                (8U)
-#define LTDC_GC2R_OCA_Msk                (0x1UL << LTDC_GC2R_OCA_Pos)
-#define LTDC_GC2R_OCA                    LTDC_GC2R_OCA_Msk  /*!< output conversion ability (RGB to YCbCr) */
-#define LTDC_GC2R_AXIIDA_Pos             (9U)
-#define LTDC_GC2R_AXIIDA_Msk             (0x1UL << LTDC_GC2R_AXIIDA_Pos)
-#define LTDC_GC2R_AXIIDA                 LTDC_GC2R_AXIIDA_Msk  /*!< AXIID ability */
-#define LTDC_GC2R_ROTA_Pos               (10U)
-#define LTDC_GC2R_ROTA_Msk               (0x1UL << LTDC_GC2R_ROTA_Pos)
-#define LTDC_GC2R_ROTA                   LTDC_GC2R_ROTA_Msk  /*!< rotation support ability */
-#define LTDC_GC2R_SISA_Pos               (11U)
-#define LTDC_GC2R_SISA_Msk               (0x1UL << LTDC_GC2R_SISA_Pos)
-#define LTDC_GC2R_SISA                   LTDC_GC2R_SISA_Msk  /*!< second interrupt set ability- 0: second interrupt set not available- 1: second interrupt set available */
-#define LTDC_GC2R_SFA_Pos                (12U)
-#define LTDC_GC2R_SFA_Msk                (0x1UL << LTDC_GC2R_SFA_Pos)
-#define LTDC_GC2R_SFA                    LTDC_GC2R_SFA_Msk  /*!< single frame mode ability- 0: single frame not available.- 1: single frame available */
-#define LTDC_GC2R_CRCA_Pos               (13U)
-#define LTDC_GC2R_CRCA_Msk               (0x1UL << LTDC_GC2R_CRCA_Pos)
-#define LTDC_GC2R_CRCA                   LTDC_GC2R_CRCA_Msk  /*!< CRC ability- 0: CRC no computation available- 1: CRC computation available */
-#define LTDC_GC2R_BOA_Pos                (15U)
-#define LTDC_GC2R_BOA_Msk                (0x1UL << LTDC_GC2R_BOA_Pos)
-#define LTDC_GC2R_BOA                    LTDC_GC2R_BOA_Msk  /*!< blending order ability- 0: blending order fixed- 1: blending order configurable */
-
-/* Bit fields for LTDC_SRCR register */
-#define LTDC_SRCR_IMR_Pos                (0U)
-#define LTDC_SRCR_IMR_Msk                (0x1UL << LTDC_SRCR_IMR_Pos)
-#define LTDC_SRCR_IMR                    LTDC_SRCR_IMR_Msk  /*!< immediate reload triggerThis bit is set by software and cleared only by hardware after reload.- 0: no effect- 1: The shadow registers are reloaded immediately. */
-#define LTDC_SRCR_VBR_Pos                (1U)
-#define LTDC_SRCR_VBR_Msk                (0x1UL << LTDC_SRCR_VBR_Pos)
-#define LTDC_SRCR_VBR                    LTDC_SRCR_VBR_Msk  /*!< vertical blanking reload requestThis bit is set by software and cleared only by hardware after reload (it cannot be cleared through register write once it is set).- 0: no effect- 1: The shadow registers are reloaded during the vertical blanking period (at the beginning of the first line after the active display area). */
-
-/* Bit fields for LTDC_GCCR register */
-#define LTDC_GCCR_ADDR_Pos               (0U)
-#define LTDC_GCCR_ADDR_Msk               (0xffUL << LTDC_GCCR_ADDR_Pos)
-#define LTDC_GCCR_ADDR                   LTDC_GCCR_ADDR_Msk  /*!< address of the R,G,B table where the COMP component is written.When LTDC_GC1R.GCT=2, the gamma is implemented with 8 interpolated segment. In that case, the valid ADDR addresses are: 0, 32, 64, 96, 128, 160, 192, 224, 255.Note that for ADDR=255, the gamma interpolation hardware considers that the address is 256. */
-#define LTDC_GCCR_COMP_Pos               (8U)
-#define LTDC_GCCR_COMP_Msk               (0xffUL << LTDC_GCCR_COMP_Pos)
-#define LTDC_GCCR_COMP                   LTDC_GCCR_COMP_Msk  /*!< color component to be written, in either (or all) the R,G,B tables.. */
-#define LTDC_GCCR_BEN_Pos                (16U)
-#define LTDC_GCCR_BEN_Msk                (0x1UL << LTDC_GCCR_BEN_Pos)
-#define LTDC_GCCR_BEN                    LTDC_GCCR_BEN_Msk  /*!< write trigger to the blue table- 0: no action done- 1: COMP is written at ADDR in the Blue table. */
-#define LTDC_GCCR_GEN_Pos                (17U)
-#define LTDC_GCCR_GEN_Msk                (0x1UL << LTDC_GCCR_GEN_Pos)
-#define LTDC_GCCR_GEN                    LTDC_GCCR_GEN_Msk  /*!< write trigger to the green table- 0: no action done- 1: COMP is written at ADDR in the Green table. */
-#define LTDC_GCCR_REN_Pos                (18U)
-#define LTDC_GCCR_REN_Msk                (0x1UL << LTDC_GCCR_REN_Pos)
-#define LTDC_GCCR_REN                    LTDC_GCCR_REN_Msk  /*!< write trigger to the red table- 0: no action done- 1: COMP is written at ADDR in the Red table. */
-
-/* Bit fields for LTDC_BCCR register */
-#define LTDC_BCCR_BCBLUE_Pos             (0U)
-#define LTDC_BCCR_BCBLUE_Msk             (0xffUL << LTDC_BCCR_BCBLUE_Pos)
-#define LTDC_BCCR_BCBLUE                 LTDC_BCCR_BCBLUE_Msk  /*!< background color blue valueThese bits configure the background blue value. */
-#define LTDC_BCCR_BCGREEN_Pos            (8U)
-#define LTDC_BCCR_BCGREEN_Msk            (0xffUL << LTDC_BCCR_BCGREEN_Pos)
-#define LTDC_BCCR_BCGREEN                LTDC_BCCR_BCGREEN_Msk  /*!< background color green valueThese bits configure the background green value. */
-#define LTDC_BCCR_BCRED_Pos              (16U)
-#define LTDC_BCCR_BCRED_Msk              (0xffUL << LTDC_BCCR_BCRED_Pos)
-#define LTDC_BCCR_BCRED                  LTDC_BCCR_BCRED_Msk  /*!< background color red valueThese bits configure the background red value. */
-
-/* Bit fields for LTDC_IER register */
-#define LTDC_IER_LIE_Pos                 (0U)
-#define LTDC_IER_LIE_Msk                 (0x1UL << LTDC_IER_LIE_Pos)
-#define LTDC_IER_LIE                     LTDC_IER_LIE_Msk  /*!< line interrupt enableThis bit is set and cleared by software.- 0: line interrupt disable- 1: line interrupt enable */
-#define LTDC_IER_FUWIE_Pos               (1U)
-#define LTDC_IER_FUWIE_Msk               (0x1UL << LTDC_IER_FUWIE_Pos)
-#define LTDC_IER_FUWIE                   LTDC_IER_FUWIE_Msk  /*!< FIFO underrun warning interrupt enableThis bit is set and cleared by software.- 0: FIFO underrun interrupt disable- 1: FIFO underrun Interrupt enable */
-#define LTDC_IER_TERRIE_Pos              (2U)
-#define LTDC_IER_TERRIE_Msk              (0x1UL << LTDC_IER_TERRIE_Pos)
-#define LTDC_IER_TERRIE                  LTDC_IER_TERRIE_Msk  /*!< transfer error interrupt enableThis bit is set and cleared by software.- 0: transfer error interrupt disable- 1: transfer error interrupt enable */
-#define LTDC_IER_RRIE_Pos                (3U)
-#define LTDC_IER_RRIE_Msk                (0x1UL << LTDC_IER_RRIE_Pos)
-#define LTDC_IER_RRIE                    LTDC_IER_RRIE_Msk  /*!< register reload interrupt enableThis bit is set and cleared by software.- 0: register reload interrupt disable- 1: register reload interrupt enable */
-#define LTDC_IER_FUKIE_Pos               (6U)
-#define LTDC_IER_FUKIE_Msk               (0x1UL << LTDC_IER_FUKIE_Pos)
-#define LTDC_IER_FUKIE                   LTDC_IER_FUKIE_Msk  /*!< FIFO underrun killing interrupt enableThis bit is set and cleared by software.- 0: FIFO underrun killing interrupt disable- 1: FIFO underrun killing Interrupt enable */
-#define LTDC_IER_CRCIE_Pos               (7U)
-#define LTDC_IER_CRCIE_Msk               (0x1UL << LTDC_IER_CRCIE_Pos)
-#define LTDC_IER_CRCIE                   LTDC_IER_CRCIE_Msk  /*!< CRC error interrupt enableThis bit is set and cleared by software.- 0: crcerror disable- 1: crc error interrupt enable */
-#define LTDC_IER_FURIE_Pos               (8U)
-#define LTDC_IER_FURIE_Msk               (0x1UL << LTDC_IER_FURIE_Pos)
-#define LTDC_IER_FURIE                   LTDC_IER_FURIE_Msk  /*!< FIFOunderrun at rotation interrupt enableThis bit is set and cleared by software.- 0: FIFOunderrun at rotation interrupt disable- 1: FIFO underrunat rotation interrupt enable */
-
-/* Bit fields for LTDC_ISR register */
-#define LTDC_ISR_LIF_Pos                 (0U)
-#define LTDC_ISR_LIF_Msk                 (0x1UL << LTDC_ISR_LIF_Pos)
-#define LTDC_ISR_LIF                     LTDC_ISR_LIF_Msk  /*!< line interrupt flag- 0: no line interrupt generated- 1: line interrupt generated when a programmed line is reached */
-#define LTDC_ISR_FUWIF_Pos               (1U)
-#define LTDC_ISR_FUWIF_Msk               (0x1UL << LTDC_ISR_FUWIF_Pos)
-#define LTDC_ISR_FUWIF                   LTDC_ISR_FUWIF_Msk  /*!< FIFO underrun warning interrupt flag- 0: no FIFO underrun warning interrupt generated.- 1: FIFO underrun warning interrupt generated, if one of the layer FIFOs is empty and pixel data is read from the FIFO */
-#define LTDC_ISR_TERRIF_Pos              (2U)
-#define LTDC_ISR_TERRIF_Msk              (0x1UL << LTDC_ISR_TERRIF_Pos)
-#define LTDC_ISR_TERRIF                  LTDC_ISR_TERRIF_Msk  /*!< transfer error interrupt flag- 0: no transfer error interrupt generated- 1: transfer error interrupt generated when a bus error occurs */
-#define LTDC_ISR_RRIF_Pos                (3U)
-#define LTDC_ISR_RRIF_Msk                (0x1UL << LTDC_ISR_RRIF_Pos)
-#define LTDC_ISR_RRIF                    LTDC_ISR_RRIF_Msk  /*!< register reload interrupt flag- 0: no register reload interrupt generated- 1: register reload interrupt generated when a vertical blanking reload occurs (and the first line after the active area is reached) */
-#define LTDC_ISR_FUKIF_Pos               (6U)
-#define LTDC_ISR_FUKIF_Msk               (0x1UL << LTDC_ISR_FUKIF_Pos)
-#define LTDC_ISR_FUKIF                   LTDC_ISR_FUKIF_Msk  /*!< FIFO underrun killing interrupt flag- 0: no FIFO underrun killing interrupt generated.- 1: FIFO underrun killing interrupt generated, if one of the layer FIFOs is empty and many pixel data is read from the FIFO */
-#define LTDC_ISR_CRCIF_Pos               (7U)
-#define LTDC_ISR_CRCIF_Msk               (0x1UL << LTDC_ISR_CRCIF_Pos)
-#define LTDC_ISR_CRCIF                   LTDC_ISR_CRCIF_Msk  /*!< transfer error interrupt flag- 0: no CRC error interrupt generated- 1: CRC error interrupt generated when the computed CRC is different from the expected CRC. */
-#define LTDC_ISR_FURIF_Pos               (8U)
-#define LTDC_ISR_FURIF_Msk               (0x1UL << LTDC_ISR_FURIF_Pos)
-#define LTDC_ISR_FURIF                   LTDC_ISR_FURIF_Msk  /*!< FIFO underrun at rotation interrupt flag- 0: no FIFO underrun at rotation interrupt generated- 1: FIFO underrun at rotation interrupt generated */
-
-/* Bit fields for LTDC_ICR register */
-#define LTDC_ICR_CLIF_Pos                (0U)
-#define LTDC_ICR_CLIF_Msk                (0x1UL << LTDC_ICR_CLIF_Pos)
-#define LTDC_ICR_CLIF                    LTDC_ICR_CLIF_Msk  /*!< clears the line interrupt flag- 0: no effect- 1: clears the LIF flag in the LTDC_ISR register. */
-#define LTDC_ICR_CFUWIF_Pos              (1U)
-#define LTDC_ICR_CFUWIF_Msk              (0x1UL << LTDC_ICR_CFUWIF_Pos)
-#define LTDC_ICR_CFUWIF                  LTDC_ICR_CFUWIF_Msk  /*!< clears the FIFO underrun warning interrupt flag- 0: no effect- 1: clears the FUWIF flag in the LTDC_ISR register. */
-#define LTDC_ICR_CTERRIF_Pos             (2U)
-#define LTDC_ICR_CTERRIF_Msk             (0x1UL << LTDC_ICR_CTERRIF_Pos)
-#define LTDC_ICR_CTERRIF                 LTDC_ICR_CTERRIF_Msk  /*!< clears the transfer error interrupt flag- 0: no effect- 1: clears the TERRIF flag in the LTDC_ISR register. */
-#define LTDC_ICR_CRRIF_Pos               (3U)
-#define LTDC_ICR_CRRIF_Msk               (0x1UL << LTDC_ICR_CRRIF_Pos)
-#define LTDC_ICR_CRRIF                   LTDC_ICR_CRRIF_Msk  /*!< clears register reload interrupt flag- 0: no effect- 1: clears the RRIF flag in the LTDC_ISR register */
-#define LTDC_ICR_CFUKIF_Pos              (6U)
-#define LTDC_ICR_CFUKIF_Msk              (0x1UL << LTDC_ICR_CFUKIF_Pos)
-#define LTDC_ICR_CFUKIF                  LTDC_ICR_CFUKIF_Msk  /*!< clears the FIFO underrun warning interrupt flag- 0: no effect- 1: clears the FUKIF flag in the LTDC_ISR register. */
-#define LTDC_ICR_CCRCIF_Pos              (7U)
-#define LTDC_ICR_CCRCIF_Msk              (0x1UL << LTDC_ICR_CCRCIF_Pos)
-#define LTDC_ICR_CCRCIF                  LTDC_ICR_CCRCIF_Msk  /*!< clears the transfer error interrupt flag- 0: no effect- 1: clears the CRCIF flag in the LTDC_ISR register. */
-#define LTDC_ICR_CFURIF_Pos              (8U)
-#define LTDC_ICR_CFURIF_Msk              (0x1UL << LTDC_ICR_CFURIF_Pos)
-#define LTDC_ICR_CFURIF                  LTDC_ICR_CFURIF_Msk  /*!< clears register reload interrupt flag- 0: no effect- 1: clears the FURIF flag in the LTDC_ISR register */
-
-/* Bit fields for LTDC_LIPCR register */
-#define LTDC_LIPCR_LIPOS_Pos             (0U)
-#define LTDC_LIPCR_LIPOS_Msk             (0xffffUL << LTDC_LIPCR_LIPOS_Pos)
-#define LTDC_LIPCR_LIPOS                 LTDC_LIPCR_LIPOS_Msk  /*!< line interrupt positionThese bits configure the line interrupt position. */
-
-/* Bit fields for LTDC_CPSR register */
-#define LTDC_CPSR_CYPOS_Pos              (0U)
-#define LTDC_CPSR_CYPOS_Msk              (0xffffUL << LTDC_CPSR_CYPOS_Pos)
-#define LTDC_CPSR_CYPOS                  LTDC_CPSR_CYPOS_Msk  /*!< current Y positionThese bits return the current Y position. */
-#define LTDC_CPSR_CXPOS_Pos              (16U)
-#define LTDC_CPSR_CXPOS_Msk              (0xffffUL << LTDC_CPSR_CXPOS_Pos)
-#define LTDC_CPSR_CXPOS                  LTDC_CPSR_CXPOS_Msk  /*!< current X positionThese bits return the current X position. */
-
-/* Bit fields for LTDC_CDSR register */
-#define LTDC_CDSR_VDES_Pos               (0U)
-#define LTDC_CDSR_VDES_Msk               (0x1UL << LTDC_CDSR_VDES_Pos)
-#define LTDC_CDSR_VDES                   LTDC_CDSR_VDES_Msk  /*!< vertical data enable display status- 0: active low- 1: active high */
-#define LTDC_CDSR_HDES_Pos               (1U)
-#define LTDC_CDSR_HDES_Msk               (0x1UL << LTDC_CDSR_HDES_Pos)
-#define LTDC_CDSR_HDES                   LTDC_CDSR_HDES_Msk  /*!< horizontal data enable display status- 0: active low- 1: active high */
-#define LTDC_CDSR_VSYNCS_Pos             (2U)
-#define LTDC_CDSR_VSYNCS_Msk             (0x1UL << LTDC_CDSR_VSYNCS_Pos)
-#define LTDC_CDSR_VSYNCS                 LTDC_CDSR_VSYNCS_Msk  /*!< vertical synchronization display status- 0: active low- 1: active high */
-#define LTDC_CDSR_HSYNCS_Pos             (3U)
-#define LTDC_CDSR_HSYNCS_Msk             (0x1UL << LTDC_CDSR_HSYNCS_Pos)
-#define LTDC_CDSR_HSYNCS                 LTDC_CDSR_HSYNCS_Msk  /*!< horizontal synchronization display status- 0: active low- 1: active high */
-
-/* Bit fields for LTDC_EDCR register */
-#define LTDC_EDCR_OCYEN_Pos              (25U)
-#define LTDC_EDCR_OCYEN_Msk              (0x1UL << LTDC_EDCR_OCYEN_Pos)
-#define LTDC_EDCR_OCYEN                  LTDC_EDCR_OCYEN_Msk  /*!< output conversion to YCbCr 422: Enable- 0: conversion is disabled- 1: conversion is enabled */
-#define LTDC_EDCR_OCYSEL_Pos             (26U)
-#define LTDC_EDCR_OCYSEL_Msk             (0x1UL << LTDC_EDCR_OCYSEL_Pos)
-#define LTDC_EDCR_OCYSEL                 LTDC_EDCR_OCYSEL_Msk  /*!< output conversion to YCbCr 422: selection of the CCIR hard-wired coefficients:- 0: use CCIR-BT601 set (for typically SDTV analog-like displays)- 1: use CCIR-BT709 set (for typically HDTV digital-like displays) */
-#define LTDC_EDCR_OCYCO_Pos              (27U)
-#define LTDC_EDCR_OCYCO_Msk              (0x1UL << LTDC_EDCR_OCYCO_Pos)
-#define LTDC_EDCR_OCYCO                  LTDC_EDCR_OCYCO_Msk  /*!< output conversion to YCbCr 422: chrominance order.- 0: Cb is output first (so: Y0Cb, then Y1Cr, Y2Cb, etc .. ).- 1: Cr is output first (so: Y0Cr, then Y1Cb, Y2Cr, etc ..). */
-
-/* Bit fields for LTDC_IER2 register */
-#define LTDC_IER2_LIE_Pos                (0U)
-#define LTDC_IER2_LIE_Msk                (0x1UL << LTDC_IER2_LIE_Pos)
-#define LTDC_IER2_LIE                    LTDC_IER2_LIE_Msk  /*!< line interrupt enableThis bit is set and cleared by software.- 0: line interrupt disable- 1: line interrupt enable */
-#define LTDC_IER2_FUWIE_Pos              (1U)
-#define LTDC_IER2_FUWIE_Msk              (0x1UL << LTDC_IER2_FUWIE_Pos)
-#define LTDC_IER2_FUWIE                  LTDC_IER2_FUWIE_Msk  /*!< FIFO underrun warning interrupt enableThis bit is set and cleared by software.- 0: FIFO underrun interrupt disable- 1: FIFO underrun Interrupt enable */
-#define LTDC_IER2_TERRIE_Pos             (2U)
-#define LTDC_IER2_TERRIE_Msk             (0x1UL << LTDC_IER2_TERRIE_Pos)
-#define LTDC_IER2_TERRIE                 LTDC_IER2_TERRIE_Msk  /*!< transfer error interrupt enableThis bit is set and cleared by software.- 0: transfer error interrupt disable- 1: transfer error interrupt enable */
-#define LTDC_IER2_RRIE_Pos               (3U)
-#define LTDC_IER2_RRIE_Msk               (0x1UL << LTDC_IER2_RRIE_Pos)
-#define LTDC_IER2_RRIE                   LTDC_IER2_RRIE_Msk  /*!< register reload interrupt enableThis bit is set and cleared by software.- 0: register reload interrupt disable- 1: register reload interrupt enable */
-#define LTDC_IER2_FUKIE_Pos              (6U)
-#define LTDC_IER2_FUKIE_Msk              (0x1UL << LTDC_IER2_FUKIE_Pos)
-#define LTDC_IER2_FUKIE                  LTDC_IER2_FUKIE_Msk  /*!< FIFO underrun killing interrupt enableThis bit is set and cleared by software.- 0: FIFO underrun killing interrupt disable- 1: FIFO underrun killing Interrupt enable */
-#define LTDC_IER2_CRCIE_Pos              (7U)
-#define LTDC_IER2_CRCIE_Msk              (0x1UL << LTDC_IER2_CRCIE_Pos)
-#define LTDC_IER2_CRCIE                  LTDC_IER2_CRCIE_Msk  /*!< CRC error interrupt enableThis bit is set and cleared by software.- 0: crcerror disable- 1: crc error interrupt enable */
-#define LTDC_IER2_FURIE_Pos              (8U)
-#define LTDC_IER2_FURIE_Msk              (0x1UL << LTDC_IER2_FURIE_Pos)
-#define LTDC_IER2_FURIE                  LTDC_IER2_FURIE_Msk  /*!< FIFOunderrun at rotation interrupt enableThis bit is set and cleared by software.- 0: FIFOunderrun at rotation interrupt disable- 1: FIFO underrunat rotation interrupt enable */
-
-/* Bit fields for LTDC_ISR2 register */
-#define LTDC_ISR2_LIF_Pos                (0U)
-#define LTDC_ISR2_LIF_Msk                (0x1UL << LTDC_ISR2_LIF_Pos)
-#define LTDC_ISR2_LIF                    LTDC_ISR2_LIF_Msk  /*!< line interrupt flag- 0: no line interrupt generated- 1: line interrupt generated when a programmed line is reached */
-#define LTDC_ISR2_FUWIF_Pos              (1U)
-#define LTDC_ISR2_FUWIF_Msk              (0x1UL << LTDC_ISR2_FUWIF_Pos)
-#define LTDC_ISR2_FUWIF                  LTDC_ISR2_FUWIF_Msk  /*!< FIFO underrun warning interrupt flag- 0: no FIFO underrun warning interrupt generated.- 1: FIFO underrun warning interrupt generated, if one of the layer FIFOs is empty and pixel data is read from the FIFO */
-#define LTDC_ISR2_TERRIF_Pos             (2U)
-#define LTDC_ISR2_TERRIF_Msk             (0x1UL << LTDC_ISR2_TERRIF_Pos)
-#define LTDC_ISR2_TERRIF                 LTDC_ISR2_TERRIF_Msk  /*!< transfer error interrupt flag- 0: no transfer error interrupt generated- 1: transfer error interrupt generated when a bus error occurs */
-#define LTDC_ISR2_RRIF_Pos               (3U)
-#define LTDC_ISR2_RRIF_Msk               (0x1UL << LTDC_ISR2_RRIF_Pos)
-#define LTDC_ISR2_RRIF                   LTDC_ISR2_RRIF_Msk  /*!< register reload interrupt flag- 0: no register reload interrupt generated- 1: register reload interrupt generated when a vertical blanking reload occurs (and the first line after the active area is reached) */
-#define LTDC_ISR2_FUKIF_Pos              (6U)
-#define LTDC_ISR2_FUKIF_Msk              (0x1UL << LTDC_ISR2_FUKIF_Pos)
-#define LTDC_ISR2_FUKIF                  LTDC_ISR2_FUKIF_Msk  /*!< FIFO underrun killing interrupt flag- 0: no FIFO underrun killing interrupt generated.- 1: FIFO underrun killing interrupt generated, if one of the layer FIFOs is empty and many pixel data are read from the FIFO */
-#define LTDC_ISR2_CRCIF_Pos              (7U)
-#define LTDC_ISR2_CRCIF_Msk              (0x1UL << LTDC_ISR2_CRCIF_Pos)
-#define LTDC_ISR2_CRCIF                  LTDC_ISR2_CRCIF_Msk  /*!< transfer error interrupt flag- 0: no CRC error interrupt generated- 1: CRC error interrupt generated when a bus error occurs */
-#define LTDC_ISR2_FURIF_Pos              (8U)
-#define LTDC_ISR2_FURIF_Msk              (0x1UL << LTDC_ISR2_FURIF_Pos)
-#define LTDC_ISR2_FURIF                  LTDC_ISR2_FURIF_Msk  /*!< FIFO underrun at rotation interrupt flag- 0: no FIFO underrun at rotation interrupt generated- 1: FIFO underrun at rotation interrupt generated */
-
-/* Bit fields for LTDC_ICR2 register */
-#define LTDC_ICR2_CLIF_Pos               (0U)
-#define LTDC_ICR2_CLIF_Msk               (0x1UL << LTDC_ICR2_CLIF_Pos)
-#define LTDC_ICR2_CLIF                   LTDC_ICR2_CLIF_Msk  /*!< clears the line interrupt flag- 0: no effect- 1: clears the LIF flag in the LTDC_ISR register. */
-#define LTDC_ICR2_CFUWIF_Pos             (1U)
-#define LTDC_ICR2_CFUWIF_Msk             (0x1UL << LTDC_ICR2_CFUWIF_Pos)
-#define LTDC_ICR2_CFUWIF                 LTDC_ICR2_CFUWIF_Msk  /*!< clears the FIFO underrun warning interrupt flag- 0: no effect- 1: clears the FUWIF flag in the LTDC_ISR register. */
-#define LTDC_ICR2_CTERRIF_Pos            (2U)
-#define LTDC_ICR2_CTERRIF_Msk            (0x1UL << LTDC_ICR2_CTERRIF_Pos)
-#define LTDC_ICR2_CTERRIF                LTDC_ICR2_CTERRIF_Msk  /*!< clears the transfer error interrupt flag- 0: no effect- 1: clears the TERRIF flag in the LTDC_ISR register. */
-#define LTDC_ICR2_CRRIF_Pos              (3U)
-#define LTDC_ICR2_CRRIF_Msk              (0x1UL << LTDC_ICR2_CRRIF_Pos)
-#define LTDC_ICR2_CRRIF                  LTDC_ICR2_CRRIF_Msk  /*!< clears register reload interrupt flag- 0: no effect- 1: clears the RRIF flag in the LTDC_ISR register */
-#define LTDC_ICR2_CFUKIF_Pos             (6U)
-#define LTDC_ICR2_CFUKIF_Msk             (0x1UL << LTDC_ICR2_CFUKIF_Pos)
-#define LTDC_ICR2_CFUKIF                 LTDC_ICR2_CFUKIF_Msk  /*!< clears the FIFO underrun warning interrupt flag- 0: no effect- 1: clears the FUKIF flag in the LTDC_ISR register. */
-#define LTDC_ICR2_CCRCIF_Pos             (7U)
-#define LTDC_ICR2_CCRCIF_Msk             (0x1UL << LTDC_ICR2_CCRCIF_Pos)
-#define LTDC_ICR2_CCRCIF                 LTDC_ICR2_CCRCIF_Msk  /*!< clears the transfer error interrupt flag- 0: no effect- 1: clears the CRCIF flag in the LTDC_ISR register. */
-#define LTDC_ICR2_CFURIF_Pos             (8U)
-#define LTDC_ICR2_CFURIF_Msk             (0x1UL << LTDC_ICR2_CFURIF_Pos)
-#define LTDC_ICR2_CFURIF                 LTDC_ICR2_CFURIF_Msk  /*!< clears register reload interrupt flag- 0: no effect- 1: clears the FURIF flag in the LTDC_ISR register */
-
-/* Bit fields for LTDC_CPSR2 register */
-#define LTDC_CPSR2_CYPOS_Pos             (0U)
-#define LTDC_CPSR2_CYPOS_Msk             (0xffffUL << LTDC_CPSR2_CYPOS_Pos)
-#define LTDC_CPSR2_CYPOS                 LTDC_CPSR2_CYPOS_Msk  /*!< current Y positionThese bits return the current Y position. */
-#define LTDC_CPSR2_CXPOS_Pos             (16U)
-#define LTDC_CPSR2_CXPOS_Msk             (0xffffUL << LTDC_CPSR2_CXPOS_Pos)
-#define LTDC_CPSR2_CXPOS                 LTDC_CPSR2_CXPOS_Msk  /*!< current X positionThese bits return the current X position. */
-
-/* Bit fields for LTDC_ECRCR register */
-#define LTDC_ECRCR_ECRC_Pos              (0U)
-#define LTDC_ECRCR_ECRC_Msk              (0xffffUL << LTDC_ECRCR_ECRC_Pos)
-#define LTDC_ECRCR_ECRC                  LTDC_ECRCR_ECRC_Msk  /*!< expected CRC of frame */
-
-/* Bit fields for LTDC_CCRCR register */
-#define LTDC_CCRCR_CCRC_Pos              (0U)
-#define LTDC_CCRCR_CCRC_Msk              (0xffffUL << LTDC_CCRCR_CCRC_Pos)
-#define LTDC_CCRCR_CCRC                  LTDC_CCRCR_CCRC_Msk  /*!< expected CRC of frame */
-
-/* Bit fields for LTDC_FUTR register */
-#define LTDC_FUTR_THRE_Pos               (0U)
-#define LTDC_FUTR_THRE_Msk               (0xffffUL << LTDC_FUTR_THRE_Pos)
-#define LTDC_FUTR_THRE                   LTDC_FUTR_THRE_Msk  /*!< threshold to trigger a FIFO underrun killing interrupt (unit is per fifo word, 64bit) */
-
-/* Bit fields for LTDC_LxC0R register */
-#define LTDC_LxC0R_CKTA_Pos              (0U)
-#define LTDC_LxC0R_CKTA_Msk              (0x1UL << LTDC_LxC0R_CKTA_Pos)
-#define LTDC_LxC0R_CKTA                  LTDC_LxC0R_CKTA_Msk  /*!< color key transparency Ability */
-#define LTDC_LxC0R_CFBDA_Pos             (1U)
-#define LTDC_LxC0R_CFBDA_Msk             (0x1UL << LTDC_LxC0R_CFBDA_Pos)
-#define LTDC_LxC0R_CFBDA                 LTDC_LxC0R_CFBDA_Msk  /*!< color frame buffer duplication ability */
-#define LTDC_LxC0R_CFBPA_Pos             (2U)
-#define LTDC_LxC0R_CFBPA_Msk             (0x1UL << LTDC_LxC0R_CFBPA_Pos)
-#define LTDC_LxC0R_CFBPA                 LTDC_LxC0R_CFBPA_Msk  /*!< color frame buffer pitch ability */
-#define LTDC_LxC0R_APA_Pos               (3U)
-#define LTDC_LxC0R_APA_Msk               (0x1UL << LTDC_LxC0R_APA_Pos)
-#define LTDC_LxC0R_APA                   LTDC_LxC0R_APA_Msk  /*!< alpha plane ability */
-#define LTDC_LxC0R_DCP_Pos               (4U)
-#define LTDC_LxC0R_DCP_Msk               (0x1UL << LTDC_LxC0R_DCP_Pos)
-#define LTDC_LxC0R_DCP                   LTDC_LxC0R_DCP_Msk  /*!< default color programmability */
-#define LTDC_LxC0R_WINA_Pos              (5U)
-#define LTDC_LxC0R_WINA_Msk              (0x1UL << LTDC_LxC0R_WINA_Pos)
-#define LTDC_LxC0R_WINA                  LTDC_LxC0R_WINA_Msk  /*!< windowing ability */
-#define LTDC_LxC0R_CLUTA_Pos             (6U)
-#define LTDC_LxC0R_CLUTA_Msk             (0x1UL << LTDC_LxC0R_CLUTA_Pos)
-#define LTDC_LxC0R_CLUTA                 LTDC_LxC0R_CLUTA_Msk  /*!< CLUT ability */
-#define LTDC_LxC0R_CKRA_Pos              (7U)
-#define LTDC_LxC0R_CKRA_Msk              (0x1UL << LTDC_LxC0R_CKRA_Pos)
-#define LTDC_LxC0R_CKRA                  LTDC_LxC0R_CKRA_Msk  /*!< color key replace ability */
-#define LTDC_LxC0R_F21_Pos               (8U)
-#define LTDC_LxC0R_F21_Msk               (0x1UL << LTDC_LxC0R_F21_Pos)
-#define LTDC_LxC0R_F21                   LTDC_LxC0R_F21_Msk  /*!< blending factor 2, ability for: 1.0 */
-#define LTDC_LxC0R_F20_Pos               (9U)
-#define LTDC_LxC0R_F20_Msk               (0x1UL << LTDC_LxC0R_F20_Pos)
-#define LTDC_LxC0R_F20                   LTDC_LxC0R_F20_Msk  /*!< blending factor 2, ability for: 0.0 */
-#define LTDC_LxC0R_F2P_Pos               (10U)
-#define LTDC_LxC0R_F2P_Msk               (0x1UL << LTDC_LxC0R_F2P_Pos)
-#define LTDC_LxC0R_F2P                   LTDC_LxC0R_F2P_Msk  /*!< blending factor 2, ability for: pixel_alpha */
-#define LTDC_LxC0R_F21P_Pos              (11U)
-#define LTDC_LxC0R_F21P_Msk              (0x1UL << LTDC_LxC0R_F21P_Pos)
-#define LTDC_LxC0R_F21P                  LTDC_LxC0R_F21P_Msk  /*!< blending factor 2, ability for: 1.0 - pixel_alpha */
-#define LTDC_LxC0R_F2C_Pos               (12U)
-#define LTDC_LxC0R_F2C_Msk               (0x1UL << LTDC_LxC0R_F2C_Pos)
-#define LTDC_LxC0R_F2C                   LTDC_LxC0R_F2C_Msk  /*!< blending factor 2, ability for: constant_alpha */
-#define LTDC_LxC0R_F21C_Pos              (13U)
-#define LTDC_LxC0R_F21C_Msk              (0x1UL << LTDC_LxC0R_F21C_Pos)
-#define LTDC_LxC0R_F21C                  LTDC_LxC0R_F21C_Msk  /*!< blending factor 2, ability for: 1.0 - constant_alpha */
-#define LTDC_LxC0R_F2PC_Pos              (14U)
-#define LTDC_LxC0R_F2PC_Msk              (0x1UL << LTDC_LxC0R_F2PC_Pos)
-#define LTDC_LxC0R_F2PC                  LTDC_LxC0R_F2PC_Msk  /*!< blending factor 2, ability for: pixel_alpha * constant_alpha */
-#define LTDC_LxC0R_F21PC_Pos             (15U)
-#define LTDC_LxC0R_F21PC_Msk             (0x1UL << LTDC_LxC0R_F21PC_Pos)
-#define LTDC_LxC0R_F21PC                 LTDC_LxC0R_F21PC_Msk  /*!< blending factor 2, ability for: 1.0 - (pixel_alpha * constant_alpha) */
-#define LTDC_LxC0R_F11_Pos               (16U)
-#define LTDC_LxC0R_F11_Msk               (0x1UL << LTDC_LxC0R_F11_Pos)
-#define LTDC_LxC0R_F11                   LTDC_LxC0R_F11_Msk  /*!< blending factor 1, ability for: 1.0 */
-#define LTDC_LxC0R_F10_Pos               (17U)
-#define LTDC_LxC0R_F10_Msk               (0x1UL << LTDC_LxC0R_F10_Pos)
-#define LTDC_LxC0R_F10                   LTDC_LxC0R_F10_Msk  /*!< blending factor 1,ability for: 0.0 */
-#define LTDC_LxC0R_F1P_Pos               (18U)
-#define LTDC_LxC0R_F1P_Msk               (0x1UL << LTDC_LxC0R_F1P_Pos)
-#define LTDC_LxC0R_F1P                   LTDC_LxC0R_F1P_Msk  /*!< blending factor 1, ability for: pixel_alpha */
-#define LTDC_LxC0R_F11P_Pos              (19U)
-#define LTDC_LxC0R_F11P_Msk              (0x1UL << LTDC_LxC0R_F11P_Pos)
-#define LTDC_LxC0R_F11P                  LTDC_LxC0R_F11P_Msk  /*!< blending factor 1, ability for: 1.0 - pixel_alpha */
-#define LTDC_LxC0R_F1C_Pos               (20U)
-#define LTDC_LxC0R_F1C_Msk               (0x1UL << LTDC_LxC0R_F1C_Pos)
-#define LTDC_LxC0R_F1C                   LTDC_LxC0R_F1C_Msk  /*!< blending factor 1, ability for: constant_alpha */
-#define LTDC_LxC0R_F11C_Pos              (21U)
-#define LTDC_LxC0R_F11C_Msk              (0x1UL << LTDC_LxC0R_F11C_Pos)
-#define LTDC_LxC0R_F11C                  LTDC_LxC0R_F11C_Msk  /*!< blending factor 1, ability for: 1.0 - constant_alpha */
-#define LTDC_LxC0R_F1PC_Pos              (22U)
-#define LTDC_LxC0R_F1PC_Msk              (0x1UL << LTDC_LxC0R_F1PC_Pos)
-#define LTDC_LxC0R_F1PC                  LTDC_LxC0R_F1PC_Msk  /*!< blending factor 1, ability for: pixel_alpha * constant_alpha */
-#define LTDC_LxC0R_F11PC_Pos             (23U)
-#define LTDC_LxC0R_F11PC_Msk             (0x1UL << LTDC_LxC0R_F11PC_Pos)
-#define LTDC_LxC0R_F11PC                 LTDC_LxC0R_F11PC_Msk  /*!< blending factor 1, ability for: 1.0 - (pixel_alpha * constant_alpha) */
-#define LTDC_LxC0R_P88_Pos               (24U)
-#define LTDC_LxC0R_P88_Msk               (0x1UL << LTDC_LxC0R_P88_Pos)
-#define LTDC_LxC0R_P88                   LTDC_LxC0R_P88_Msk  /*!< pixel format, ability for: AL88. */
-#define LTDC_LxC0R_P44_Pos               (25U)
-#define LTDC_LxC0R_P44_Msk               (0x1UL << LTDC_LxC0R_P44_Pos)
-#define LTDC_LxC0R_P44                   LTDC_LxC0R_P44_Msk  /*!< pixel format, ability for: AL44. */
-#define LTDC_LxC0R_P8_Pos                (26U)
-#define LTDC_LxC0R_P8_Msk                (0x1UL << LTDC_LxC0R_P8_Pos)
-#define LTDC_LxC0R_P8                    LTDC_LxC0R_P8_Msk  /*!< pixel format, ability for: L8. */
-#define LTDC_LxC0R_P4444_Pos             (27U)
-#define LTDC_LxC0R_P4444_Msk             (0x1UL << LTDC_LxC0R_P4444_Pos)
-#define LTDC_LxC0R_P4444                 LTDC_LxC0R_P4444_Msk  /*!< pixel format, ability for: ARGB4444. */
-#define LTDC_LxC0R_P1555_Pos             (28U)
-#define LTDC_LxC0R_P1555_Msk             (0x1UL << LTDC_LxC0R_P1555_Pos)
-#define LTDC_LxC0R_P1555                 LTDC_LxC0R_P1555_Msk  /*!< pixel format, ability for: ARGB1555. */
-#define LTDC_LxC0R_P565_Pos              (29U)
-#define LTDC_LxC0R_P565_Msk              (0x1UL << LTDC_LxC0R_P565_Pos)
-#define LTDC_LxC0R_P565                  LTDC_LxC0R_P565_Msk  /*!< pixel format, ability for: RGB565. */
-#define LTDC_LxC0R_P888_Pos              (30U)
-#define LTDC_LxC0R_P888_Msk              (0x1UL << LTDC_LxC0R_P888_Pos)
-#define LTDC_LxC0R_P888                  LTDC_LxC0R_P888_Msk  /*!< pixel format, ability for: RGB888. */
-#define LTDC_LxC0R_P8888_Pos             (31U)
-#define LTDC_LxC0R_P8888_Msk             (0x1UL << LTDC_LxC0R_P8888_Pos)
-#define LTDC_LxC0R_P8888                 LTDC_LxC0R_P8888_Msk  /*!< pixel format, ability for: ARGB8888. */
-
-/* Bit fields for LTDC_LxC1R register */
-#define LTDC_LxC1R_YIA_Pos               (0U)
-#define LTDC_LxC1R_YIA_Msk               (0x1UL << LTDC_LxC1R_YIA_Pos)
-#define LTDC_LxC1R_YIA                   LTDC_LxC1R_YIA_Msk  /*!< YCbCr 422 interleaved ability for that layer.- 0: interleaved not available- 1: interleaved available */
-#define LTDC_LxC1R_YSPA_Pos              (1U)
-#define LTDC_LxC1R_YSPA_Msk              (0x1UL << LTDC_LxC1R_YSPA_Pos)
-#define LTDC_LxC1R_YSPA                  LTDC_LxC1R_YSPA_Msk  /*!< YCbCr 420 semi-planar ability for that layer.- 0: semiplanar not available- 1: semi-planar available */
-#define LTDC_LxC1R_YFPA_Pos              (2U)
-#define LTDC_LxC1R_YFPA_Msk              (0x1UL << LTDC_LxC1R_YFPA_Pos)
-#define LTDC_LxC1R_YFPA                  LTDC_LxC1R_YFPA_Msk  /*!< YCbCr 420 full-planar ability for that layer.- 0: full planar not available- 1: full planar available */
-#define LTDC_LxC1R_SCA_Pos               (31U)
-#define LTDC_LxC1R_SCA_Msk               (0x1UL << LTDC_LxC1R_SCA_Pos)
-#define LTDC_LxC1R_SCA                   LTDC_LxC1R_SCA_Msk  /*!< scaling ability for that layer.- 0: scaling not available- 1: scaling available */
-
-/* Bit fields for LTDC_LxRCR register */
-#define LTDC_LxRCR_IMR_Pos               (0U)
-#define LTDC_LxRCR_IMR_Msk               (0x1UL << LTDC_LxRCR_IMR_Pos)
-#define LTDC_LxRCR_IMR                   LTDC_LxRCR_IMR_Msk  /*!< immediate reload triggerThis bit is set by software and cleared only by hardware after reload.- 0: no effect- 1: The shadow registers are reloaded immediately. */
-#define LTDC_LxRCR_VBR_Pos               (1U)
-#define LTDC_LxRCR_VBR_Msk               (0x1UL << LTDC_LxRCR_VBR_Pos)
-#define LTDC_LxRCR_VBR                   LTDC_LxRCR_VBR_Msk  /*!< vertical blanking reload requestThis bit is set by software and cleared only by hardware after reload (it cannot be cleared through register write once it is set).- 0: no effect- 1: The shadow registers are reloaded during the vertical blanking period (at the beginning of the first line after the active display area). */
-#define LTDC_LxRCR_GRMSK_Pos             (2U)
-#define LTDC_LxRCR_GRMSK_Msk             (0x1UL << LTDC_LxRCR_GRMSK_Pos)
-#define LTDC_LxRCR_GRMSK                 LTDC_LxRCR_GRMSK_Msk  /*!< shadow reload control: global (centralized) reload maskedThis bit is set and cleared by software.- 0: global reload active (the control from the LTDC_SRCR are enabled)- 1: global reload is masked (the control from the LTDC_SRCR are disabled) */
-
-/* Bit fields for LTDC_LxCR register */
-#define LTDC_LxCR_LEN_Pos                (0U)
-#define LTDC_LxCR_LEN_Msk                (0x1UL << LTDC_LxCR_LEN_Pos)
-#define LTDC_LxCR_LEN                    LTDC_LxCR_LEN_Msk  /*!< layer enable: the bit is used to enable/disable the presence of this whole layer.This bit is set and cleared by software.- 0: layer disabled- 1: layer enabled */
-#define LTDC_LxCR_CKEN_Pos               (1U)
-#define LTDC_LxCR_CKEN_Msk               (0x1UL << LTDC_LxCR_CKEN_Pos)
-#define LTDC_LxCR_CKEN                   LTDC_LxCR_CKEN_Msk  /*!< color keying enableThis bit is set and cleared by software.- 0: color keying disabled- 1: color keying enabled: if RGB matches, then the ARGB are set to 0. */
-#define LTDC_LxCR_VPDEN_Pos              (2U)
-#define LTDC_LxCR_VPDEN_Msk              (0x1UL << LTDC_LxCR_VPDEN_Pos)
-#define LTDC_LxCR_VPDEN                  LTDC_LxCR_VPDEN_Msk  /*!< vertical pixel duplication enableThis bit is set and cleared by software.- 0: duplication disabled- 1: duplication enabled */
-#define LTDC_LxCR_HPDEN_Pos              (3U)
-#define LTDC_LxCR_HPDEN_Msk              (0x1UL << LTDC_LxCR_HPDEN_Pos)
-#define LTDC_LxCR_HPDEN                  LTDC_LxCR_HPDEN_Msk  /*!< horizontal pixel duplication enableThis bit is set and cleared by software.- 0: duplication disabled- 1: duplication enabled */
-#define LTDC_LxCR_CLUTEN_Pos             (4U)
-#define LTDC_LxCR_CLUTEN_Msk             (0x1UL << LTDC_LxCR_CLUTEN_Pos)
-#define LTDC_LxCR_CLUTEN                 LTDC_LxCR_CLUTEN_Msk  /*!< color look-up table enableThis bit is set and cleared by software.- 0: color look-up table disabled- 1: color look-up table enabledThe CLUT is only meaningful for L8, AL44 and AL88 pixel format. Refer to Color look-up table (CLUT) */
-#define LTDC_LxCR_HMEN_Pos               (8U)
-#define LTDC_LxCR_HMEN_Msk               (0x1UL << LTDC_LxCR_HMEN_Pos)
-#define LTDC_LxCR_HMEN                   LTDC_LxCR_HMEN_Msk  /*!< horizontal mirroring enableThis bit is set and cleared by software.- 0: mirror disabled- 1: mirror enabled (if so, the color frame buffer start address has to be set to the last byte of the first line, so for instannce: if line is 100 pixels, 24bpp, then address is set to 299) */
-#define LTDC_LxCR_DCBEN_Pos              (9U)
-#define LTDC_LxCR_DCBEN_Msk              (0x1UL << LTDC_LxCR_DCBEN_Pos)
-#define LTDC_LxCR_DCBEN                  LTDC_LxCR_DCBEN_Msk  /*!< default color blending enableThis bit is set and cleared by software.- 0: blending disabled- 1: blending enabled */
-#define LTDC_LxCR_SCEN_Pos               (10U)
-#define LTDC_LxCR_SCEN_Msk               (0x1UL << LTDC_LxCR_SCEN_Pos)
-#define LTDC_LxCR_SCEN                   LTDC_LxCR_SCEN_Msk  /*!< scaler enableThis bit is set and cleared by software.- 0: scaler disabled- 1: scaler enabled */
-
-/* Bit fields for LTDC_LxWHPCR register */
-#define LTDC_LxWHPCR_WHSTPOS_Pos         (0U)
-#define LTDC_LxWHPCR_WHSTPOS_Msk         (0xffffUL << LTDC_LxWHPCR_WHSTPOS_Pos)
-#define LTDC_LxWHPCR_WHSTPOS             LTDC_LxWHPCR_WHSTPOS_Msk  /*!< window horizontal start positionThese bits configure the first visible pixel of a line of the layer window.WHSTPOS[15:0] must be >= AAW[15:0] bits (programmed in LTDC_AWCR register). */
-#define LTDC_LxWHPCR_WHSPPOS_Pos         (16U)
-#define LTDC_LxWHPCR_WHSPPOS_Msk         (0xffffUL << LTDC_LxWHPCR_WHSPPOS_Pos)
-#define LTDC_LxWHPCR_WHSPPOS             LTDC_LxWHPCR_WHSPPOS_Msk  /*!< window horizontal stop positionThese bits configure the last visible pixel of a line of the layer window.WHSPPOS[15:0] must be <= AHBP[15:0] bits + 1 (programmed in LTDC_BPCR register). */
-
-/* Bit fields for LTDC_LxWVPCR register */
-#define LTDC_LxWVPCR_WVSTPOS_Pos         (0U)
-#define LTDC_LxWVPCR_WVSTPOS_Msk         (0xffffUL << LTDC_LxWVPCR_WVSTPOS_Pos)
-#define LTDC_LxWVPCR_WVSTPOS             LTDC_LxWVPCR_WVSTPOS_Msk  /*!< window vertical start positionThese bits configure the first visible line of the layer window.WVSTPOS[15:0] must be >= AAH[15:0] bits (programmed in LTDC_AWCR register). */
-#define LTDC_LxWVPCR_WVSPPOS_Pos         (16U)
-#define LTDC_LxWVPCR_WVSPPOS_Msk         (0xffffUL << LTDC_LxWVPCR_WVSPPOS_Pos)
-#define LTDC_LxWVPCR_WVSPPOS             LTDC_LxWVPCR_WVSPPOS_Msk  /*!< window vertical stop positionThese bits configure the last visible line of the layer window.WVSPPOS[11:0] must be <= AVBP[15:0] bits + 1 (programmed in LTDC_BPCR register). */
-
-/* Bit fields for LTDC_LxCKCR register */
-#define LTDC_LxCKCR_CKBLUE_Pos           (0U)
-#define LTDC_LxCKCR_CKBLUE_Msk           (0xffUL << LTDC_LxCKCR_CKBLUE_Pos)
-#define LTDC_LxCKCR_CKBLUE               LTDC_LxCKCR_CKBLUE_Msk  /*!< color key blue value */
-#define LTDC_LxCKCR_CKGREEN_Pos          (8U)
-#define LTDC_LxCKCR_CKGREEN_Msk          (0xffUL << LTDC_LxCKCR_CKGREEN_Pos)
-#define LTDC_LxCKCR_CKGREEN              LTDC_LxCKCR_CKGREEN_Msk  /*!< color key green value */
-#define LTDC_LxCKCR_CKRED_Pos            (16U)
-#define LTDC_LxCKCR_CKRED_Msk            (0xffUL << LTDC_LxCKCR_CKRED_Pos)
-#define LTDC_LxCKCR_CKRED                LTDC_LxCKCR_CKRED_Msk  /*!< color key red value */
-
-/* Bit fields for LTDC_LxPFCR register */
-#define LTDC_LxPFCR_PF_Pos               (0U)
-#define LTDC_LxPFCR_PF_Msk               (0x7UL << LTDC_LxPFCR_PF_Pos)
-#define LTDC_LxPFCR_PF                   LTDC_LxPFCR_PF_Msk  /*!< pixel formatThese bits configure the pixel format- 000: ARGB8888- 001: RGB888- 010: RGB565- 011: ARGB1555- 100: ARGB4444- 101: L8 (8-bit luminance)- 110: AL44 (4-bit alpha, 4-bit luminance)- 111: AL88 (8-bit alpha, 8-bit luminance) */
-
-/* Bit fields for LTDC_LxCACR register */
-#define LTDC_LxCACR_CONSTA_Pos           (0U)
-#define LTDC_LxCACR_CONSTA_Msk           (0xffUL << LTDC_LxCACR_CONSTA_Pos)
-#define LTDC_LxCACR_CONSTA               LTDC_LxCACR_CONSTA_Msk  /*!< constant alphaThese bits configure the constant alpha used for blending. The constant alpha is divided by 255 by hardware.Example: if the programmed constant alpha is 0xFF, the constant alpha value is 255 / 255 = 1. */
-
-/* Bit fields for LTDC_LxDCCR register */
-#define LTDC_LxDCCR_DCBLUE_Pos           (0U)
-#define LTDC_LxDCCR_DCBLUE_Msk           (0xffUL << LTDC_LxDCCR_DCBLUE_Pos)
-#define LTDC_LxDCCR_DCBLUE               LTDC_LxDCCR_DCBLUE_Msk  /*!< default color blueThese bits configure the default blue value. */
-#define LTDC_LxDCCR_DCGREEN_Pos          (8U)
-#define LTDC_LxDCCR_DCGREEN_Msk          (0xffUL << LTDC_LxDCCR_DCGREEN_Pos)
-#define LTDC_LxDCCR_DCGREEN              LTDC_LxDCCR_DCGREEN_Msk  /*!< default color greenThese bits configure the default green value. */
-#define LTDC_LxDCCR_DCRED_Pos            (16U)
-#define LTDC_LxDCCR_DCRED_Msk            (0xffUL << LTDC_LxDCCR_DCRED_Pos)
-#define LTDC_LxDCCR_DCRED                LTDC_LxDCCR_DCRED_Msk  /*!< default color redThese bits configure the default red value. */
-#define LTDC_LxDCCR_DCALPHA_Pos          (24U)
-#define LTDC_LxDCCR_DCALPHA_Msk          (0xffUL << LTDC_LxDCCR_DCALPHA_Pos)
-#define LTDC_LxDCCR_DCALPHA              LTDC_LxDCCR_DCALPHA_Msk  /*!< default color alphaThese bits configure the default alpha value. */
-
-/* Bit fields for LTDC_LxBFCR register */
-#define LTDC_LxBFCR_BF2_Pos              (0U)
-#define LTDC_LxBFCR_BF2_Msk              (0x7UL << LTDC_LxBFCR_BF2_Pos)
-#define LTDC_LxBFCR_BF2                  LTDC_LxBFCR_BF2_Msk  /*!< blending factor 2These bits select the blending factor F2- 000: reserved- 001: reserved- 010: reserved- 011: reserved- 100: reserved- 101: 1 - constant alpha- 110: reserved- 111: 1 - (pixel alpha x constant alpha) */
-#define LTDC_LxBFCR_BF1_Pos              (8U)
-#define LTDC_LxBFCR_BF1_Msk              (0x7UL << LTDC_LxBFCR_BF1_Pos)
-#define LTDC_LxBFCR_BF1                  LTDC_LxBFCR_BF1_Msk  /*!< blending factor 1These bits select the blending factor F1.- 000: reserved- 001: reserved- 010: reserved- 011: reserved- 100: constant alpha- 101: reserved- 110: pixel alpha x constant alpha- 111: reserved */
-#define LTDC_LxBFCR_BOR_Pos              (16U)
-#define LTDC_LxBFCR_BOR_Msk              (0xfUL << LTDC_LxBFCR_BOR_Pos)
-#define LTDC_LxBFCR_BOR                  LTDC_LxBFCR_BOR_Msk  /*!< blending orderThese bits select the blending orderBOR.BOR= 0000 is for the most background layer (usually hidden behind others)BOR= 1111 is for the most foreground layer (always visible, never hidden by any other).In case of inconsistency, like two layers at same order, the blending engine reverses to BOR[LayerID] = LayerID-1, so that Layer3 is in foreground and Layer1 is in background.Note: if the Layer3 is set as secure, to guarantee it is on the foreground, it should be configured with BOR(Layer3)=1111. */
-
-/* Bit fields for LTDC_LxBLCR register */
-#define LTDC_LxBLCR_BL_Pos               (0U)
-#define LTDC_LxBLCR_BL_Msk               (0xffUL << LTDC_LxBLCR_BL_Pos)
-#define LTDC_LxBLCR_BL                   LTDC_LxBLCR_BL_Msk  /*!< burst length- 0x00: maximum burst length (16 words 64bit, thus 128 Bytes)- 0x01: 1 word (of 64bit) per burst..- 0x10: 16 words (of 64bit) per burst- 0x11: reserved...- 0xFF: reserved. */
-
-/* Bit fields for LTDC_LxPCR register */
-#define LTDC_LxPCR_VPDEN_Pos             (1U)
-#define LTDC_LxPCR_VPDEN_Msk             (0x1UL << LTDC_LxPCR_VPDEN_Pos)
-#define LTDC_LxPCR_VPDEN                 LTDC_LxPCR_VPDEN_Msk  /*!< Vertical Pixel Duplication EnableAllows to read a picture, and double its height by duplication of its pixels.- 0: vertical duplication disabled.- 1: vertical duplication enabled. */
-#define LTDC_LxPCR_HPDEN_Pos             (2U)
-#define LTDC_LxPCR_HPDEN_Msk             (0x1UL << LTDC_LxPCR_HPDEN_Pos)
-#define LTDC_LxPCR_HPDEN                 LTDC_LxPCR_HPDEN_Msk  /*!< Horizontal Pixel Duplication Enable.Allows to read a picture, and double its width by duplication of its pixels.- 0: horizontal duplication disabled.- 1: horizontal duplication enabled. */
-#define LTDC_LxPCR_YCEN_Pos              (3U)
-#define LTDC_LxPCR_YCEN_Msk              (0x1UL << LTDC_LxPCR_YCEN_Pos)
-#define LTDC_LxPCR_YCEN                  LTDC_LxPCR_YCEN_Msk  /*!< YCbCr-to-RGB Conversion Enable:- 0: conversion disabled.- 1: YCbCr conversion enabled, using the YCM setting above. */
-#define LTDC_LxPCR_YCM_Pos               (4U)
-#define LTDC_LxPCR_YCM_Msk               (0x3UL << LTDC_LxPCR_YCM_Pos)
-#define LTDC_LxPCR_YCM                   LTDC_LxPCR_YCM_Msk  /*!< YCbCr Conversion ModeDefined the type of input that is considered and converted to a YCbCr 444:- 00: interleaved 422 (Cb and Cr component are replicated horizontally for pixels P and P+1)- 01: semi-Planar 420: (Cb and Cr component are replicated horizontally and vertically. The layer main configuration defines the access to the Y buffer, and auxiliary registers define the access to the Cb and Cr buffers).- 10: full-Planar 420: (Cb and Cr component are replicated horizontally and vertically. The layer main configuration defines the access to the Y buffer, and auxiliary registers define the access to the Cb and Cr buffers).- 11: reserved. */
-#define LTDC_LxPCR_YF_Pos                (6U)
-#define LTDC_LxPCR_YF_Msk                (0x1UL << LTDC_LxPCR_YF_Pos)
-#define LTDC_LxPCR_YF                    LTDC_LxPCR_YF_Msk  /*!< Y Component FirstDefines if the byte 0 of a word (in LSB) contains the Y component.- 0: Y component disabled (thus Cr or Cb component is on byte 0)- 1: Y component enabled (thus Y component is on byte 0) */
-#define LTDC_LxPCR_CBF_Pos               (7U)
-#define LTDC_LxPCR_CBF_Msk               (0x1UL << LTDC_LxPCR_CBF_Pos)
-#define LTDC_LxPCR_CBF                   LTDC_LxPCR_CBF_Msk  /*!< Cb Component FirstDefines if the byte 0&amp;1 of a word (in LSB) contains the Cb component. The setting impacts only for interleaved and semi-planar modes, as it has no meaning in full-planar mode)- 0: Cb disabled (thus Cr component is on byte 0&amp;1)- 1: Cb enabled (thus Cb component is on byte 0&amp;1) */
-#define LTDC_LxPCR_OF_Pos                (8U)
-#define LTDC_LxPCR_OF_Msk                (0x1UL << LTDC_LxPCR_OF_Pos)
-#define LTDC_LxPCR_OF                    LTDC_LxPCR_OF_Msk  /*!< Odd Pixel FirstDefines if the byte 0 of a word (in LSB) contains the Odd pixel.- 0: odd pixel disabled (thus even pixel on byte 0)- 1: odd pixel enabled (thus odd pixel on byte 0) */
-#define LTDC_LxPCR_YREN_Pos              (9U)
-#define LTDC_LxPCR_YREN_Msk              (0x1UL << LTDC_LxPCR_YREN_Pos)
-#define LTDC_LxPCR_YREN                  LTDC_LxPCR_YREN_Msk  /*!< Y Rescale EnableWhen enabled, incoming Y values in range 16..235 are re-scaled to range 0..255, as required e.g. for ITU-R BT.601 conversion: For Y2R and Y2B values.- 0: rescaling disabled.- 1: rescaling enabled. */
-
-/* Bit fields for LTDC_LxCFBAR register */
-#define LTDC_LxCFBAR_CFBADD_Pos          (0U)
-#define LTDC_LxCFBAR_CFBADD_Msk          (0xffffffffUL << LTDC_LxCFBAR_CFBADD_Pos)
-#define LTDC_LxCFBAR_CFBADD              LTDC_LxCFBAR_CFBADD_Msk  /*!< color frame buffer start addressThese bits define the color frame buffer start address. */
-
-/* Bit fields for LTDC_LxCFBLR register */
-#define LTDC_LxCFBLR_CFBLL_Pos           (0U)
-#define LTDC_LxCFBLR_CFBLL_Msk           (0xffffUL << LTDC_LxCFBLR_CFBLL_Pos)
-#define LTDC_LxCFBLR_CFBLL               LTDC_LxCFBLR_CFBLL_Msk  /*!< color frame buffer line lengthThese bits define the length of one line of pixels in bytes + 7.The line length is computed as follows:active high width * number of bytes per pixel + 7. */
-#define LTDC_LxCFBLR_CFBP_Pos            (16U)
-#define LTDC_LxCFBLR_CFBP_Msk            (0xffffUL << LTDC_LxCFBLR_CFBP_Pos)
-#define LTDC_LxCFBLR_CFBP                LTDC_LxCFBLR_CFBP_Msk  /*!< color frame buffer pitch in bytesThese bits define the pitch that is the increment from the start of one line of pixels to the start of the next line in bytes.Negative values (with msb bit = 1) are allowed, to read the buffer from bottom to top, and thus to flip is vertically. When vertically flipped, as the address register must provide the address of the first line to be read, the address register must point to the start of the bottom line of the buffer. */
-
-/* Bit fields for LTDC_LxCFBLNR register */
-#define LTDC_LxCFBLNR_CFBLNBR_Pos        (0U)
-#define LTDC_LxCFBLNR_CFBLNBR_Msk        (0xffffUL << LTDC_LxCFBLNR_CFBLNBR_Pos)
-#define LTDC_LxCFBLNR_CFBLNBR            LTDC_LxCFBLNR_CFBLNBR_Msk  /*!< frame buffer line numberThese bits define the number of lines in the frame buffer that corresponds to the active high width. */
-
-/* Bit fields for LTDC_LxAFBA0R register */
-#define LTDC_LxAFBA0R_AFBADD0_Pos        (0U)
-#define LTDC_LxAFBA0R_AFBADD0_Msk        (0xffffffffUL << LTDC_LxAFBA0R_AFBADD0_Pos)
-#define LTDC_LxAFBA0R_AFBADD0            LTDC_LxAFBA0R_AFBADD0_Msk  /*!< color frame buffer start addressThese bits define the color frame buffer start address. */
-
-/* Bit fields for LTDC_LxAFBA1R register */
-#define LTDC_LxAFBA1R_AFBADD1_Pos        (0U)
-#define LTDC_LxAFBA1R_AFBADD1_Msk        (0xffffffffUL << LTDC_LxAFBA1R_AFBADD1_Pos)
-#define LTDC_LxAFBA1R_AFBADD1            LTDC_LxAFBA1R_AFBADD1_Msk  /*!< color frame buffer start addressThese bits define the color frame buffer start address. */
-
-/* Bit fields for LTDC_LxAFBLR register */
-#define LTDC_LxAFBLR_AFBLL_Pos           (0U)
-#define LTDC_LxAFBLR_AFBLL_Msk           (0xffffUL << LTDC_LxAFBLR_AFBLL_Pos)
-#define LTDC_LxAFBLR_AFBLL               LTDC_LxAFBLR_AFBLL_Msk  /*!< color frame buffer line lengthThese bits define the length of one line of pixels in bytes + 7.The line length is computed as follows:active high width * number of bytes per pixel + 7. */
-#define LTDC_LxAFBLR_AFBP_Pos            (16U)
-#define LTDC_LxAFBLR_AFBP_Msk            (0xffffUL << LTDC_LxAFBLR_AFBP_Pos)
-#define LTDC_LxAFBLR_AFBP                LTDC_LxAFBLR_AFBP_Msk  /*!< color frame buffer pitch in bytesThese bits define the pitch that is the increment from the start of one line of pixels to the start of the next line in bytes.Negative values (with msb bit = 1) are allowed, to read the buffer from bottom to top, and thus to flip is vertically. When vertically flipped, as the address register must provide the address of the first line to be read, the address register must point to the start of the bottom line of the buffer. */
-
-/* Bit fields for LTDC_LxAFBLNR register */
-#define LTDC_LxAFBLNR_AFBLNBR_Pos        (0U)
-#define LTDC_LxAFBLNR_AFBLNBR_Msk        (0xffffUL << LTDC_LxAFBLNR_AFBLNBR_Pos)
-#define LTDC_LxAFBLNR_AFBLNBR            LTDC_LxAFBLNR_AFBLNBR_Msk  /*!< frame buffer line numberThese bits define the number of lines in the frame buffer that corresponds to the active high width. */
-
-/* Bit fields for LTDC_LxCLUTWR register */
-#define LTDC_LxCLUTWR_BLUE_Pos           (0U)
-#define LTDC_LxCLUTWR_BLUE_Msk           (0xffUL << LTDC_LxCLUTWR_BLUE_Pos)
-#define LTDC_LxCLUTWR_BLUE               LTDC_LxCLUTWR_BLUE_Msk  /*!< blue valueThese bits configure the blue value. */
-#define LTDC_LxCLUTWR_GREEN_Pos          (8U)
-#define LTDC_LxCLUTWR_GREEN_Msk          (0xffUL << LTDC_LxCLUTWR_GREEN_Pos)
-#define LTDC_LxCLUTWR_GREEN              LTDC_LxCLUTWR_GREEN_Msk  /*!< green valueThese bits configure the green value. */
-#define LTDC_LxCLUTWR_RED_Pos            (16U)
-#define LTDC_LxCLUTWR_RED_Msk            (0xffUL << LTDC_LxCLUTWR_RED_Pos)
-#define LTDC_LxCLUTWR_RED                LTDC_LxCLUTWR_RED_Msk  /*!< red valueThese bits configure the red value. */
-#define LTDC_LxCLUTWR_CLUTADD_Pos        (24U)
-#define LTDC_LxCLUTWR_CLUTADD_Msk        (0xffUL << LTDC_LxCLUTWR_CLUTADD_Pos)
-#define LTDC_LxCLUTWR_CLUTADD            LTDC_LxCLUTWR_CLUTADD_Msk  /*!< CLUT addressThese bits configure the CLUT address (color position within the CLUT) of each RGB value. */
-
-/* Bit fields for LTDC_LxCYR0R register */
-#define LTDC_LxCYR0R_CR2R_Pos            (0U)
-#define LTDC_LxCYR0R_CR2R_Msk            (0x3ffUL << LTDC_LxCYR0R_CR2R_Pos)
-#define LTDC_LxCYR0R_CR2R                LTDC_LxCYR0R_CR2R_Msk  /*!< Cr-to-Red coefficient, with bits 9:8 as positive integer and 7:0 as decimals. */
-#define LTDC_LxCYR0R_CB2B_Pos            (16U)
-#define LTDC_LxCYR0R_CB2B_Msk            (0x3ffUL << LTDC_LxCYR0R_CB2B_Pos)
-#define LTDC_LxCYR0R_CB2B                LTDC_LxCYR0R_CB2B_Msk  /*!< Cb-to-Blue coefficient, with bits 9:8 as positive integer and 7:0 as decimals. */
-
-/* Bit fields for LTDC_LxCYR1R register */
-#define LTDC_LxCYR1R_CR2G_Pos            (0U)
-#define LTDC_LxCYR1R_CR2G_Msk            (0x3ffUL << LTDC_LxCYR1R_CR2G_Pos)
-#define LTDC_LxCYR1R_CR2G                LTDC_LxCYR1R_CR2G_Msk  /*!< Cr-to-Green coefficient, with bits 9:8 as positive integer and 7:0 as decimals. */
-#define LTDC_LxCYR1R_CB2G_Pos            (16U)
-#define LTDC_LxCYR1R_CB2G_Msk            (0x3ffUL << LTDC_LxCYR1R_CB2G_Pos)
-#define LTDC_LxCYR1R_CB2G                LTDC_LxCYR1R_CB2G_Msk  /*!< Cb-to-Green coefficient, with bits 9:8 as positive integer and 7:0 as decimals. */
 
 /******************************************************************************/
 /*                                                                            */
@@ -22067,6 +20705,185 @@ typedef struct
 #define PKA_MODE_POINT_CHECK              ((uint32_t)0x00000028U) /*!< Point on elliptic curve check */
 #define PKA_MODE_ECC_PROJECTIVE_AFF       ((uint32_t)0x0000002FU) /*!< ECC projective to affine */
 
+/******************************************************************************/
+/*                                                                            */
+/*                      Memory Cipher Engine (LTDC)                           */
+/*                                                                            */
+/******************************************************************************/
+
+/********************  Bit definition for MCE_CR register  ********************/
+
+#define MCE_CR_GLOCK_Pos            (0U)
+#define MCE_CR_GLOCK_Msk            (0x1UL << MCE_CR_GLOCK_Pos)                 /*!< 0x00000001 */
+#define MCE_CR_GLOCK                MCE_CR_GLOCK_Msk                           /*!< Global lock */
+#define MCE_CR_MKLOCK_Pos           (1U)
+#define MCE_CR_MKLOCK_Msk           (0x1UL << MCE_CR_MKLOCK_Pos)                /*!< 0x00000002 */
+#define MCE_CR_MKLOCK               MCE_CR_MKLOCK_Msk                          /*!< Master keys lock */
+
+/********************  Bit definition for MCE_SR register  ********************/
+
+#define MCE_SR_MKVALID_Pos          (0U)
+#define MCE_SR_MKVALID_Msk          (0x1UL << MCE_SR_MKVALID_Pos)               /*!< 0x00000001 */
+#define MCE_SR_MKVALID              MCE_SR_MKVALID_Msk                         /*!< Master key valid */
+#define MCE_SR_ENCDIS_Pos           (4U)
+#define MCE_SR_ENCDIS_Msk           (0x1UL << MCE_SR_ENCDIS_Pos)               /*!< 0x00000010 */
+#define MCE_SR_ENCDIS               MCE_SR_ENCDIS_Msk                         /*!< Encryption disabled */
+
+/********************  Bit definition for MCE_IASR register  ******************/
+
+#define MCE_IASR_CAEF_Pos           (0U)
+#define MCE_IASR_CAEF_Msk           (0x1UL << MCE_IASR_CAEF_Pos)                /*!< 0x00000001 */
+#define MCE_IASR_CAEF               MCE_IASR_CAEF_Msk                          /*!< Configuration access error flag */
+
+/********************  Bit definition for MCE_IACR register  ******************/
+
+#define MCE_IACR_CAEF_Pos           (0U)
+#define MCE_IACR_CAEF_Msk           (0x1UL << MCE_IACR_CAEF_Pos)                /*!< 0x00000001 */
+#define MCE_IACR_CAEF               MCE_IACR_CAEF_Msk                          /*!< Configuration access error flag */
+
+/********************  Bit definition for MCE_IAIER register  *****************/
+
+#define MCE_IAIER_CAEIE_Pos         (0U)
+#define MCE_IAIER_CAEIE_Msk         (0x1UL << MCE_IAIER_CAEIE_Pos)              /*!< 0x00000001 */
+#define MCE_IAIER_CAEIE             MCE_IAIER_CAEIE_Msk                        /*!< Configuration access error interrupt enable */
+
+/********************  Bit definition for MCE_PRIVCFGR register  **************/
+
+#define MCE_PRIVCFGR_PRIV_Pos       (0U)
+#define MCE_PRIVCFGR_PRIV_Msk       (0x1UL << MCE_PRIVCFGR_PRIV_Pos)            /*!< 0x00000001 */
+#define MCE_PRIVCFGR_PRIV           MCE_PRIVCFGR_PRIV_Msk                      /*!< Privileged configuration */
+
+/********************  Bit definition for MCE_REGCR register  *****************/
+
+#define MCE_REGCR_BREN_Pos          (0U)
+#define MCE_REGCR_BREN_Msk          (0x1UL << MCE_REGCR_BREN_Pos)               /*!< 0x00000001 */
+#define MCE_REGCR_BREN              MCE_REGCR_BREN_Msk                         /*!< Base region enable */
+#define MCE_REGCR_ENC_Pos           (15U)
+#define MCE_REGCR_ENC_Msk           (0x1UL << MCE_REGCR_ENC_Pos)                /*!< 0x00008000 */
+#define MCE_REGCR_ENC               MCE_REGCR_ENC_Msk                          /*!< Encrypted region */
+
+/********************  Bit definition for MCE_SADDR register  *****************/
+
+#define MCE_SADDR_BADDSTART_Pos     (16U)
+#define MCE_SADDR_BADDSTART_Msk     (0xFFFFUL << MCE_SADDR_BADDSTART_Pos)       /*!< 0xFFFF0000 */
+#define MCE_SADDR_BADDSTART         MCE_SADDR_BADDSTART_Msk                    /*!< Region address start */
+
+/********************  Bit definition for MCE_EADDR register  *****************/
+
+#define MCE_EADDR_BADDEND_Pos       (16U)
+#define MCE_EADDR_BADDEND_Msk       (0xFFFFUL << MCE_EADDR_BADDEND_Pos)         /*!< 0xFFFF0000 */
+#define MCE_EADDR_BADDEND           MCE_EADDR_BADDEND_Msk                      /*!< Region address end */
+
+/********************  Bit definition for MCE_MKEYR0 register  ****************/
+
+#define MCE_MKEYR0_MKEY_Pos         (0U)
+#define MCE_MKEYR0_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR0_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR0_MKEY             MCE_MKEYR0_MKEY_Msk                        /*!< Master key, bits [31:0] */
+
+/********************  Bit definition for MCE_MKEYR1 register  ****************/
+
+#define MCE_MKEYR1_MKEY_Pos         (0U)
+#define MCE_MKEYR1_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR1_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR1_MKEY             MCE_MKEYR1_MKEY_Msk                        /*!< Master key, bits [63:32] */
+
+/********************  Bit definition for MCE_MKEYR2 register  ****************/
+
+#define MCE_MKEYR2_MKEY_Pos         (0U)
+#define MCE_MKEYR2_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR2_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR2_MKEY             MCE_MKEYR2_MKEY_Msk                        /*!< Master key, bits [95:64] */
+
+/********************  Bit definition for MCE_MKEYR3 register  ****************/
+
+#define MCE_MKEYR3_MKEY_Pos         (0U)
+#define MCE_MKEYR3_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR3_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR3_MKEY             MCE_MKEYR3_MKEY_Msk                        /*!< Master key, bits [127:96] */
+
+/********************  Bit definition for MCE_HWCFGR3 register  ***************/
+
+#define MCE_HWCFGR3_CFG1_Pos        (0U)
+#define MCE_HWCFGR3_CFG1_Msk        (0xFUL << MCE_HWCFGR3_CFG1_Pos)             /*!< 0x0000000F */
+#define MCE_HWCFGR3_CFG1            MCE_HWCFGR3_CFG1_Msk                       /*!< HW generic 1 */
+#define MCE_HWCFGR3_CFG2_Pos        (4U)
+#define MCE_HWCFGR3_CFG2_Msk        (0xFUL << MCE_HWCFGR3_CFG2_Pos)             /*!< 0x000000F0 */
+#define MCE_HWCFGR3_CFG2            MCE_HWCFGR3_CFG2_Msk                       /*!< HW generic 2 */
+#define MCE_HWCFGR3_CFG3_Pos        (8U)
+#define MCE_HWCFGR3_CFG3_Msk        (0xFUL << MCE_HWCFGR3_CFG3_Pos)             /*!< 0x00000F00 */
+#define MCE_HWCFGR3_CFG3            MCE_HWCFGR3_CFG3_Msk                       /*!< HW generic 3 */
+#define MCE_HWCFGR3_CFG4_Pos        (12U)
+#define MCE_HWCFGR3_CFG4_Msk        (0xFUL << MCE_HWCFGR3_CFG4_Pos)             /*!< 0x0000F000 */
+#define MCE_HWCFGR3_CFG4            MCE_HWCFGR3_CFG4_Msk                       /*!< HW generic 4 */
+#define MCE_HWCFGR3_CFG5_Pos        (16U)
+#define MCE_HWCFGR3_CFG5_Msk        (0xFUL << MCE_HWCFGR3_CFG5_Pos)             /*!< 0x000F0000 */
+#define MCE_HWCFGR3_CFG5            MCE_HWCFGR3_CFG5_Msk                       /*!< HW generic 5 */
+#define MCE_HWCFGR3_CFG6_Pos        (20U)
+#define MCE_HWCFGR3_CFG6_Msk        (0xFUL << MCE_HWCFGR3_CFG6_Pos)             /*!< 0x00F00000 */
+#define MCE_HWCFGR3_CFG6            MCE_HWCFGR3_CFG6_Msk                       /*!< HW generic 6 */
+#define MCE_HWCFGR3_CFG7_Pos        (24U)
+#define MCE_HWCFGR3_CFG7_Msk        (0xFUL << MCE_HWCFGR3_CFG7_Pos)             /*!< 0x0F000000 */
+#define MCE_HWCFGR3_CFG7            MCE_HWCFGR3_CFG7_Msk                       /*!< HW generic 7 */
+#define MCE_HWCFGR3_CFG8_Pos        (28U)
+#define MCE_HWCFGR3_CFG8_Msk        (0xFUL << MCE_HWCFGR3_CFG8_Pos)             /*!< 0xF0000000 */
+#define MCE_HWCFGR3_CFG8            MCE_HWCFGR3_CFG8_Msk                       /*!< HW generic 8 */
+
+/********************  Bit definition for MCE_HWCFGR2 register  ***************/
+
+#define MCE_HWCFGR2_CFG1_Pos        (0U)
+#define MCE_HWCFGR2_CFG1_Msk        (0xFUL << MCE_HWCFGR2_CFG1_Pos)             /*!< 0x0000000F */
+#define MCE_HWCFGR2_CFG1            MCE_HWCFGR2_CFG1_Msk                       /*!< HW generic 1 */
+#define MCE_HWCFGR2_CFG2_Pos        (4U)
+#define MCE_HWCFGR2_CFG2_Msk        (0xFUL << MCE_HWCFGR2_CFG2_Pos)             /*!< 0x000000F0 */
+#define MCE_HWCFGR2_CFG2            MCE_HWCFGR2_CFG2_Msk                       /*!< HW generic 2 */
+#define MCE_HWCFGR2_CFG3_Pos        (8U)
+#define MCE_HWCFGR2_CFG3_Msk        (0xFUL << MCE_HWCFGR2_CFG3_Pos)             /*!< 0x00000F00 */
+#define MCE_HWCFGR2_CFG3            MCE_HWCFGR2_CFG3_Msk                       /*!< HW generic 3 */
+#define MCE_HWCFGR2_CFG4_Pos        (12U)
+#define MCE_HWCFGR2_CFG4_Msk        (0xFUL << MCE_HWCFGR2_CFG4_Pos)             /*!< 0x0000F000 */
+#define MCE_HWCFGR2_CFG4            MCE_HWCFGR2_CFG4_Msk                       /*!< HW generic 4 */
+#define MCE_HWCFGR2_CFG5_Pos        (16U)
+#define MCE_HWCFGR2_CFG5_Msk        (0xFUL << MCE_HWCFGR2_CFG5_Pos)             /*!< 0x000F0000 */
+#define MCE_HWCFGR2_CFG5            MCE_HWCFGR2_CFG5_Msk                       /*!< HW generic 5 */
+#define MCE_HWCFGR2_CFG6_Pos        (20U)
+#define MCE_HWCFGR2_CFG6_Msk        (0xFUL << MCE_HWCFGR2_CFG6_Pos)             /*!< 0x00F00000 */
+#define MCE_HWCFGR2_CFG6            MCE_HWCFGR2_CFG6_Msk                       /*!< HW generic 6 */
+#define MCE_HWCFGR2_CFG7_Pos        (24U)
+#define MCE_HWCFGR2_CFG7_Msk        (0xFUL << MCE_HWCFGR2_CFG7_Pos)             /*!< 0x0F000000 */
+#define MCE_HWCFGR2_CFG7            MCE_HWCFGR2_CFG7_Msk                       /*!< HW generic 7 */
+#define MCE_HWCFGR2_CFG8_Pos        (28U)
+#define MCE_HWCFGR2_CFG8_Msk        (0xFUL << MCE_HWCFGR2_CFG8_Pos)             /*!< 0xF0000000 */
+#define MCE_HWCFGR2_CFG8            MCE_HWCFGR2_CFG8_Msk                       /*!< HW generic 8 */
+
+/********************  Bit definition for MCE_HWCFGR1 register  ***************/
+
+#define MCE_HWCFGR1_CFG1_Pos        (0U)
+#define MCE_HWCFGR1_CFG1_Msk        (0xFFUL << MCE_HWCFGR1_CFG1_Pos)            /*!< 0x000000FF */
+#define MCE_HWCFGR1_CFG1            MCE_HWCFGR1_CFG1_Msk                       /*!< HW generic 1 */
+#define MCE_HWCFGR1_CFG2_Pos        (8U)
+#define MCE_HWCFGR1_CFG2_Msk        (0xFFUL << MCE_HWCFGR1_CFG2_Pos)            /*!< 0x0000FF00 */
+#define MCE_HWCFGR1_CFG2            MCE_HWCFGR1_CFG2_Msk                       /*!< HW generic 2 */
+#define MCE_HWCFGR1_CFG3_Pos        (16U)
+#define MCE_HWCFGR1_CFG3_Msk        (0xFFUL << MCE_HWCFGR1_CFG3_Pos)            /*!< 0x00FF0000 */
+#define MCE_HWCFGR1_CFG3            MCE_HWCFGR1_CFG3_Msk                       /*!< HW generic 3 */
+
+/********************  Bit definition for MCE_VERR register  ******************/
+
+#define MCE_VERR_MINREV_Pos         (0U)
+#define MCE_VERR_MINREV_Msk         (0xFUL << MCE_VERR_MINREV_Pos)              /*!< 0x0000000F */
+#define MCE_VERR_MINREV             MCE_VERR_MINREV_Msk                        /*!< Minor revision */
+#define MCE_VERR_MAJREV_Pos         (4U)
+#define MCE_VERR_MAJREV_Msk         (0xFUL << MCE_VERR_MAJREV_Pos)              /*!< 0x0000000F */
+#define MCE_VERR_MAJREV             MCE_VERR_MAJREV_Msk                        /*!< Major revision */
+
+/********************  Bit definition for MCE_IPIDR register  *****************/
+
+#define MCE_IPIDR_ID_Pos            (0U)
+#define MCE_IPIDR_ID_Msk            (0xFFFFFFFFUL << MCE_IPIDR_ID_Pos)          /*!< 0xFFFFFFFF */
+#define MCE_IPIDR_ID                MCE_IPIDR_ID_Msk                           /*!< Identification code */
+
+/********************  Bit definition for MCE_SIDR register  *****************/
+
+#define MCE_SIDR_SID_Pos            (0U)
+#define MCE_SIDR_SID_Msk            (0xFFFFFFFFUL << MCE_SIDR_SID_Pos)          /*!< 0xFFFFFFFF */
+#define MCE_SIDR_SID                MCE_SIDR_SID_Msk                           /*!< Size Identification code */
 
 /******************************************************************************/
 /*                                                                            */
@@ -35243,8 +34060,6 @@ typedef struct
 
 /******************************* CRC Instances ********************************/
 #define IS_CRC_ALL_INSTANCE(INSTANCE) (((INSTANCE) == CRC1))
-/******************************* DCMIPP Instances *****************************/
-#define IS_DCMIPP_ALL_INSTANCE(INSTANCE) (((INSTANCE) == DCMIPP))
 
 /****************************** DFSDM Instances *******************************/
 #define IS_DFSDM_FILTER_ALL_INSTANCE(INSTANCE) (((INSTANCE) == DFSDM1_Filter0) || \
@@ -35371,8 +34186,6 @@ typedef struct
                                          ((INSTANCE) == SPI2) || \
                                          ((INSTANCE) == SPI3))
 
-/****************************** LTDC Instances ********************************/
-#define IS_LTDC_ALL_INSTANCE(INSTANCE)  ((INSTANCE) == LTDC)
 /******************************* RNG Instances ********************************/
 #define IS_RNG_ALL_INSTANCE(INSTANCE)  (((INSTANCE) == RNG1))
 
@@ -35382,6 +34195,8 @@ typedef struct
 /******************************* HASH Instances ********************************/
 #define IS_HASH_DIGEST_ALL_INSTANCE(INSTANCE) (((INSTANCE) == HASH1_DIGEST))
 
+/******************************* SAES Instances ********************************/
+#define IS_SAES_ALL_INSTANCE(INSTANCE) (((INSTANCE) == SAES))
 
 /******************************* PKA Instances ********************************/
 #define IS_PKA_ALL_INSTANCE(INSTANCE) (((INSTANCE) == PKA))
@@ -36005,7 +34820,14 @@ typedef struct
 /******************************* HASH VERSION ********************************/
 #define HASH_VERSION(INSTANCE) ((INSTANCE)->VERR)
 
+/******************************* CRYP VERSION ********************************/
+#define CRYP_VERSION(INSTANCE) ((INSTANCE)->VERR)
 
+/******************************* SAES VERSION ********************************/
+#define SAES_VERSION(INSTANCE) ((INSTANCE)->VERR)
+
+/******************************* MCE VERSION ********************************/
+#define MCE_VERSION(INSTANCE) ((INSTANCE)->VERR)
 /******************************* PKA VERSION ********************************/
 #define PKA_VERSION(INSTANCE) ((INSTANCE)->VERR)
 
@@ -36078,4 +34900,4 @@ typedef struct
 }
 #endif /* __cplusplus */
 
-#endif /* __STM32MP135Dxx_CA7_H */
+#endif /* __STM32MP133Cxx_CA7_H */

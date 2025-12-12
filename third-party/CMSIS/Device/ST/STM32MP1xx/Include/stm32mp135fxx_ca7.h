@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    stm32mp135dxx_ca7.h
+  * @file    stm32mp135fxx_ca7.h
   * @author  MCD Application Team
-  * @brief   CMSIS stm32mp135dxx_ca7 Device Peripheral Access Layer Header File.
+  * @brief   CMSIS stm32mp135fxx_ca7 Device Peripheral Access Layer Header File.
   *
   *          This file contains:
   *           - Data structures and the address mapping for all peripherals
@@ -26,12 +26,12 @@
   * @{
   */
 
-/** @addtogroup stm32mp135dxx_ca7
+/** @addtogroup stm32mp135fxx_ca7
   * @{
   */
 
-#ifndef __STM32MP135Dxx_CA7_H
-#define __STM32MP135Dxx_CA7_H
+#ifndef __STM32MP135Fxx_CA7_H
+#define __STM32MP135Fxx_CA7_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -163,9 +163,9 @@
    EXTI12_IRQn                      = 109,    /*!< EXTI Line 76 Interrupts                                              */
    EXTI13_IRQn                      = 110,    /*!< EXTI Line 77 Interrupts                                              */
    DCMIPP_IRQn                      = 111,    /*!< DCMIPP global interrupt                                              */
-   RESERVED_112                     = 112,    /*!< reserved                                                             */
+   CRYP1_IRQn                       = 112,    /*!< CRYP crypto global interrupt                                         */
    HASH1_IRQn                       = 113,    /*!< Hash global interrupt                                                */
-   RESERVED_114                     = 114,    /*!< reserved                                                             */
+   SAES_IRQn                        = 114,    /*!< Secure AES global interrupt                                          */
    UART7_IRQn                       = 115,    /*!< UART7 global interrupt                                               */
    UART8_IRQn                       = 116,    /*!< UART8 global interrupt                                               */
    SPI4_IRQn                        = 117,    /*!< SPI4 global Interrupt                                                */
@@ -222,7 +222,7 @@
    AXIERRIRQ_IRQn                   = 168,    /*!< Asynchronous AXI Abort interrupt                                     */
    DDRPERFM_IRQn                    = 169,    /*!< DDR Performance Monitor Interrupt                                    */
    nCTIIRQ0_IRQn                    = 170,    /*!< Cortex-A7 Core#0 CTI interrupt                                       */
-   RESERVED_171                     = 171,    /*!< reserved                                                             */
+   MCE_IRQn                         = 171,    /*!< MCE interrupt                                                        */
    DFSDM1_IRQn                      = 172,    /*!< DFSDM Filter1 Interrupt                                              */
    DFSDM2_IRQn                      = 173,    /*!< DFSDM Filter2 Interrupt                                              */
    DMA3_Stream0_IRQn                = 174,    /*!< DMA3 Stream 0 global Interrupt                                       */
@@ -2480,6 +2480,48 @@ typedef struct
   __IO uint32_t FPF1R;        /*!< LTDC layer x Flexible Pixel Format 1 register Address offset: 0x178 */
 } LTDC_Layer_TypeDef;
 
+/**
+  * @brief SAES hardware accelerator
+  */
+typedef struct
+{
+  __IO uint32_t CR;          /*!< SAES control register,                        Address offset: 0x00 */
+  __IO uint32_t SR;          /*!< SAES status register,                         Address offset: 0x04 */
+  __IO uint32_t DINR;        /*!< SAES data input register,                     Address offset: 0x08 */
+  __IO uint32_t DOUTR;       /*!< SAES data output register,                    Address offset: 0x0C */
+  __IO uint32_t KEYR0;       /*!< SAES key register 0,                          Address offset: 0x10 */
+  __IO uint32_t KEYR1;       /*!< SAES key register 1,                          Address offset: 0x14 */
+  __IO uint32_t KEYR2;       /*!< SAES key register 2,                          Address offset: 0x18 */
+  __IO uint32_t KEYR3;       /*!< SAES key register 3,                          Address offset: 0x1C */
+  __IO uint32_t IVR0;        /*!< SAES initialization vector register 0,        Address offset: 0x20 */
+  __IO uint32_t IVR1;        /*!< SAES initialization vector register 1,        Address offset: 0x24 */
+  __IO uint32_t IVR2;        /*!< SAES initialization vector register 2,        Address offset: 0x28 */
+  __IO uint32_t IVR3;        /*!< SAES initialization vector register 3,        Address offset: 0x2C */
+  __IO uint32_t KEYR4;       /*!< SAES key register 4,                          Address offset: 0x30 */
+  __IO uint32_t KEYR5;       /*!< SAES key register 5,                          Address offset: 0x34 */
+  __IO uint32_t KEYR6;       /*!< SAES key register 6,                          Address offset: 0x38 */
+  __IO uint32_t KEYR7;       /*!< SAES key register 7,                          Address offset: 0x3C */
+  __IO uint32_t SUSP0R;      /*!< SAES suspend registers 0,                     Address offset: 0x40 */
+  __IO uint32_t SUSP1R;      /*!< SAES suspend registers 1,                     Address offset: 0x44 */
+  __IO uint32_t SUSP2R;      /*!< SAES suspend registers 2,                     Address offset: 0x48 */
+  __IO uint32_t SUSP3R;      /*!< SAES suspend registers 3,                     Address offset: 0x4c */
+  __IO uint32_t SUSP4R;      /*!< SAES suspend registers 4,                     Address offset: 0x50 */
+  __IO uint32_t SUSP5R;      /*!< SAES suspend registers 5,                     Address offset: 0x54 */
+  __IO uint32_t SUSP6R;      /*!< SAES suspend registers 6,                     Address offset: 0x58 */
+  __IO uint32_t SUSP7R;      /*!< SAES suspend registers 7,                     Address offset: 0x5c */
+  uint32_t RESERVED1[40];    /*!< Reserved,                                     Address offset: 0x60 -- 0xFC */
+  __IO uint32_t DPACFGR;     /*!< SAES IP DPACFGR register,                     Address offset: 0x0100 */
+  uint32_t RESERVED2[127];   /*!< Reserved,                                     Address offset: 0x104 -- 0x2FC */
+  __IO uint32_t IER;         /*!< SAES Interrupt Enable Register,               Address offset: 0x0300 */
+  __IO uint32_t ISR;         /*!< SAES Interrupt Status Register,               Address offset: 0x0304 */
+  __IO uint32_t ICR;         /*!< SAES Interrupt Clear Register,                Address offset: 0x0308 */
+  uint32_t RESERVED3[57];   /*!< Reserved,                                      Address offset: 0x30C -- 0x3EC */
+  __IO uint32_t HWCFGR;      /*!< SAES HW Configuration Register,               Address offset: 0x3F0 */
+  __IO uint32_t VERR;        /*!< SAES Version Register,                        Address offset: 0x3F4 */
+  __IO uint32_t IPIDR;       /*!< SAES Identification Register,                 Address offset: 0x3F8 */
+  __IO uint32_t SIDR;        /*!< SAES Size ID Register,                        Address offset: 0x3FC */
+} SAES_TypeDef;
+
  
  /**
   * @brief Public Key Accelerator (PKA)
@@ -2498,6 +2540,35 @@ typedef struct
   __IO uint32_t ID;          /*!< PKA ID register,                      Address offset: 0x1FF8 */
 } PKA_TypeDef;
 
+/**
+  * @brief MCE Memory Cipher Engine
+  */
+typedef struct
+{
+  __IO uint32_t CR;                        /*!< MCE Configuration Register,               Address offset: 0x000 */
+  __IO uint32_t SR;                        /*!< MCE Status Register,                      Address offset: 0x004 */
+  __IO uint32_t IASR;                      /*!< MCE Illegal Access Status Register,       Address offset: 0x008 */
+  __IO uint32_t IACR;                      /*!< MCE Illegal Access Clear Register,        Address offset: 0x00C */
+  __IO uint32_t IAIER;                     /*!< MCE Illegal Interrupt Enable Register,    Address offset: 0x010 */
+  uint32_t RESERVED0[2];                   /*! Reserved                                   Address offset: 0x014 - 0x018 */
+  __IO uint32_t PRIVCFGR;                  /*!< MCE Privileged Configuration Register,    Address offset: 0x01C */
+  uint32_t RESERVED1[8];                   /*! Reserved                                   Address offset: 0x020 - 0x03C */
+  __IO uint32_t REGCR;                     /*!< MCE Region X Configuration Register,      Address offset: 0x040 */
+  __IO uint32_t SADDR;                     /*!< MCE Start Address For Region X Register,  Address offset: 0x044 */
+  __IO uint32_t EADDR;                     /*!< MCE End Address For Region X Register,    Address offset: 0x048 */
+  uint32_t RESERVED2[109];                 /*! Reserved                                   Address offset: 0x04C - 0x1FC */
+  __IO uint32_t MKEYR0;                    /*!< MCE Master Key 0 Register,                Address offset: 0x200 */
+  __IO uint32_t MKEYR1;                    /*!< MCE Master Key 1 Register,                Address offset: 0x204 */
+  __IO uint32_t MKEYR2;                    /*!< MCE Master Key 2 Register,                Address offset: 0x208 */
+  __IO uint32_t MKEYR3;                    /*!< MCE Master Key 3 Register,                Address offset: 0x20C */
+  uint32_t RESERVED3[118];                 /*! Reserved                                   Address offset: 0x210 - 0x3E4 */
+  __IO uint32_t HWCFGR3;                   /*!< MCE Version Register,                     Address offset: 0x3E8 */
+  __IO uint32_t HWCFGR2;                   /*!< MCE Version Register,                     Address offset: 0x3EC */
+  __IO uint32_t HWCFGR1;                   /*!< MCE Version Register,                     Address offset: 0x3F0 */
+  __IO uint32_t VERR;                      /*!< MCE Version Register,                     Address offset: 0x3F4 */
+  __IO uint32_t IPIDR;                     /*!< MCE Identification Register,              Address offset: 0x3F8 */
+  __IO uint32_t SIDR;                      /*!< MCE Size ID Register,                     Address offset: 0x3FC */
+} MCE_TypeDef;
 
 /**
   * @brief USBPHYC  USB HS PHY Control
@@ -3379,6 +3450,54 @@ typedef struct
 } SWPMI_TypeDef;
 
 /**
+  * @brief Crypto Processor
+  */
+
+typedef struct
+{
+  __IO uint32_t CR;         /*!< CRYP control register,                                    Address offset: 0x00 */
+  __IO uint32_t SR;         /*!< CRYP status register,                                     Address offset: 0x04 */
+  __IO uint32_t DIN;        /*!< CRYP data input register,                                 Address offset: 0x08 */
+  __IO uint32_t DOUT;       /*!< CRYP data output register,                                Address offset: 0x0C */
+  __IO uint32_t DMACR;      /*!< CRYP DMA control register,                                Address offset: 0x10 */
+  __IO uint32_t IMSCR;      /*!< CRYP interrupt mask set/clear register,                   Address offset: 0x14 */
+  __IO uint32_t RISR;       /*!< CRYP raw interrupt status register,                       Address offset: 0x18 */
+  __IO uint32_t MISR;       /*!< CRYP masked interrupt status register,                    Address offset: 0x1C */
+  __IO uint32_t K0LR;       /*!< CRYP key left  register 0,                                Address offset: 0x20 */
+  __IO uint32_t K0RR;       /*!< CRYP key right register 0,                                Address offset: 0x24 */
+  __IO uint32_t K1LR;       /*!< CRYP key left  register 1,                                Address offset: 0x28 */
+  __IO uint32_t K1RR;       /*!< CRYP key right register 1,                                Address offset: 0x2C */
+  __IO uint32_t K2LR;       /*!< CRYP key left  register 2,                                Address offset: 0x30 */
+  __IO uint32_t K2RR;       /*!< CRYP key right register 2,                                Address offset: 0x34 */
+  __IO uint32_t K3LR;       /*!< CRYP key left  register 3,                                Address offset: 0x38 */
+  __IO uint32_t K3RR;       /*!< CRYP key right register 3,                                Address offset: 0x3C */
+  __IO uint32_t IV0LR;      /*!< CRYP initialization vector left-word  register 0,         Address offset: 0x40 */
+  __IO uint32_t IV0RR;      /*!< CRYP initialization vector right-word register 0,         Address offset: 0x44 */
+  __IO uint32_t IV1LR;      /*!< CRYP initialization vector left-word  register 1,         Address offset: 0x48 */
+  __IO uint32_t IV1RR;      /*!< CRYP initialization vector right-word register 1,         Address offset: 0x4C */
+  __IO uint32_t CSGCMCCM0R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 0,        Address offset: 0x50 */
+  __IO uint32_t CSGCMCCM1R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 1,        Address offset: 0x54 */
+  __IO uint32_t CSGCMCCM2R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 2,        Address offset: 0x58 */
+  __IO uint32_t CSGCMCCM3R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 3,        Address offset: 0x5C */
+  __IO uint32_t CSGCMCCM4R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 4,        Address offset: 0x60 */
+  __IO uint32_t CSGCMCCM5R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 5,        Address offset: 0x64 */
+  __IO uint32_t CSGCMCCM6R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 6,        Address offset: 0x68 */
+  __IO uint32_t CSGCMCCM7R; /*!< CRYP GCM/GMAC or CCM/CMAC context swap register 7,        Address offset: 0x6C */
+  __IO uint32_t CSGCM0R;    /*!< CRYP GCM/GMAC context swap register 0,                    Address offset: 0x70 */
+  __IO uint32_t CSGCM1R;    /*!< CRYP GCM/GMAC context swap register 1,                    Address offset: 0x74 */
+  __IO uint32_t CSGCM2R;    /*!< CRYP GCM/GMAC context swap register 2,                    Address offset: 0x78 */
+  __IO uint32_t CSGCM3R;    /*!< CRYP GCM/GMAC context swap register 3,                    Address offset: 0x7C */
+  __IO uint32_t CSGCM4R;    /*!< CRYP GCM/GMAC context swap register 4,                    Address offset: 0x80 */
+  __IO uint32_t CSGCM5R;    /*!< CRYP GCM/GMAC context swap register 5,                    Address offset: 0x84 */
+  __IO uint32_t CSGCM6R;    /*!< CRYP GCM/GMAC context swap register 6,                    Address offset: 0x88 */
+  __IO uint32_t CSGCM7R;    /*!< CRYP GCM/GMAC context swap register 7,                    Address offset: 0x8C */
+  uint32_t RESERVED[216];
+  __IO uint32_t HWCFGR;     /*!< CRYP HW Configuration,                                    Address offset: 0x3F0 */
+  __IO uint32_t VERR;       /*!< CRYP version register ,                                   Address offset: 0x3F4 */
+  __IO uint32_t IPIDR;      /*!< CRYP Identification register,                             Address offset: 0x3F8 */
+  __IO uint32_t MID;        /*!< CRYP HW Magic ID register,                                Address offset: 0x3FC */
+} CRYP_TypeDef;
+/**
   * @brief HASH
   */
 /* HASH (c7amba_hash1@v4.0) */
@@ -3710,15 +3829,18 @@ typedef struct
 
 /*!< AHB5 */
 #define BKPSRAM_BASE          (AHB5_PERIPH_BASE + 0x0000UL)
+#define CRYP1_BASE            (AHB5_PERIPH_BASE + 0x2000UL)
 #define HASH1_BASE            (AHB5_PERIPH_BASE + 0x3000UL)
 #define HASH1_DIGEST_BASE     (AHB5_PERIPH_BASE + 0x3310UL)
 #define RNG1_BASE             (AHB5_PERIPH_BASE + 0x4000UL)
+#define SAES_BASE             (AHB5_PERIPH_BASE + 0x5000UL)
 #define PKA_BASE              (AHB5_PERIPH_BASE + 0x6000UL)
 
 /*!< GPV */
 
 /*!< MPU_AHB6 */
 #define MDMA_BASE               (AHB6_PERIPH_BASE + 0x0000UL)
+#define MCE_BASE                (AHB6_PERIPH_BASE + 0x1000UL)
 #define FMC_R_BASE              (AHB6_PERIPH_BASE + 0x2000UL)
 #define QSPI_R_BASE             (AHB6_PERIPH_BASE + 0x3000UL)
 #define DLYB_QSPI_BASE          (AHB6_PERIPH_BASE + 0x4000UL)
@@ -3983,11 +4105,13 @@ typedef struct
 #define ADC1_COMMON        ((ADC_Common_TypeDef *) ADC1_COMMON_BASE)
 #define ADC2_COMMON        ((ADC_Common_TypeDef *) ADC2_COMMON_BASE)
 
+#define CRYP1               ((CRYP_TypeDef *) CRYP1_BASE)
 #define HASH1               ((HASH_TypeDef *) HASH1_BASE)
 #define HASH1_DIGEST        ((HASH_DIGEST_TypeDef *) HASH1_DIGEST_BASE)
 #define HASH                ((HASH_TypeDef *) HASH1)
 #define HASH_DIGEST         ((HASH_DIGEST_TypeDef *) HASH1_DIGEST)
 #define RNG1                ((RNG_TypeDef *) RNG1_BASE)
+#define SAES                ((SAES_TypeDef *) SAES_BASE)
 #define PKA                 ((PKA_TypeDef *) PKA_BASE)
 #define SDMMC2              ((SDMMC_TypeDef *) SDMMC2_BASE)
 
@@ -4086,6 +4210,7 @@ typedef struct
 #define LTDC                ((LTDC_TypeDef *)LTDC_BASE)
 #define LTDC_Layer1         ((LTDC_Layer_TypeDef *)LTDC_Layer1_BASE)
 #define LTDC_Layer2         ((LTDC_Layer_TypeDef *)LTDC_Layer2_BASE)
+#define MCE                 ((MCE_TypeDef *)MCE_BASE)
 #define DCMIPP              ((DCMIPP_TypeDef *) DCMIPP_BASE)
 #define TZC                 ((TZC_TypeDef *)TZC_BASE)
 #define ETZPC               ((ETZPC_TypeDef *)ETZPC_BASE)
@@ -7012,6 +7137,166 @@ typedef struct
 #define CRS_ICR_ESYNCC_Msk        (0x1UL << CRS_ICR_ESYNCC_Pos)                 /*!< 0x00000008 */
 #define CRS_ICR_ESYNCC            CRS_ICR_ESYNCC_Msk                           /*!< Expected SYNC clear flag */
 
+/******************************************************************************/
+/*                                                                            */
+/*                            Crypto Processor                                */
+/*                                                                            */
+/******************************************************************************/
+/******************* Bits definition for CRYP_CR register  ********************/
+#define CRYP_CR_ALGODIR_Pos              (2U)
+#define CRYP_CR_ALGODIR_Msk              (0x1UL << CRYP_CR_ALGODIR_Pos)         /*!< 0x00000004 */
+#define CRYP_CR_ALGODIR                  CRYP_CR_ALGODIR_Msk
+
+#define CRYP_CR_ALGOMODE_Pos             (3U)
+#define CRYP_CR_ALGOMODE_Msk             (0x10007UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00080038 */
+#define CRYP_CR_ALGOMODE                 CRYP_CR_ALGOMODE_Msk
+#define CRYP_CR_ALGOMODE_0               (0x00001UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00000008 */
+#define CRYP_CR_ALGOMODE_1               (0x00002UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00000010 */
+#define CRYP_CR_ALGOMODE_2               (0x00004UL << CRYP_CR_ALGOMODE_Pos)    /*!< 0x00000020 */
+#define CRYP_CR_ALGOMODE_TDES_ECB        ((uint32_t)0x00000000)
+#define CRYP_CR_ALGOMODE_TDES_CBC_Pos    (3U)
+#define CRYP_CR_ALGOMODE_TDES_CBC_Msk    (0x1UL << CRYP_CR_ALGOMODE_TDES_CBC_Pos) /*!< 0x00000008 */
+#define CRYP_CR_ALGOMODE_TDES_CBC        CRYP_CR_ALGOMODE_TDES_CBC_Msk
+#define CRYP_CR_ALGOMODE_DES_ECB_Pos     (4U)
+#define CRYP_CR_ALGOMODE_DES_ECB_Msk     (0x1UL << CRYP_CR_ALGOMODE_DES_ECB_Pos) /*!< 0x00000010 */
+#define CRYP_CR_ALGOMODE_DES_ECB         CRYP_CR_ALGOMODE_DES_ECB_Msk
+#define CRYP_CR_ALGOMODE_DES_CBC_Pos     (3U)
+#define CRYP_CR_ALGOMODE_DES_CBC_Msk     (0x3UL << CRYP_CR_ALGOMODE_DES_CBC_Pos) /*!< 0x00000018 */
+#define CRYP_CR_ALGOMODE_DES_CBC         CRYP_CR_ALGOMODE_DES_CBC_Msk
+#define CRYP_CR_ALGOMODE_AES_ECB_Pos     (5U)
+#define CRYP_CR_ALGOMODE_AES_ECB_Msk     (0x1UL << CRYP_CR_ALGOMODE_AES_ECB_Pos) /*!< 0x00000020 */
+#define CRYP_CR_ALGOMODE_AES_ECB         CRYP_CR_ALGOMODE_AES_ECB_Msk
+#define CRYP_CR_ALGOMODE_AES_CBC_Pos     (3U)
+#define CRYP_CR_ALGOMODE_AES_CBC_Msk     (0x5UL << CRYP_CR_ALGOMODE_AES_CBC_Pos) /*!< 0x00000028 */
+#define CRYP_CR_ALGOMODE_AES_CBC         CRYP_CR_ALGOMODE_AES_CBC_Msk
+#define CRYP_CR_ALGOMODE_AES_CTR_Pos     (4U)
+#define CRYP_CR_ALGOMODE_AES_CTR_Msk     (0x3UL << CRYP_CR_ALGOMODE_AES_CTR_Pos) /*!< 0x00000030 */
+#define CRYP_CR_ALGOMODE_AES_CTR         CRYP_CR_ALGOMODE_AES_CTR_Msk
+#define CRYP_CR_ALGOMODE_AES_GCM_Pos     (19U)
+#define CRYP_CR_ALGOMODE_AES_GCM_Msk     (0x1UL << CRYP_CR_ALGOMODE_AES_GCM_Pos) /*!< 0x00080000 */
+#define CRYP_CR_ALGOMODE_AES_GCM         CRYP_CR_ALGOMODE_AES_GCM_Msk
+#define CRYP_CR_ALGOMODE_AES_CCM_Pos     (3U)
+#define CRYP_CR_ALGOMODE_AES_CCM_Msk     (0x10001UL << CRYP_CR_ALGOMODE_AES_CCM_Pos) /*!< 0x00080008 */
+#define CRYP_CR_ALGOMODE_AES_CCM         CRYP_CR_ALGOMODE_AES_CCM_Msk
+#define CRYP_CR_ALGOMODE_AES_KEY_Pos     (3U)
+#define CRYP_CR_ALGOMODE_AES_KEY_Msk     (0x7UL << CRYP_CR_ALGOMODE_AES_KEY_Pos) /*!< 0x00000038 */
+#define CRYP_CR_ALGOMODE_AES_KEY         CRYP_CR_ALGOMODE_AES_KEY_Msk
+
+#define CRYP_CR_DATATYPE_Pos             (6U)
+#define CRYP_CR_DATATYPE_Msk             (0x3UL << CRYP_CR_DATATYPE_Pos)        /*!< 0x000000C0 */
+#define CRYP_CR_DATATYPE                 CRYP_CR_DATATYPE_Msk
+#define CRYP_CR_DATATYPE_0               (0x1UL << CRYP_CR_DATATYPE_Pos)        /*!< 0x00000040 */
+#define CRYP_CR_DATATYPE_1               (0x2UL << CRYP_CR_DATATYPE_Pos)        /*!< 0x00000080 */
+#define CRYP_CR_KEYSIZE_Pos              (8U)
+#define CRYP_CR_KEYSIZE_Msk              (0x3UL << CRYP_CR_KEYSIZE_Pos)         /*!< 0x00000300 */
+#define CRYP_CR_KEYSIZE                  CRYP_CR_KEYSIZE_Msk
+#define CRYP_CR_KEYSIZE_0                (0x1UL << CRYP_CR_KEYSIZE_Pos)         /*!< 0x00000100 */
+#define CRYP_CR_KEYSIZE_1                (0x2UL << CRYP_CR_KEYSIZE_Pos)         /*!< 0x00000200 */
+#define CRYP_CR_FFLUSH_Pos               (14U)
+#define CRYP_CR_FFLUSH_Msk               (0x1UL << CRYP_CR_FFLUSH_Pos)          /*!< 0x00004000 */
+#define CRYP_CR_FFLUSH                   CRYP_CR_FFLUSH_Msk
+#define CRYP_CR_CRYPEN_Pos               (15U)
+#define CRYP_CR_CRYPEN_Msk               (0x1UL << CRYP_CR_CRYPEN_Pos)          /*!< 0x00008000 */
+#define CRYP_CR_CRYPEN                   CRYP_CR_CRYPEN_Msk
+
+#define CRYP_CR_GCM_CCMPH_Pos            (16U)
+#define CRYP_CR_GCM_CCMPH_Msk            (0x3UL << CRYP_CR_GCM_CCMPH_Pos)       /*!< 0x00030000 */
+#define CRYP_CR_GCM_CCMPH                CRYP_CR_GCM_CCMPH_Msk
+#define CRYP_CR_GCM_CCMPH_0              (0x1UL << CRYP_CR_GCM_CCMPH_Pos)       /*!< 0x00010000 */
+#define CRYP_CR_GCM_CCMPH_1              (0x2UL << CRYP_CR_GCM_CCMPH_Pos)       /*!< 0x00020000 */
+#define CRYP_CR_ALGOMODE_3               ((uint32_t)0x00080000)
+#define CRYP_CR_NPBLB_Pos                (20U)
+#define CRYP_CR_NPBLB_Msk                (0xFUL << CRYP_CR_NPBLB_Pos)           /*!< 0x00F00000 */
+#define CRYP_CR_NPBLB                    CRYP_CR_NPBLB_Msk
+
+#define CRYP_CR_KMOD_Pos                 (24U)
+#define CRYP_CR_KMOD_Msk                 (0x3UL << CRYP_CR_KMOD_Pos)            /*!< 0x03000000 */
+#define CRYP_CR_KMOD                     CRYP_CR_KMOD_Msk
+#define CRYP_CR_KMOD_0                   (0x1UL << CRYP_CR_KMOD_Pos)            /*!< 0x01000000 */
+#define CRYP_CR_KMOD_1                   (0x2UL << CRYP_CR_KMOD_Pos)            /*!< 0x02000000 */
+
+#define CRYP_CR_IPRST_Pos                (31U)
+#define CRYP_CR_IPRST_Msk                (0xFUL << CRYP_CR_IPRST_Pos)           /*!< 0xF0000000 */
+#define CRYP_CR_IPRST                    CRYP_CR_IPRST_Msk
+/****************** Bits definition for CRYP_SR register  *********************/
+#define CRYP_SR_IFEM_Pos                 (0U)
+#define CRYP_SR_IFEM_Msk                 (0x1UL << CRYP_SR_IFEM_Pos)            /*!< 0x00000001 */
+#define CRYP_SR_IFEM                     CRYP_SR_IFEM_Msk
+#define CRYP_SR_IFNF_Pos                 (1U)
+#define CRYP_SR_IFNF_Msk                 (0x1UL << CRYP_SR_IFNF_Pos)            /*!< 0x00000002 */
+#define CRYP_SR_IFNF                     CRYP_SR_IFNF_Msk
+#define CRYP_SR_OFNE_Pos                 (2U)
+#define CRYP_SR_OFNE_Msk                 (0x1UL << CRYP_SR_OFNE_Pos)            /*!< 0x00000004 */
+#define CRYP_SR_OFNE                     CRYP_SR_OFNE_Msk
+#define CRYP_SR_OFFU_Pos                 (3U)
+#define CRYP_SR_OFFU_Msk                 (0x1UL << CRYP_SR_OFFU_Pos)            /*!< 0x00000008 */
+#define CRYP_SR_OFFU                     CRYP_SR_OFFU_Msk
+#define CRYP_SR_BUSY_Pos                 (4U)
+#define CRYP_SR_BUSY_Msk                 (0x1UL << CRYP_SR_BUSY_Pos)            /*!< 0x00000010 */
+#define CRYP_SR_BUSY                     CRYP_SR_BUSY_Msk
+#define CRYP_SR_KERF_Pos                 (6U)
+#define CRYP_SR_KERF_Msk                 (0x1UL << CRYP_SR_KERF_Pos)            /*!< 0x00000040 */
+#define CRYP_SR_KERF                     CRYP_SR_KERF_Msk
+#define CRYP_SR_KEYVALID_Pos             (7U)
+#define CRYP_SR_KEYVALID_Msk             (0x1UL << CRYP_SR_KEYVALID_Pos)        /*!< 0x00000080 */
+#define CRYP_SR_KEYVALID                 CRYP_SR_KEYVALID_Msk
+/****************** Bits definition for CRYP_DMACR register  ******************/
+#define CRYP_DMACR_DIEN_Pos              (0U)
+#define CRYP_DMACR_DIEN_Msk              (0x1UL << CRYP_DMACR_DIEN_Pos)         /*!< 0x00000001 */
+#define CRYP_DMACR_DIEN                  CRYP_DMACR_DIEN_Msk
+#define CRYP_DMACR_DOEN_Pos              (1U)
+#define CRYP_DMACR_DOEN_Msk              (0x1UL << CRYP_DMACR_DOEN_Pos)         /*!< 0x00000002 */
+#define CRYP_DMACR_DOEN                  CRYP_DMACR_DOEN_Msk
+/*****************  Bits definition for CRYP_IMSCR register  ******************/
+#define CRYP_IMSCR_INIM_Pos              (0U)
+#define CRYP_IMSCR_INIM_Msk              (0x1UL << CRYP_IMSCR_INIM_Pos)         /*!< 0x00000001 */
+#define CRYP_IMSCR_INIM                  CRYP_IMSCR_INIM_Msk
+#define CRYP_IMSCR_OUTIM_Pos             (1U)
+#define CRYP_IMSCR_OUTIM_Msk             (0x1UL << CRYP_IMSCR_OUTIM_Pos)        /*!< 0x00000002 */
+#define CRYP_IMSCR_OUTIM                 CRYP_IMSCR_OUTIM_Msk
+/****************** Bits definition for CRYP_RISR register  *******************/
+#define CRYP_RISR_OUTRIS_Pos             (0U)
+#define CRYP_RISR_OUTRIS_Msk             (0x1UL << CRYP_RISR_OUTRIS_Pos)        /*!< 0x00000001 */
+#define CRYP_RISR_OUTRIS                 CRYP_RISR_OUTRIS_Msk
+#define CRYP_RISR_INRIS_Pos              (1U)
+#define CRYP_RISR_INRIS_Msk              (0x1UL << CRYP_RISR_INRIS_Pos)         /*!< 0x00000002 */
+#define CRYP_RISR_INRIS                  CRYP_RISR_INRIS_Msk
+/****************** Bits definition for CRYP_MISR register  *******************/
+#define CRYP_MISR_INMIS_Pos              (0U)
+#define CRYP_MISR_INMIS_Msk              (0x1UL << CRYP_MISR_INMIS_Pos)         /*!< 0x00000001 */
+#define CRYP_MISR_INMIS                  CRYP_MISR_INMIS_Msk
+#define CRYP_MISR_OUTMIS_Pos             (1U)
+#define CRYP_MISR_OUTMIS_Msk             (0x1UL << CRYP_MISR_OUTMIS_Pos)        /*!< 0x00000002 */
+#define CRYP_MISR_OUTMIS                 CRYP_MISR_OUTMIS_Msk
+
+/**********************  Bit definition for CRYP_HWCFGR register  ***************/
+#define CRYP_HWCFGR_CFG1_Pos  (0U)
+#define CRYP_HWCFGR_CFG1_Msk  (0xFUL << CRYP_HWCFGR_CFG1_Pos)          /*!< 0x0000000F */
+#define CRYP_HWCFGR_CFG1      CRYP_HWCFGR_CFG1_Msk                    /*!< HW Generic 1 */
+#define CRYP_HWCFGR_CFG2_Pos  (4U)
+#define CRYP_HWCFGR_CFG2_Msk  (0xFUL << CRYP_HWCFGR_CFG2_Pos)          /*!< 0x000000F0 */
+#define CRYP_HWCFGR_CFG2      CRYP_HWCFGR_CFG2_Msk                    /*!< HW Generic 2 */
+#define CRYP_HWCFGR_CFG3_Pos  (8U)
+#define CRYP_HWCFGR_CFG3_Msk  (0xFUL << CRYP_HWCFGR_CFG3_Pos)          /*!< 0x00000F00 */
+#define CRYP_HWCFGR_CFG3      CRYP_HWCFGR_CFG3_Msk                    /*!< HW Generic 3 */
+#define CRYP_HWCFGR_CFG4_Pos  (12U)
+#define CRYP_HWCFGR_CFG4_Msk  (0xFUL << CRYP_HWCFGR_CFG4_Pos)          /*!< 0x0000F000 */
+#define CRYP_HWCFGR_CFG4      CRYP_HWCFGR_CFG4_Msk                    /*!< HW Generic 4 */
+
+/**********************  Bit definition for CRYP_VERR register  *****************/
+#define CRYP_VERR_VER_Pos      (0U)
+#define CRYP_VERR_VER_Msk      (0xFFUL << CRYP_VERR_VER_Pos)               /*!< 0x000000FF */
+#define CRYP_VERR_VER          CRYP_VERR_VER_Msk                         /*!< Revision number */
+
+/**********************  Bit definition for CRYP_IPIDR register  ****************/
+#define CRYP_IPIDR_IPID_Pos       (0U)
+#define CRYP_IPIDR_IPID_Msk       (0xFFFFFFFFUL << CRYP_IPIDR_IPID_Pos)         /*!< 0xFFFFFFFF */
+#define CRYP_IPIDR_IPID           CRYP_IPIDR_IPID_Msk                          /*!< IP Identification */
+
+/**********************  Bit definition for CRYP_SIDR register  *****************/
+#define CRYP_MID_MID_Pos         (0U)
+#define CRYP_MID_MID_Msk         (0xFFFFFFFFUL << CRYP_MID_MID_Pos)           /*!< 0xFFFFFFFF */
+#define CRYP_MID_MID             CRYP_MID_MID_Msk                            /*!< IP size identification */
 
 /******************************************************************************/
 /*                                                                            */
@@ -20569,6 +20854,270 @@ typedef struct
 
 /******************************************************************************/
 /*                                                                            */
+/*               Secure Advanced Encryption Standard (SAES)                   */
+/*                                                                            */
+/******************************************************************************/
+/*******************  Bit definition for SAES_CR register  *********************/
+#define SAES_CR_EN_Pos                      (0U)
+#define SAES_CR_EN_Msk                      (0x1UL << SAES_CR_EN_Pos)               /*!< 0x00000001 */
+#define SAES_CR_EN                          SAES_CR_EN_Msk                          /*!< SAES Enable */
+#define SAES_CR_DATATYPE_Pos                (1U)
+#define SAES_CR_DATATYPE_Msk                (0x3UL << SAES_CR_DATATYPE_Pos)         /*!< 0x00000006 */
+#define SAES_CR_DATATYPE                    SAES_CR_DATATYPE_Msk                    /*!< Data type selection */
+#define SAES_CR_DATATYPE_0                  (0x1UL << SAES_CR_DATATYPE_Pos)         /*!< 0x00000002 */
+#define SAES_CR_DATATYPE_1                  (0x2UL << SAES_CR_DATATYPE_Pos)         /*!< 0x00000004 */
+#define SAES_CR_MODE_Pos                    (3U)
+#define SAES_CR_MODE_Msk                    (0x3UL << SAES_CR_MODE_Pos)             /*!< 0x00000018 */
+#define SAES_CR_MODE                        SAES_CR_MODE_Msk                        /*!< SAES Mode Of Operation */
+#define SAES_CR_MODE_0                      (0x1UL << SAES_CR_MODE_Pos)             /*!< 0x00000008 */
+#define SAES_CR_MODE_1                      (0x2UL << SAES_CR_MODE_Pos)             /*!< 0x00000010 */
+#define SAES_CR_CHMOD_Pos                   (5U)
+#define SAES_CR_CHMOD_Msk                   (0x803UL << SAES_CR_CHMOD_Pos)          /*!< 0x00010060 */
+#define SAES_CR_CHMOD                       SAES_CR_CHMOD_Msk                       /*!< SAES Chaining Mode */
+#define SAES_CR_CHMOD_0                     (0x001UL << SAES_CR_CHMOD_Pos)          /*!< 0x00000020 */
+#define SAES_CR_CHMOD_1                     (0x002UL << SAES_CR_CHMOD_Pos)          /*!< 0x00000040 */
+#define SAES_CR_CHMOD_2                     (0x800UL << SAES_CR_CHMOD_Pos)          /*!< 0x00010000 */
+#define SAES_CR_ALGOMODE_AES_ECB            ((uint32_t)0x00000000)
+#define SAES_CR_ALGOMODE_AES_CBC_Pos        (5U)
+#define SAES_CR_ALGOMODE_AES_CBC_Msk        (0x1UL << SAES_CR_ALGOMODE_AES_CBC_Pos) /*!< 0x00000020 */
+#define SAES_CR_ALGOMODE_AES_CBC            SAES_CR_ALGOMODE_AES_CBC_Msk
+#define SAES_CR_ALGOMODE_AES_CTR_Pos        (6U)
+#define SAES_CR_ALGOMODE_AES_CTR_Msk        (0x1UL << SAES_CR_ALGOMODE_AES_CTR_Pos) /*!< 0x00000040 */
+#define SAES_CR_ALGOMODE_AES_CTR            SAES_CR_ALGOMODE_AES_CTR_Msk
+#define SAES_CR_ALGOMODE_AES_GCM_Pos        (5U)
+#define SAES_CR_ALGOMODE_AES_GCM_Msk        (0x3UL << SAES_CR_ALGOMODE_AES_GCM_Pos) /*!< 0x00000060 */
+#define SAES_CR_ALGOMODE_AES_GCM            SAES_CR_ALGOMODE_AES_GCM_Msk
+#define SAES_CR_ALGOMODE_AES_CCM_Pos        (16U)
+#define SAES_CR_ALGOMODE_AES_CCM_Msk        (0x1UL << SAES_CR_ALGOMODE_AES_CCM_Pos) /*!< 0x00010000 */
+#define SAES_CR_ALGOMODE_AES_CCM            SAES_CR_ALGOMODE_AES_CCM_Msk
+#define SAES_CR_DMAINEN_Pos                 (11U)
+#define SAES_CR_DMAINEN_Msk                 (0x1UL << SAES_CR_DMAINEN_Pos)          /*!< 0x00000800 */
+#define SAES_CR_DMAINEN                     SAES_CR_DMAINEN_Msk                     /*!< Enable data input phase DMA management  */
+#define SAES_CR_DMAOUTEN_Pos                (12U)
+#define SAES_CR_DMAOUTEN_Msk                (0x1UL << SAES_CR_DMAOUTEN_Pos)         /*!< 0x00001000 */
+#define SAES_CR_DMAOUTEN                    SAES_CR_DMAOUTEN_Msk                    /*!< Enable data output phase DMA management */
+#define SAES_CR_GCMPH_Pos                   (13U)
+#define SAES_CR_GCMPH_Msk                   (0x3UL << SAES_CR_GCMPH_Pos)            /*!< 0x00006000 */
+#define SAES_CR_GCMPH                       SAES_CR_GCMPH_Msk                       /*!< GCM Phase */
+#define SAES_CR_GCMPH_0                     (0x1UL << SAES_CR_GCMPH_Pos)            /*!< 0x00002000 */
+#define SAES_CR_GCMPH_1                     (0x2UL << SAES_CR_GCMPH_Pos)            /*!< 0x00004000 */
+#define SAES_CR_KEYSIZE_Pos                 (18U)
+#define SAES_CR_KEYSIZE_Msk                 (0x1UL << SAES_CR_KEYSIZE_Pos)          /*!< 0x00040000 */
+#define SAES_CR_KEYSIZE                     SAES_CR_KEYSIZE_Msk                     /*!< Key size selection */
+#define SAES_CR_NPBLB_Pos                   (20U)
+#define SAES_CR_NPBLB_Msk                   (0xFUL << SAES_CR_NPBLB_Pos)            /*!< 0x00F00000 */
+#define SAES_CR_NPBLB                       SAES_CR_NPBLB_Msk                       /*!< Number of padding bytes in payload last block */
+#define SAES_CR_NPBLB_0                     (0x1UL << SAES_CR_NPBLB_Pos)            /*!< 0x00100000 */
+#define SAES_CR_NPBLB_1                     (0x2UL << SAES_CR_NPBLB_Pos)            /*!< 0x00200000 */
+#define SAES_CR_NPBLB_2                     (0x4UL << SAES_CR_NPBLB_Pos)            /*!< 0x00400000 */
+#define SAES_CR_NPBLB_3                     (0x8UL << SAES_CR_NPBLB_Pos)            /*!< 0x00800000 */
+#define SAES_CR_KEYPROT_Pos                 (19U)
+#define SAES_CR_KEYPROT_Msk                 (0x1UL << SAES_CR_KEYPROT_Pos)          /*!< 0x00040000 */
+#define SAES_CR_KEYPROT                     SAES_CR_KEYPROT_Msk                     /*!<  Key protection */
+#define SAES_CR_KMOD_Pos                    (24U)
+#define SAES_CR_KMOD_Msk                    (0x3UL << SAES_CR_KMOD_Pos)             /*!< 0x00000006 */
+#define SAES_CR_KMOD                        SAES_CR_KMOD_Msk                        /*!< Key mode selection */
+#define SAES_CR_KMOD_0                      (0x1UL << SAES_CR_KMOD_Pos)             /*!< 0x02000000 */
+#define SAES_CR_KMOD_1                      (0x2UL << SAES_CR_KMOD_Pos)             /*!< 0x02000000 */
+#define SAES_CR_KSHAREID_Pos                (26U)
+#define SAES_CR_KSHAREID_Msk                (0x3UL << SAES_CR_KSHAREID_Pos)         /*!< 0x00000006 */
+#define SAES_CR_KSHAREID                    SAES_CR_KSHAREID_Msk                    /*!< Key Shared ID */
+#define SAES_CR_KEYSEL_Pos                  (28U)
+#define SAES_CR_KEYSEL_Msk                  (0x7UL << SAES_CR_KEYSEL_Pos)           /*!< 0x00000006 */
+#define SAES_CR_KEYSEL                      SAES_CR_KEYSEL_Msk                      /*!< Key Selection */
+#define SAES_CR_KEYSEL_0                    (0x1UL << SAES_CR_KEYSEL_Pos)           /*!< 0x02000000 */
+#define SAES_CR_KEYSEL_1                    (0x2UL << SAES_CR_KEYSEL_Pos)           /*!< 0x02000000 */
+#define SAES_CR_KEYSEL_2                    (0x4UL << SAES_CR_KEYSEL_Pos)           /*!< 0x02000000 */
+#define SAES_CR_IPRST_Pos                   (31U)
+#define SAES_CR_IPRST_Msk                   (0x1UL << SAES_CR_IPRST_Pos)            /*!< 0x80000001 */
+#define SAES_CR_IPRST                       SAES_CR_IPRST_Msk                       /*!< SAES IP software reset */
+
+/*******************  Bit definition for SAES_SR register  *********************/
+#define SAES_SR_CCF_Pos                     (0U)
+#define SAES_SR_CCF_Msk                     (0x1UL << SAES_SR_CCF_Pos)              /*!< 0x00000001 */
+#define SAES_SR_CCF                         SAES_SR_CCF_Msk                         /*!< Computation Complete Flag */
+#define SAES_SR_RDERR_Pos                   (1U)
+#define SAES_SR_RDERR_Msk                   (0x1UL << SAES_SR_RDERR_Pos)            /*!< 0x00000002 */
+#define SAES_SR_RDERR                       SAES_SR_RDERR_Msk                       /*!< Read Error Flag */
+#define SAES_SR_WRERR_Pos                   (2U)
+#define SAES_SR_WRERR_Msk                   (0x1UL << SAES_SR_WRERR_Pos)            /*!< 0x00000004 */
+#define SAES_SR_WRERR                       SAES_SR_WRERR_Msk                       /*!< Write Error Flag */
+#define SAES_SR_BUSY_Pos                    (3U)
+#define SAES_SR_BUSY_Msk                    (0x1UL << SAES_SR_BUSY_Pos)             /*!< 0x00000008 */
+#define SAES_SR_BUSY                        SAES_SR_BUSY_Msk                        /*!< Busy Flag */
+#define SAES_SR_KEYVALID_Pos                (7U)
+#define SAES_SR_KEYVALID_Msk                (0x1UL << SAES_SR_KEYVALID_Pos)         /*!< 0x00000008 */
+#define SAES_SR_KEYVALID                    SAES_SR_KEYVALID_Msk                    /*!< KEYVALID Flag */
+
+/*******************  Bit definition for SAES_DINR register  *******************/
+#define SAES_DINR_Pos                       (0U)
+#define SAES_DINR_Msk                       (0xFFFFFFFFUL << SAES_DINR_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_DINR                           SAES_DINR_Msk                           /*!< SAES Data Input Register */
+
+/*******************  Bit definition for SAES_DOUTR register  ******************/
+#define SAES_DOUTR_Pos                      (0U)
+#define SAES_DOUTR_Msk                      (0xFFFFFFFFUL << SAES_DOUTR_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_DOUTR                          SAES_DOUTR_Msk                          /*!< SAES Data Output Register */
+
+/*******************  Bit definition for SAES_KEYR0 register  ******************/
+#define SAES_KEYR0_Pos                      (0U)
+#define SAES_KEYR0_Msk                      (0xFFFFFFFFUL << SAES_KEYR0_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR0                          SAES_KEYR0_Msk                          /*!< SAES Key Register 0 */
+
+/*******************  Bit definition for SAES_KEYR1 register  ******************/
+#define SAES_KEYR1_Pos                      (0U)
+#define SAES_KEYR1_Msk                      (0xFFFFFFFFUL << SAES_KEYR1_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR1                          SAES_KEYR1_Msk                          /*!< SAES Key Register 1 */
+
+/*******************  Bit definition for SAES_KEYR2 register  ******************/
+#define SAES_KEYR2_Pos                      (0U)
+#define SAES_KEYR2_Msk                      (0xFFFFFFFFUL << SAES_KEYR2_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR2                          SAES_KEYR2_Msk                          /*!< SAES Key Register 2 */
+
+/*******************  Bit definition for SAES_KEYR3 register  ******************/
+#define SAES_KEYR3_Pos                      (0U)
+#define SAES_KEYR3_Msk                      (0xFFFFFFFFUL << SAES_KEYR3_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR3                          SAES_KEYR3_Msk                          /*!< SAES Key Register 3 */
+
+/*******************  Bit definition for SAES_KEYR4 register  ******************/
+#define SAES_KEYR4_Pos                      (0U)
+#define SAES_KEYR4_Msk                      (0xFFFFFFFFUL << SAES_KEYR4_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR4                          SAES_KEYR4_Msk                          /*!< SAES Key Register 4 */
+
+/*******************  Bit definition for SAES_KEYR5 register  ******************/
+#define SAES_KEYR5_Pos                      (0U)
+#define SAES_KEYR5_Msk                      (0xFFFFFFFFUL << SAES_KEYR5_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR5                          SAES_KEYR5_Msk                          /*!< SAES Key Register 5 */
+
+/*******************  Bit definition for SAES_KEYR6 register  ******************/
+#define SAES_KEYR6_Pos                      (0U)
+#define SAES_KEYR6_Msk                      (0xFFFFFFFFUL << SAES_KEYR6_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR6                          SAES_KEYR6_Msk                          /*!< SAES Key Register 6 */
+
+/*******************  Bit definition for SAES_KEYR7 register  ******************/
+#define SAES_KEYR7_Pos                      (0U)
+#define SAES_KEYR7_Msk                      (0xFFFFFFFFUL << SAES_KEYR7_Pos)        /*!< 0xFFFFFFFF */
+#define SAES_KEYR7                          SAES_KEYR7_Msk                          /*!< SAES Key Register 7 */
+
+/*******************  Bit definition for SAES_IVR0 register   ******************/
+#define SAES_IVR0_Pos                       (0U)
+#define SAES_IVR0_Msk                       (0xFFFFFFFFUL << SAES_IVR0_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR0                           SAES_IVR0_Msk                           /*!< SAES Initialization Vector Register 0 */
+
+/*******************  Bit definition for SAES_IVR1 register   ******************/
+#define SAES_IVR1_Pos                       (0U)
+#define SAES_IVR1_Msk                       (0xFFFFFFFFUL << SAES_IVR1_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR1                           SAES_IVR1_Msk                           /*!< SAES Initialization Vector Register 1 */
+
+/*******************  Bit definition for SAES_IVR2 register   ******************/
+#define SAES_IVR2_Pos                       (0U)
+#define SAES_IVR2_Msk                       (0xFFFFFFFFUL << SAES_IVR2_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR2                           SAES_IVR2_Msk                           /*!< SAES Initialization Vector Register 2 */
+
+/*******************  Bit definition for SAES_IVR3 register   ******************/
+#define SAES_IVR3_Pos                       (0U)
+#define SAES_IVR3_Msk                       (0xFFFFFFFFUL << SAES_IVR3_Pos)         /*!< 0xFFFFFFFF */
+#define SAES_IVR3                           SAES_IVR3_Msk                           /*!< SAES Initialization Vector Register 3 */
+
+/*******************  Bit definition for SAES_DPACFGR register  ******************/
+#define SAES_REDCFG_Pos                     (0U)
+#define SAES_REDCFG_Msk                     (0x3UL << SAES_REDCFG_Pos)
+#define SAES_REDCFG                         SAES_REDCFG_Msk                         /*!< SAES Redundancy configuration */
+#define SAES_REDCFG_0                       (0x1UL << SAES_REDCFG_Pos)
+#define SAES_REDCFG_1                       (0x2UL << SAES_REDCFG_Pos)
+#define SAES_RESEED_Pos                     (2U)
+#define SAES_RESEED_Msk                     (0x1UL << SAES_RESEED_Pos)
+#define SAES_RESEED                         SAES_RESEED_Msk                         /*!< SAES Automatic reseed */
+#define SAES_TRIMCFG_Pos                    (3U)
+#define SAES_TRIMCFG_Msk                    (0x3UL << SAES_TRIMCFG_Pos)
+#define SAES_TRIMCFG                        SAES_TRIMCFG_Msk                        /*!< SAES Clock trimming */
+#define SAES_TRIMCFG_0                      (0x1UL << SAES_TRIMCFG_Pos)
+#define SAES_TRIMCFG_1                      (0x2UL << SAES_TRIMCFG_Pos)
+#define SAES_CONFIGLOCK_Pos                 (31U)
+#define SAES_CONFIGLOCK_Msk                 (0x1UL << SAES_CONFIGLOCK_Pos)
+#define SAES_CONFIGLOCK                     SAES_CONFIGLOCK_Msk                     /*!< SAES DPA configuration lock*/
+
+/*******************  Bit definition for SAES_IER register     ******************/
+#define SAES_IER_CCFIE_Pos                  (0U)
+#define SAES_IER_CCFIE_Msk                  (0x1UL << SAES_IER_CCFIE_Pos)           /*!< 0x00000001 */
+#define SAES_IER_CCFIE                      SAES_IER_CCFIE_Msk                      /*!< Computation complete flag interrupt enable */
+#define SAES_IER_RWEIE_Pos                  (1U)
+#define SAES_IER_RWEIE_Msk                  (0x1UL << SAES_IER_RWEIE_Pos)           /*!< 0x00000002 */
+#define SAES_IER_RWEIE                      SAES_IER_RWEIE_Msk                      /*!< Read or write error Interrupt Enable */
+#define SAES_IER_KEIE_Pos                   (2U)
+#define SAES_IER_KEIE_Msk                   (0x1UL << SAES_IER_KEIE_Pos)            /*!< 0x00000004 */
+#define SAES_IER_KEIE                       SAES_IER_KEIE_Msk                       /*!< Key error interrupt enable */
+#define SAES_IER_RNGEIE_Pos                 (3U)
+#define SAES_IER_RNGEIE_Msk                 (0x1UL << SAES_IER_RNGEIE_Pos)          /*!< RNG error interrupt enable */
+#define SAES_IER_RNGEIE                     SAES_IER_RNGEIE_Msk
+
+/*******************  Bit definition for SAES_ISR register     ******************/
+#define SAES_ISR_CCF_Pos                    (0U)
+#define SAES_ISR_CCF_Msk                    (0x1UL << SAES_ISR_CCF_Pos)             /*!< 0x00000001 */
+#define SAES_ISR_CCF                        SAES_ISR_CCF_Msk                        /*!< Computation complete flag */
+#define SAES_ISR_RWEIF_Pos                  (1U)
+#define SAES_ISR_RWEIF_Msk                  (0x1UL << SAES_ISR_RWEIF_Pos)           /*!< 0x00000002 */
+#define SAES_ISR_RWEIF                      SAES_ISR_RWEIF_Msk                      /*!< Read or write error Interrupt flag */
+#define SAES_ISR_KEIF_Pos                   (2U)
+#define SAES_ISR_KEIF_Msk                   (0x1UL << SAES_ISR_KEIF_Pos)            /*!< 0x00000004 */
+#define SAES_ISR_KEIF                       SAES_ISR_KEIF_Msk                       /*!< Key error interrupt flag */
+#define SAES_ISR_RNGEIF_Pos                 (3U)
+#define SAES_ISR_RNGEIF_Msk                 (0x1UL << SAES_ISR_RNGEIF_Pos)          /*!< 0x00000004 */
+#define SAES_ISR_RNGEIF                     SAES_ISR_RNGEIF_Msk                     /*!< RNG error interrupt flag*/
+
+/*******************  Bit definition for SAES_ICR register     ******************/
+#define SAES_ICR_CCF_Pos                    (0U)
+#define SAES_ICR_CCF_Msk                    (0x1UL << SAES_ICR_CCF_Pos)             /*!< 0x00000001 */
+#define SAES_ICR_CCF                        SAES_ICR_CCF_Msk                        /*!< Computation complete flag clear */
+#define SAES_ICR_RWEIF_Pos                  (1U)
+#define SAES_ICR_RWEIF_Msk                  (0x1UL << SAES_ICR_RWEIF_Pos)           /*!< 0x00000002 */
+#define SAES_ICR_RWEIF                      SAES_ICR_RWEIF_Msk                      /*!< Read or write error Interrupt flag clear */
+#define SAES_ICR_KEIF_Pos                   (2U)
+#define SAES_ICR_KEIF_Msk                   (0x1UL << SAES_ICR_KEIF_Pos)            /*!< 0x00000004 */
+#define SAES_ICR_KEIF                       SAES_ICR_KEIF_Msk                       /*!< Key error interrupt flag clear */
+#define SAES_ICR_RNGEIF_Pos                 (3U)
+#define SAES_ICR_RNGEIF_Msk                 (0x1UL << SAES_ICR_RNGEIF_Pos)          /*!< 0x00000004 */
+#define SAES_ICR_RNGEIF                     SAES_ICR_RNGEIF_Msk                     /*!< RNG error interrupt flag clear */
+
+/**********************  Bit definition for SAES_HWCFGR register  ***************/
+#define SAES_HWCFGR_CFG1_Pos               (0U)
+#define SAES_HWCFGR_CFG1_Msk               (0xFUL << SAES_HWCFGR_CFG1_Pos)          /*!< 0x0000000F */
+#define SAES_HWCFGR_CFG1                   SAES_HWCFGR_CFG1_Msk                    /*!< HW Generic 1 */
+#define SAES_HWCFGR_CFG2_Pos               (4U)
+#define SAES_HWCFGR_CFG2_Msk               (0xFUL << SAES_HWCFGR_CFG2_Pos)          /*!< 0x000000F0 */
+#define SAES_HWCFGR_CFG2                   SAES_HWCFGR_CFG2_Msk                    /*!< HW Generic 2 */
+#define SAES_HWCFGR_CFG3_Pos               (8U)
+#define SAES_HWCFGR_CFG3_Msk               (0xFUL << SAES_HWCFGR_CFG3_Pos)          /*!< 0x00000F00 */
+#define SAES_HWCFGR_CFG3                   SAES_HWCFGR_CFG3_Msk                    /*!< HW Generic 3 */
+
+/********************  Bits definition for SAES_VERR register  ****************/
+#define SAES_VERR_MAJREV_Pos               (4U)
+#define SAES_VERR_MAJREV_Msk               (0xFUL << SAES_VERR_MAJREV_Pos)        /*!< 0x000000F0 */
+#define SAES_VERR_MAJREV                   SAES_VERR_MAJREV_Msk
+#define SAES_VERR_MAJREV_0                 (0x1UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000010 */
+#define SAES_VERR_MAJREV_1                 (0x2UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000020 */
+#define SAES_VERR_MAJREV_2                 (0x4UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000040 */
+#define SAES_VERR_MAJREV_3                 (0x8UL << SAES_VERR_MAJREV_Pos)        /*!< 0x00000080 */
+#define SAES_VERR_MINREV_Pos               (0U)
+#define SAES_VERR_MINREV_Msk               (0xFUL << SAES_VERR_MINREV_Pos)        /*!< 0x0000000F */
+#define SAES_VERR_MINREV                   SAES_VERR_MINREV_Msk
+#define SAES_VERR_MINREV_0                 (0x1UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000001 */
+#define SAES_VERR_MINREV_1                 (0x2UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000002 */
+#define SAES_VERR_MINREV_2                 (0x4UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000004 */
+#define SAES_VERR_MINREV_3                 (0x8UL << SAES_VERR_MINREV_Pos)        /*!< 0x00000008 */
+
+/********************  Bits definition for SAES_IPIDR register  ****************/
+#define SAES_IPIDR_ID_Pos                  (0U)
+#define SAES_IPIDR_ID_Msk                  (0xFFFFFFFFUL << SAES_IPIDR_ID_Pos)    /*!< 0xFFFFFFFF */
+#define SAES_IPIDR_ID                      SAES_IPIDR_ID_Msk
+
+/********************  Bits definition for SAES_SIDR register  ****************/
+#define SAES_SIDR_SID_Pos                  (0U)
+#define SAES_SIDR_SID_Msk                  (0xFFFFFFFFUL << SAES_SIDR_SID_Pos)    /*!< 0xFFFFFFFF */
+#define SAES_SIDR_SID                      SAES_SIDR_SID_Msk
+
+/******************************************************************************/
+/*                                                                            */
 /*                      Inter-integrated Circuit Interface (I2C)              */
 /*                                                                            */
 /******************************************************************************/
@@ -22067,6 +22616,185 @@ typedef struct
 #define PKA_MODE_POINT_CHECK              ((uint32_t)0x00000028U) /*!< Point on elliptic curve check */
 #define PKA_MODE_ECC_PROJECTIVE_AFF       ((uint32_t)0x0000002FU) /*!< ECC projective to affine */
 
+/******************************************************************************/
+/*                                                                            */
+/*                      Memory Cipher Engine (LTDC)                           */
+/*                                                                            */
+/******************************************************************************/
+
+/********************  Bit definition for MCE_CR register  ********************/
+
+#define MCE_CR_GLOCK_Pos            (0U)
+#define MCE_CR_GLOCK_Msk            (0x1UL << MCE_CR_GLOCK_Pos)                 /*!< 0x00000001 */
+#define MCE_CR_GLOCK                MCE_CR_GLOCK_Msk                           /*!< Global lock */
+#define MCE_CR_MKLOCK_Pos           (1U)
+#define MCE_CR_MKLOCK_Msk           (0x1UL << MCE_CR_MKLOCK_Pos)                /*!< 0x00000002 */
+#define MCE_CR_MKLOCK               MCE_CR_MKLOCK_Msk                          /*!< Master keys lock */
+
+/********************  Bit definition for MCE_SR register  ********************/
+
+#define MCE_SR_MKVALID_Pos          (0U)
+#define MCE_SR_MKVALID_Msk          (0x1UL << MCE_SR_MKVALID_Pos)               /*!< 0x00000001 */
+#define MCE_SR_MKVALID              MCE_SR_MKVALID_Msk                         /*!< Master key valid */
+#define MCE_SR_ENCDIS_Pos           (4U)
+#define MCE_SR_ENCDIS_Msk           (0x1UL << MCE_SR_ENCDIS_Pos)               /*!< 0x00000010 */
+#define MCE_SR_ENCDIS               MCE_SR_ENCDIS_Msk                         /*!< Encryption disabled */
+
+/********************  Bit definition for MCE_IASR register  ******************/
+
+#define MCE_IASR_CAEF_Pos           (0U)
+#define MCE_IASR_CAEF_Msk           (0x1UL << MCE_IASR_CAEF_Pos)                /*!< 0x00000001 */
+#define MCE_IASR_CAEF               MCE_IASR_CAEF_Msk                          /*!< Configuration access error flag */
+
+/********************  Bit definition for MCE_IACR register  ******************/
+
+#define MCE_IACR_CAEF_Pos           (0U)
+#define MCE_IACR_CAEF_Msk           (0x1UL << MCE_IACR_CAEF_Pos)                /*!< 0x00000001 */
+#define MCE_IACR_CAEF               MCE_IACR_CAEF_Msk                          /*!< Configuration access error flag */
+
+/********************  Bit definition for MCE_IAIER register  *****************/
+
+#define MCE_IAIER_CAEIE_Pos         (0U)
+#define MCE_IAIER_CAEIE_Msk         (0x1UL << MCE_IAIER_CAEIE_Pos)              /*!< 0x00000001 */
+#define MCE_IAIER_CAEIE             MCE_IAIER_CAEIE_Msk                        /*!< Configuration access error interrupt enable */
+
+/********************  Bit definition for MCE_PRIVCFGR register  **************/
+
+#define MCE_PRIVCFGR_PRIV_Pos       (0U)
+#define MCE_PRIVCFGR_PRIV_Msk       (0x1UL << MCE_PRIVCFGR_PRIV_Pos)            /*!< 0x00000001 */
+#define MCE_PRIVCFGR_PRIV           MCE_PRIVCFGR_PRIV_Msk                      /*!< Privileged configuration */
+
+/********************  Bit definition for MCE_REGCR register  *****************/
+
+#define MCE_REGCR_BREN_Pos          (0U)
+#define MCE_REGCR_BREN_Msk          (0x1UL << MCE_REGCR_BREN_Pos)               /*!< 0x00000001 */
+#define MCE_REGCR_BREN              MCE_REGCR_BREN_Msk                         /*!< Base region enable */
+#define MCE_REGCR_ENC_Pos           (15U)
+#define MCE_REGCR_ENC_Msk           (0x1UL << MCE_REGCR_ENC_Pos)                /*!< 0x00008000 */
+#define MCE_REGCR_ENC               MCE_REGCR_ENC_Msk                          /*!< Encrypted region */
+
+/********************  Bit definition for MCE_SADDR register  *****************/
+
+#define MCE_SADDR_BADDSTART_Pos     (16U)
+#define MCE_SADDR_BADDSTART_Msk     (0xFFFFUL << MCE_SADDR_BADDSTART_Pos)       /*!< 0xFFFF0000 */
+#define MCE_SADDR_BADDSTART         MCE_SADDR_BADDSTART_Msk                    /*!< Region address start */
+
+/********************  Bit definition for MCE_EADDR register  *****************/
+
+#define MCE_EADDR_BADDEND_Pos       (16U)
+#define MCE_EADDR_BADDEND_Msk       (0xFFFFUL << MCE_EADDR_BADDEND_Pos)         /*!< 0xFFFF0000 */
+#define MCE_EADDR_BADDEND           MCE_EADDR_BADDEND_Msk                      /*!< Region address end */
+
+/********************  Bit definition for MCE_MKEYR0 register  ****************/
+
+#define MCE_MKEYR0_MKEY_Pos         (0U)
+#define MCE_MKEYR0_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR0_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR0_MKEY             MCE_MKEYR0_MKEY_Msk                        /*!< Master key, bits [31:0] */
+
+/********************  Bit definition for MCE_MKEYR1 register  ****************/
+
+#define MCE_MKEYR1_MKEY_Pos         (0U)
+#define MCE_MKEYR1_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR1_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR1_MKEY             MCE_MKEYR1_MKEY_Msk                        /*!< Master key, bits [63:32] */
+
+/********************  Bit definition for MCE_MKEYR2 register  ****************/
+
+#define MCE_MKEYR2_MKEY_Pos         (0U)
+#define MCE_MKEYR2_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR2_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR2_MKEY             MCE_MKEYR2_MKEY_Msk                        /*!< Master key, bits [95:64] */
+
+/********************  Bit definition for MCE_MKEYR3 register  ****************/
+
+#define MCE_MKEYR3_MKEY_Pos         (0U)
+#define MCE_MKEYR3_MKEY_Msk         (0xFFFFFFFFUL << MCE_MKEYR3_MKEY_Pos)       /*!< 0xFFFFFFFF */
+#define MCE_MKEYR3_MKEY             MCE_MKEYR3_MKEY_Msk                        /*!< Master key, bits [127:96] */
+
+/********************  Bit definition for MCE_HWCFGR3 register  ***************/
+
+#define MCE_HWCFGR3_CFG1_Pos        (0U)
+#define MCE_HWCFGR3_CFG1_Msk        (0xFUL << MCE_HWCFGR3_CFG1_Pos)             /*!< 0x0000000F */
+#define MCE_HWCFGR3_CFG1            MCE_HWCFGR3_CFG1_Msk                       /*!< HW generic 1 */
+#define MCE_HWCFGR3_CFG2_Pos        (4U)
+#define MCE_HWCFGR3_CFG2_Msk        (0xFUL << MCE_HWCFGR3_CFG2_Pos)             /*!< 0x000000F0 */
+#define MCE_HWCFGR3_CFG2            MCE_HWCFGR3_CFG2_Msk                       /*!< HW generic 2 */
+#define MCE_HWCFGR3_CFG3_Pos        (8U)
+#define MCE_HWCFGR3_CFG3_Msk        (0xFUL << MCE_HWCFGR3_CFG3_Pos)             /*!< 0x00000F00 */
+#define MCE_HWCFGR3_CFG3            MCE_HWCFGR3_CFG3_Msk                       /*!< HW generic 3 */
+#define MCE_HWCFGR3_CFG4_Pos        (12U)
+#define MCE_HWCFGR3_CFG4_Msk        (0xFUL << MCE_HWCFGR3_CFG4_Pos)             /*!< 0x0000F000 */
+#define MCE_HWCFGR3_CFG4            MCE_HWCFGR3_CFG4_Msk                       /*!< HW generic 4 */
+#define MCE_HWCFGR3_CFG5_Pos        (16U)
+#define MCE_HWCFGR3_CFG5_Msk        (0xFUL << MCE_HWCFGR3_CFG5_Pos)             /*!< 0x000F0000 */
+#define MCE_HWCFGR3_CFG5            MCE_HWCFGR3_CFG5_Msk                       /*!< HW generic 5 */
+#define MCE_HWCFGR3_CFG6_Pos        (20U)
+#define MCE_HWCFGR3_CFG6_Msk        (0xFUL << MCE_HWCFGR3_CFG6_Pos)             /*!< 0x00F00000 */
+#define MCE_HWCFGR3_CFG6            MCE_HWCFGR3_CFG6_Msk                       /*!< HW generic 6 */
+#define MCE_HWCFGR3_CFG7_Pos        (24U)
+#define MCE_HWCFGR3_CFG7_Msk        (0xFUL << MCE_HWCFGR3_CFG7_Pos)             /*!< 0x0F000000 */
+#define MCE_HWCFGR3_CFG7            MCE_HWCFGR3_CFG7_Msk                       /*!< HW generic 7 */
+#define MCE_HWCFGR3_CFG8_Pos        (28U)
+#define MCE_HWCFGR3_CFG8_Msk        (0xFUL << MCE_HWCFGR3_CFG8_Pos)             /*!< 0xF0000000 */
+#define MCE_HWCFGR3_CFG8            MCE_HWCFGR3_CFG8_Msk                       /*!< HW generic 8 */
+
+/********************  Bit definition for MCE_HWCFGR2 register  ***************/
+
+#define MCE_HWCFGR2_CFG1_Pos        (0U)
+#define MCE_HWCFGR2_CFG1_Msk        (0xFUL << MCE_HWCFGR2_CFG1_Pos)             /*!< 0x0000000F */
+#define MCE_HWCFGR2_CFG1            MCE_HWCFGR2_CFG1_Msk                       /*!< HW generic 1 */
+#define MCE_HWCFGR2_CFG2_Pos        (4U)
+#define MCE_HWCFGR2_CFG2_Msk        (0xFUL << MCE_HWCFGR2_CFG2_Pos)             /*!< 0x000000F0 */
+#define MCE_HWCFGR2_CFG2            MCE_HWCFGR2_CFG2_Msk                       /*!< HW generic 2 */
+#define MCE_HWCFGR2_CFG3_Pos        (8U)
+#define MCE_HWCFGR2_CFG3_Msk        (0xFUL << MCE_HWCFGR2_CFG3_Pos)             /*!< 0x00000F00 */
+#define MCE_HWCFGR2_CFG3            MCE_HWCFGR2_CFG3_Msk                       /*!< HW generic 3 */
+#define MCE_HWCFGR2_CFG4_Pos        (12U)
+#define MCE_HWCFGR2_CFG4_Msk        (0xFUL << MCE_HWCFGR2_CFG4_Pos)             /*!< 0x0000F000 */
+#define MCE_HWCFGR2_CFG4            MCE_HWCFGR2_CFG4_Msk                       /*!< HW generic 4 */
+#define MCE_HWCFGR2_CFG5_Pos        (16U)
+#define MCE_HWCFGR2_CFG5_Msk        (0xFUL << MCE_HWCFGR2_CFG5_Pos)             /*!< 0x000F0000 */
+#define MCE_HWCFGR2_CFG5            MCE_HWCFGR2_CFG5_Msk                       /*!< HW generic 5 */
+#define MCE_HWCFGR2_CFG6_Pos        (20U)
+#define MCE_HWCFGR2_CFG6_Msk        (0xFUL << MCE_HWCFGR2_CFG6_Pos)             /*!< 0x00F00000 */
+#define MCE_HWCFGR2_CFG6            MCE_HWCFGR2_CFG6_Msk                       /*!< HW generic 6 */
+#define MCE_HWCFGR2_CFG7_Pos        (24U)
+#define MCE_HWCFGR2_CFG7_Msk        (0xFUL << MCE_HWCFGR2_CFG7_Pos)             /*!< 0x0F000000 */
+#define MCE_HWCFGR2_CFG7            MCE_HWCFGR2_CFG7_Msk                       /*!< HW generic 7 */
+#define MCE_HWCFGR2_CFG8_Pos        (28U)
+#define MCE_HWCFGR2_CFG8_Msk        (0xFUL << MCE_HWCFGR2_CFG8_Pos)             /*!< 0xF0000000 */
+#define MCE_HWCFGR2_CFG8            MCE_HWCFGR2_CFG8_Msk                       /*!< HW generic 8 */
+
+/********************  Bit definition for MCE_HWCFGR1 register  ***************/
+
+#define MCE_HWCFGR1_CFG1_Pos        (0U)
+#define MCE_HWCFGR1_CFG1_Msk        (0xFFUL << MCE_HWCFGR1_CFG1_Pos)            /*!< 0x000000FF */
+#define MCE_HWCFGR1_CFG1            MCE_HWCFGR1_CFG1_Msk                       /*!< HW generic 1 */
+#define MCE_HWCFGR1_CFG2_Pos        (8U)
+#define MCE_HWCFGR1_CFG2_Msk        (0xFFUL << MCE_HWCFGR1_CFG2_Pos)            /*!< 0x0000FF00 */
+#define MCE_HWCFGR1_CFG2            MCE_HWCFGR1_CFG2_Msk                       /*!< HW generic 2 */
+#define MCE_HWCFGR1_CFG3_Pos        (16U)
+#define MCE_HWCFGR1_CFG3_Msk        (0xFFUL << MCE_HWCFGR1_CFG3_Pos)            /*!< 0x00FF0000 */
+#define MCE_HWCFGR1_CFG3            MCE_HWCFGR1_CFG3_Msk                       /*!< HW generic 3 */
+
+/********************  Bit definition for MCE_VERR register  ******************/
+
+#define MCE_VERR_MINREV_Pos         (0U)
+#define MCE_VERR_MINREV_Msk         (0xFUL << MCE_VERR_MINREV_Pos)              /*!< 0x0000000F */
+#define MCE_VERR_MINREV             MCE_VERR_MINREV_Msk                        /*!< Minor revision */
+#define MCE_VERR_MAJREV_Pos         (4U)
+#define MCE_VERR_MAJREV_Msk         (0xFUL << MCE_VERR_MAJREV_Pos)              /*!< 0x0000000F */
+#define MCE_VERR_MAJREV             MCE_VERR_MAJREV_Msk                        /*!< Major revision */
+
+/********************  Bit definition for MCE_IPIDR register  *****************/
+
+#define MCE_IPIDR_ID_Pos            (0U)
+#define MCE_IPIDR_ID_Msk            (0xFFFFFFFFUL << MCE_IPIDR_ID_Pos)          /*!< 0xFFFFFFFF */
+#define MCE_IPIDR_ID                MCE_IPIDR_ID_Msk                           /*!< Identification code */
+
+/********************  Bit definition for MCE_SIDR register  *****************/
+
+#define MCE_SIDR_SID_Pos            (0U)
+#define MCE_SIDR_SID_Msk            (0xFFFFFFFFUL << MCE_SIDR_SID_Pos)          /*!< 0xFFFFFFFF */
+#define MCE_SIDR_SID                MCE_SIDR_SID_Msk                           /*!< Size Identification code */
 
 /******************************************************************************/
 /*                                                                            */
@@ -35382,6 +36110,8 @@ typedef struct
 /******************************* HASH Instances ********************************/
 #define IS_HASH_DIGEST_ALL_INSTANCE(INSTANCE) (((INSTANCE) == HASH1_DIGEST))
 
+/******************************* SAES Instances ********************************/
+#define IS_SAES_ALL_INSTANCE(INSTANCE) (((INSTANCE) == SAES))
 
 /******************************* PKA Instances ********************************/
 #define IS_PKA_ALL_INSTANCE(INSTANCE) (((INSTANCE) == PKA))
@@ -36005,7 +36735,14 @@ typedef struct
 /******************************* HASH VERSION ********************************/
 #define HASH_VERSION(INSTANCE) ((INSTANCE)->VERR)
 
+/******************************* CRYP VERSION ********************************/
+#define CRYP_VERSION(INSTANCE) ((INSTANCE)->VERR)
 
+/******************************* SAES VERSION ********************************/
+#define SAES_VERSION(INSTANCE) ((INSTANCE)->VERR)
+
+/******************************* MCE VERSION ********************************/
+#define MCE_VERSION(INSTANCE) ((INSTANCE)->VERR)
 /******************************* PKA VERSION ********************************/
 #define PKA_VERSION(INSTANCE) ((INSTANCE)->VERR)
 
@@ -36078,4 +36815,4 @@ typedef struct
 }
 #endif /* __cplusplus */
 
-#endif /* __STM32MP135Dxx_CA7_H */
+#endif /* __STM32MP135Fxx_CA7_H */

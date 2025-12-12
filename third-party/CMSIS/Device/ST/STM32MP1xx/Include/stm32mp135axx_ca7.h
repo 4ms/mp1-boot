@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    stm32mp135dxx_ca7.h
+  * @file    stm32mp135axx_ca7.h
   * @author  MCD Application Team
-  * @brief   CMSIS stm32mp135dxx_ca7 Device Peripheral Access Layer Header File.
+  * @brief   CMSIS stm32mp135axx_ca7 Device Peripheral Access Layer Header File.
   *
   *          This file contains:
   *           - Data structures and the address mapping for all peripherals
@@ -26,12 +26,12 @@
   * @{
   */
 
-/** @addtogroup stm32mp135dxx_ca7
+/** @addtogroup stm32mp135axx_ca7
   * @{
   */
 
-#ifndef __STM32MP135Dxx_CA7_H
-#define __STM32MP135Dxx_CA7_H
+#ifndef __STM32MP135Axx_CA7_H
+#define __STM32MP135Axx_CA7_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -36078,4 +36078,4 @@ typedef struct
 }
 #endif /* __cplusplus */
 
-#endif /* __STM32MP135Dxx_CA7_H */
+#endif /* __STM32MP135Axx_CA7_H */
