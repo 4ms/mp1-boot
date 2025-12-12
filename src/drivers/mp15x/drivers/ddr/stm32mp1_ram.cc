@@ -8,11 +8,7 @@
 #include "drivers/rcc.hh"
 #include "memsize.h"
 #include "print_messages.hh"
-#ifdef STM32MP13x
-#include "stm32mp13-mx.dtsi"
-#else
 #include "stm32mp15-osd32mp1-ddr3-1x4Gb.dtsi"
-#endif
 #include "stm32mp1_ddr.h"
 #include "stm32mp1xx.h"
 

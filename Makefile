@@ -21,29 +21,50 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/libc_stub.c \
 		  $(SRCDIR)/libcpp_stub.cc \
 		  $(SRCDIR)/print.cc \
+		  $(SRCDIR)/drivers/ram_tests.cc \
+		  $(SRCDIR)/uboot-port/common/memsize.c \
+		  $(SRCDIR)/uboot-port/lib/crc32.c \
+		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
+		  $(SRCDIR)/drivers/norflash/qspi_norflash_read.c \
+		  $(SRCDIR)/gpt/gpt.cc 
+
+
+INCLUDES = -I. \
+		   -I$(SRCDIR) \
+		   -I$(SRCDIR)/board_conf \
+		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
+		   -I$(SRCDIR)/uboot-port/include \
+		   -I$(SRCDIR)/uboot-port/arch/arm/include \
+
+ifeq ($(SERIES),stm32mp13x)
+SOURCES += \
+		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_ll_usart.c \
+		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_ll_rcc.c \
+		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_hal.c \
+		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_ll_sdmmc.c \
+		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_hal_sd.c \
+		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_hal_ddr.c
+
+INCLUDES += \
+		   -I$(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Inc \
+		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include \
+		   -I$(SRCDIR)/drivers/mp13x/ 
+else
+SOURCES += \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_usart.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_rcc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_sd.c \
-		  $(SRCDIR)/drivers/ddr/stm32mp1_ddr.cc \
-		  $(SRCDIR)/drivers/ddr/stm32mp1_ram.cc \
-		  $(SRCDIR)/drivers/ddr/ram_tests.cc \
-		  $(SRCDIR)/uboot-port/common/memsize.c \
-		  $(SRCDIR)/uboot-port/lib/crc32.c \
-		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
-		  $(SRCDIR)/drivers/norflash/qspi_norflash_read.c \
-		  $(SRCDIR)/gpt/gpt.cc \
+		  $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ddr.cc \
+		  $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ram.cc
 
-INCLUDES = -I. \
-		   -I$(SRCDIR) \
-		   -I$(SRCDIR)/board_conf \
+INCLUDES += \
 		   -I$(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Inc \
-		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include \
-		   -I$(SRCDIR)/drivers/ddr/ \
-		   -I$(SRCDIR)/uboot-port/include \
-		   -I$(SRCDIR)/uboot-port/arch/arm/include \
+		   -I$(SRCDIR)/drivers/mp15x/ 
+endif
+
 
 MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-abi=hard
 
@@ -53,9 +74,9 @@ ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
 			  -DCORE_CA7
 
 ifeq ($(SERIES),stm32mp13x)
-ARCH_CFLAGS += -DSTM32MP135Dxx 
+	ARCH_CFLAGS += -DSTM32MP135Dxx 
 else
-ARCH_CFLAGS += -DSTM32MP157Cxx
+	ARCH_CFLAGS += -DSTM32MP157Cxx
 endif
 
 ifeq ("$(BOARD_CONF)","OSD32")
