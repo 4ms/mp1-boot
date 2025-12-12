@@ -1,7 +1,6 @@
 #pragma once
+#include "drivers/stm32mpxxx.h"
 #include "pinconf.hh"
-#include "stm32mp1xx.h"
-#include "stm32mp1xx_ll_gpio.h"
 
 enum class LedActive { Low, High };
 
@@ -19,10 +18,7 @@ public:
 	constexpr static uint16_t pin_mask = static_cast<uint16_t>(PINMASK);
 	constexpr static uint32_t pin_num = PinConf::bit_to_num(PINMASK);
 
-	Led()
-	{
-		PinConf{GPIOx, PINMASK, PinAF::AFNone}.init(PinMode::Output);
-	}
+	Led() { PinConf{GPIOx, PINMASK, PinAF::AFNone}.init(PinMode::Output); }
 
 	void on()
 	{

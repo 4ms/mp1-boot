@@ -1,6 +1,6 @@
 #include "delay.h"
 #include "qspi_ll.h"
-#include "stm32mp1xx.h"
+#include "drivers/stm32mpxxx.h"
 
 // TODO: Config file for QSPI chip:
 //  struct Cmd {

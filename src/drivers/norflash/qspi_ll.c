@@ -1,5 +1,5 @@
 #include "qspi_ll.h"
-#include "stm32mp1xx.h"
+#include "drivers/stm32mpxxx.h"
 
 // TODO: To C++, use register_access.hh
 

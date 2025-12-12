@@ -1,6 +1,6 @@
 #pragma once
 #include "drivers/register_access.hh"
-#include "stm32mp1xx.h"
+#include "drivers/stm32mpxxx.h"
 #include <cstddef> //for offsetof
 
 namespace mdrivlib

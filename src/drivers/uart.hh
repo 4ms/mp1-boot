@@ -1,7 +1,11 @@
 #pragma once
 #include "drivers/pinconf.hh"
-#include "stm32mp1xx.h"
+#include "drivers/stm32mpxxx.h"
+#ifdef STM32MP13
+#include "stm32mp13xx_ll_usart.h"
+#else
 #include "stm32mp1xx_ll_usart.h"
+#endif
 #include <cstdint>
 
 template<uint32_t BASE_ADDR>

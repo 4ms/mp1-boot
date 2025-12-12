@@ -1,7 +1,11 @@
 #pragma once
-#include "drivers/rcc.hh"
-#include "stm32mp1xx.h"
+#include "drivers/stm32mpxxx.h"
+#ifdef STM32MP13
+#include "stm32mp13xx_ll_gpio.h"
+#else
 #include "stm32mp1xx_ll_gpio.h"
+#endif
+#include "drivers/rcc.hh"
 
 enum class GPIO : uint32_t {
 	A = GPIOA_BASE,

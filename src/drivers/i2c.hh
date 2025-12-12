@@ -2,7 +2,7 @@
 #include "drivers/i2c_conf.hh"
 #include "drivers/pinconf.hh"
 #include "drivers/rcc.hh"
-#include "stm32mp1xx.h"
+#include "drivers/stm32mpxxx.h"
 #include <optional>
 #include <span>
 
@@ -131,10 +131,7 @@ public:
 		return true;
 	}
 
-	bool is_init()
-	{
-		return _is_init;
-	}
+	bool is_init() { return _is_init; }
 
 private:
 	// Writes the register address, without generating a stop

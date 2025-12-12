@@ -9,15 +9,18 @@ EXTLIBDIR = third-party
 
 ifeq ($(SERIES),stm32mp13x)
 LINKSCR := linkscript-mp13x.ld
+SERIESDIR := ${SRCDIR}/drivers/mp13x
+HALDIR := $(EXTLIBDIR)/STM32MP13x_HAL_Driver
 else
 LINKSCR := linkscript.ld
+SERIESDIR := ${SRCDIR}/drivers/mp15x
+HALDIR := $(EXTLIBDIR)/STM32MP1xx_HAL_Driver
 endif
 
 SD_DISK_STEM ?= /dev/disk4s
 
 SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/main.cc \
-		  $(SRCDIR)/systeminit.c \
 		  $(SRCDIR)/libc_stub.c \
 		  $(SRCDIR)/libcpp_stub.cc \
 		  $(SRCDIR)/print.cc \
@@ -26,7 +29,13 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(SRCDIR)/uboot-port/lib/crc32.c \
 		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
 		  $(SRCDIR)/drivers/norflash/qspi_norflash_read.c \
-		  $(SRCDIR)/gpt/gpt.cc 
+		  $(SRCDIR)/gpt/gpt.cc \
+		  $(SERIESDIR)/systeminit.c \
+		  $(HALDIR)/Src/stm32mp1xx_ll_usart.c \
+		  $(HALDIR)/Src/stm32mp1xx_ll_rcc.c \
+		  $(HALDIR)/Src/stm32mp1xx_hal.c \
+		  $(HALDIR)/Src/stm32mp1xx_ll_sdmmc.c \
+		  $(HALDIR)/Src/stm32mp1xx_hal_sd.c \
 
 
 INCLUDES = -I. \
@@ -35,34 +44,16 @@ INCLUDES = -I. \
 		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(SRCDIR)/uboot-port/include \
 		   -I$(SRCDIR)/uboot-port/arch/arm/include \
+		   -I$(SERIESDIR) \
+		   -I$(HALDIR)/Inc \
+		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include
 
 ifeq ($(SERIES),stm32mp13x)
-SOURCES += \
-		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_ll_usart.c \
-		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_ll_rcc.c \
-		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_hal.c \
-		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_ll_sdmmc.c \
-		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_hal_sd.c \
-		  $(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Src/stm32mp13xx_hal_ddr.c
+	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_ddr.c
 
-INCLUDES += \
-		   -I$(EXTLIBDIR)/STM32MP13xx_HAL_Driver/Inc \
-		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include \
-		   -I$(SRCDIR)/drivers/mp13x/ 
 else
-SOURCES += \
-		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_usart.c \
-		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_rcc.c \
-		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal.c \
-		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_ll_sdmmc.c \
-		  $(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Src/stm32mp1xx_hal_sd.c \
-		  $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ddr.cc \
-		  $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ram.cc
-
-INCLUDES += \
-		   -I$(EXTLIBDIR)/STM32MP1xx_HAL_Driver/Inc \
-		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include \
-		   -I$(SRCDIR)/drivers/mp15x/ 
+	SOURCES += $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ddr.cc \
+			   $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ram.cc
 endif
 
 
@@ -70,13 +61,12 @@ MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-ab
 
 
 ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
-			  -DSTM32MP1 \
 			  -DCORE_CA7
 
 ifeq ($(SERIES),stm32mp13x)
-	ARCH_CFLAGS += -DSTM32MP135Dxx 
+	ARCH_CFLAGS += -DSTM32MP135Dxx -DSTM32MP13
 else
-	ARCH_CFLAGS += -DSTM32MP157Cxx
+	ARCH_CFLAGS += -DSTM32MP157Cxx -DSTM32MP1
 endif
 
 ifeq ("$(BOARD_CONF)","OSD32")

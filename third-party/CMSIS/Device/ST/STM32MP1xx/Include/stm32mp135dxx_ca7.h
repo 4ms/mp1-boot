@@ -34,7 +34,7 @@
 #ifndef __STM32MP135Cxx_CA7_H
 #define __STM32MP135Cxx_CA7_H
 
-n#ifdef __cplusplus
+#ifdef __cplusplus
  extern "C" {
 #endif /* __cplusplus */
 
