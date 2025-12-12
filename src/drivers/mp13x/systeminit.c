@@ -34,6 +34,9 @@ void SystemInit(void)
 
 void security_init()
 {
+	// TODO: Change this to work on MP13x:
+	////////////////////////////////////////////
+
 	// Disable protection to RCC->BDCR, PWR->CR2, RTC, backup registers
 	PWR->CR1 = PWR->CR1 | PWR_CR1_DBP;
 	while (!(PWR->CR1 & PWR_CR1_DBP))
