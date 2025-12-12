@@ -1,10 +1,17 @@
 BINARYNAME = fsbl
 
-OPTFLAG = -O3
+SERIES ?= stm32mp15x
+
+OPTFLAG = -O0
 
 SRCDIR = src
 EXTLIBDIR = third-party
-LINKSCR = linkscript.ld
+
+ifeq ($(SERIES),stm32mp13x)
+LINKSCR := linkscript-mp13x.ld
+else
+LINKSCR := linkscript.ld
+endif
 
 SD_DISK_STEM ?= /dev/disk4s
 
@@ -42,9 +49,14 @@ MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-ab
 
 
 ARCH_CFLAGS = -DUSE_FULL_LL_DRIVER \
-			  -DSTM32MP157Cxx \
 			  -DSTM32MP1 \
 			  -DCORE_CA7
+
+ifeq ($(SERIES),stm32mp13x)
+ARCH_CFLAGS += -DSTM32MP135Dxx 
+else
+ARCH_CFLAGS += -DSTM32MP157Cxx
+endif
 
 ifeq ("$(BOARD_CONF)","OSD32")
 	ARCH_CFLAGS += -DBOARD_CONF_OSD32
@@ -141,7 +153,7 @@ $(OBJDIR)/%.o: %.c[cp]* $(OBJDIR)/%.d
 	@$(CXX) -c $(DEPFLAGS) $(OPTFLAG) $(CXXFLAGS) $< -o $@
 
 $(ELF): $(OBJECTS) $(LINKSCR)
-	$(info Linking...)
+	$(info Linking with $(LINKSCR)...)
 	@$(LD) $(LFLAGS) -o $@ $(OBJECTS) 
 
 $(BIN): $(ELF)
@@ -151,11 +163,12 @@ $(HEX): $(ELF)
 	@$(OBJCPY) --output-target=ihex $< $@
 	@$(SZ) $(SZOPTS) $(ELF)
 
+image: $(BUILDDIR)/$(BINARYNAME).stm32
+
 $(BUILDDIR)/$(BINARYNAME).stm32: $(BIN)
-	python3 fsbl_header.py $(BUILDDIR)/$(BINARYNAME).bin $(BUILDDIR)/$(BINARYNAME).stm32
+	python3 fsbl_header.py $(BUILDDIR)/$(BINARYNAME).bin $(BUILDDIR)/$(BINARYNAME).stm32 $(SERIES)
 	@ls -l $(BUILDDIR)/$(BINARYNAME).stm32
 
-image: $(BUILDDIR)/$(BINARYNAME).stm32
 
 load: image
 	@read -p "What is the disk device stem (Enter for $(SD_DISK_STEM)): " DISKSTEM && \
