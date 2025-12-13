@@ -27,11 +27,13 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
+#define DDR_TYPE_DDR3_4Gb
 
 /* ########################## Module Selection ############################## */
 /**
  * @brief This is the list of modules to be used in the HAL driver
  */
+
 #define HAL_MODULE_ENABLED
 // #define HAL_ADC_MODULE_ENABLED
 // #define HAL_BSEC_MODULE_ENABLED
@@ -58,7 +60,7 @@ extern "C" {
 // #define HAL_PKA_MODULE_ENABLED
 // #define HAL_PWR_MODULE_ENABLED
 // #define HAL_XSPI_MODULE_ENABLED
-// #define HAL_RCC_MODULE_ENABLED
+#define HAL_RCC_MODULE_ENABLED
 // #define HAL_RNG_MODULE_ENABLED
 // #define HAL_RTC_MODULE_ENABLED
 // #define HAL_SAI_MODULE_ENABLED

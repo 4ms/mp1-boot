@@ -50,10 +50,11 @@ INCLUDES = -I. \
 
 ifeq ($(SERIES),stm32mp13x)
 	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_ddr.c
-
+	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc.c
+	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc_ex.c # Required only for HAL_SD_InitCard to get SDMMC clock speed
 else
-	SOURCES += $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ddr.cc \
-			   $(SRCDIR)/drivers/mp15x/drivers/ddr/stm32mp1_ram.cc
+	SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ddr.cc \
+			   $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
 endif
 
 
@@ -147,6 +148,8 @@ OBJDIR = $(BUILDDIR)/obj/obj
 all: Makefile $(ELF) $(UIMAGENAME) image
 	@:
 
+mp13x:
+	$(MAKE) SERIES=stm32mp13x BOARD_CONF=brainboard-mp13_conf.hh
 
 $(OBJDIR)/%.o: %.s
 	@mkdir -p $(dir $@)
