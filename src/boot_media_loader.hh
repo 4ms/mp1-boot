@@ -190,8 +190,12 @@ private:
 
 	bool valid_addr(uint64_t addr)
 	{
+#ifdef STM32MP13
+		// TODO: other sectors on MP13?
+#else
 		if (addr >= RETRAM_BASE && addr <= (RETRAM_BASE + STM32MP15x_RETRAM_SIZE))
 			return true;
+#endif
 
 		if (addr >= SRAM_BASE && addr <= (SRAM_BASE + STM32MP15x_SRAM_SIZE))
 			return true;

@@ -7,7 +7,11 @@ enum class I2C_Periph {
 	I2C3_ = I2C3_BASE,
 	I2C4_ = I2C4_BASE,
 	I2C5_ = I2C5_BASE,
+#ifdef I2C6_BASE
 	I2C6_ = I2C6_BASE,
+#else
+	I2C6_ = 0,
+#endif
 };
 
 struct I2C_Config {

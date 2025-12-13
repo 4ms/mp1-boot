@@ -36,8 +36,11 @@ public:
 		if (conf.periph == I2C_Periph::I2C6_)
 			mdrivlib::RCC_Enable::I2C6_::set();
 
+#ifdef STM32MP13
+#else
 		// TODO: allow user to set CKSRC with I2C_Config
 		RCC->I2C46CKSELR = RCC_I2C46CKSELR_I2C46SRC_1; // HSI
+#endif
 
 		i2c = reinterpret_cast<I2C_TypeDef *>(conf.periph);
 

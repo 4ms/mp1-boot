@@ -17,9 +17,15 @@ enum class GPIO : uint32_t {
 	G = GPIOG_BASE,
 	H = GPIOH_BASE,
 	I = GPIOI_BASE,
+#ifdef GPIOJ_BASE
 	J = GPIOJ_BASE,
+#endif
+#ifdef GPIOK_BASE
 	K = GPIOK_BASE,
+#endif
+#ifdef GPIOZ_BASE
 	Z = GPIOZ_BASE,
+#endif
 	Unused = 0,
 };
 

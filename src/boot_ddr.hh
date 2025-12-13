@@ -50,7 +50,10 @@ private:
 		while (!(PWR->CR1 & PWR_CR1_DBP))
 			;
 
+#ifdef STM32MP13
+#else
 		// Turn off Write protection on backup registers (BOOTROM seems to turn it on during MPU1 boot-up)
 		TAMP->SMCR = (0 << TAMP_SMCR_BKPRWDPROT_Pos) | (0 << TAMP_SMCR_BKPWDPROT_Pos) | (1 << TAMP_SMCR_TAMPDPROT_Pos);
+#endif
 	}
 };
