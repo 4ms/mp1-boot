@@ -9,11 +9,11 @@ EXTLIBDIR = third-party
 
 ifeq ($(SERIES),stm32mp13x)
 LINKSCR := linkscript-mp13x.ld
-SERIESDIR := ${SRCDIR}/drivers/mp13x
+SERIESDIR := ${SRCDIR}/mp13x
 HALDIR := $(EXTLIBDIR)/STM32MP13x_HAL_Driver
 else
 LINKSCR := linkscript.ld
-SERIESDIR := ${SRCDIR}/drivers/mp15x
+SERIESDIR := ${SRCDIR}/mp15x
 HALDIR := $(EXTLIBDIR)/STM32MP1xx_HAL_Driver
 endif
 
@@ -36,6 +36,7 @@ SOURCES = $(SRCDIR)/startup.s \
 		  $(HALDIR)/Src/stm32mp1xx_hal.c \
 		  $(HALDIR)/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(HALDIR)/Src/stm32mp1xx_hal_sd.c \
+		  $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
 
 
 INCLUDES = -I. \
@@ -53,8 +54,7 @@ ifeq ($(SERIES),stm32mp13x)
 	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc.c
 	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc_ex.c # Required only for HAL_SD_InitCard to get SDMMC clock speed
 else
-	SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ddr.cc \
-			   $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
+	SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ddr.cc
 endif
 
 
