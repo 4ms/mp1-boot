@@ -791,11 +791,11 @@ void LL_RCC_GetPLL4ClockFreq(LL_PLL_ClocksTypeDef *PLL_Clocks)
   */
 uint32_t LL_RCC_CalcPLLClockFreq(uint32_t PLLInputFreq, uint32_t M, uint32_t N, uint32_t FRACV, uint32_t PQR)
 {
-  float32_t freq;
+  float freq;
 
-  freq = ((float32_t)PLLInputFreq / (float32_t)M) * ((float32_t)N + ((float32_t)FRACV / (float32_t)0x2000));
+  freq = ((float)PLLInputFreq / (float)M) * ((float)N + ((float)FRACV / (float)0x2000));
 
-  freq = freq / (float32_t)PQR;
+  freq = freq / (float)PQR;
 
   return (uint32_t)freq;
 }

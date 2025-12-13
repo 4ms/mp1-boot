@@ -45,7 +45,7 @@ extern "C" {
   * @brief  RCC PLL configuration structure definition
   */
 
-typedef float float32_t;
+// typedef float float32_t;
 
 typedef struct
 {
