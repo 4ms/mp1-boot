@@ -151,6 +151,9 @@ all: Makefile $(ELF) $(UIMAGENAME) image
 mp13x:
 	$(MAKE) SERIES=stm32mp13x BOARD_CONF=brainboard-mp13_conf.hh
 
+mp13x-load:
+	$(MAKE) load SERIES=stm32mp13x BOARD_CONF=brainboard-mp13_conf.hh
+
 $(OBJDIR)/%.o: %.s
 	@mkdir -p $(dir $@)
 	$(info Building $< at $(OPTFLAG))
@@ -202,11 +205,3 @@ endif
 
 .PRECIOUS: $(DEPS) $(OBJECTS) $(ELF)
 .PHONY: all clean image load
-
-.PHONY: compile_commands
-compile_commands:
-	compiledb make
-	compdb -p ./ list > compile_commands.tmp 2>/dev/null
-	rm compile_commands.json
-	mv compile_commands.tmp compile_commands.json
-
