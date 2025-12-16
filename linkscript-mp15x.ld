@@ -12,13 +12,6 @@ __HEAP_SIZE = 0x0;
 boot_mode_table_addr = 0x30000004;
 
 SECTIONS {
-    /* 0x100 bytes at the start reserved for header */
-    .header : {
-        FILL(0xFF);
-        BYTE(0xFF);
-        . = 0x100;
-    } >SYSRAM
-
     .text : {
         *(.vector_table)
         *(.text)

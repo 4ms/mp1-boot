@@ -24,10 +24,10 @@ if arch == "stm32mp15x":
         0x00,                                                                               # Reserved
         0x2FFC0000 + 0x2400,                                                                # Load address of image, unused
         0x00,                                                                               # Reserved
-        0x00,                                                                               # Image version                                                                         
+        0x00,                                                                               # Image version
         0x01,                                                                               # Option flags, disable signature verification
         0x01,                                                                               # ECDSA algorithm set to P-256 NIST, unused
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,                                     # ECDSA signature, unsigned here
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,                                     # Q x 8: ECDSA signature, unsigned here
         0x00                                                                                # Binary type: U-Boot
         )
 else:
