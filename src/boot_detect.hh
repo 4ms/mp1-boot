@@ -72,11 +72,12 @@ struct BootDetect {
 
 	static BootMethod read_boot_method()
 	{
-		uint32_t bootrom_itf = read_raw_bootrom_itf();
-		uint32_t bootrom_device = (bootrom_itf & BOOTROM_MODE_MASK) >> BOOTROM_MODE_SHIFT;
+		return BootMethod::BOOT_SDCARD;
+		// uint32_t bootrom_itf = read_raw_bootrom_itf();
+		// uint32_t bootrom_device = (bootrom_itf & BOOTROM_MODE_MASK) >> BOOTROM_MODE_SHIFT;
 
-		auto boot_method = static_cast<BootMethod>(bootrom_device & 0x0F);
-		return (boot_method < NUM_BOOT_METHODS) ? boot_method : BOOT_UNKNOWN;
+		// auto boot_method = static_cast<BootMethod>(bootrom_device & 0x0F);
+		// return (boot_method < NUM_BOOT_METHODS) ? boot_method : BOOT_UNKNOWN;
 	}
 
 	static BootDeviceInstance read_boot_device()
