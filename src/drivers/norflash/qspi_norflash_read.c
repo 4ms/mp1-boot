@@ -1,6 +1,6 @@
 #include "delay.h"
-#include "qspi_ll.h"
 #include "drivers/stm32mpxxx.h"
+#include "qspi_ll.h"
 
 // TODO: Config file for QSPI chip:
 //  struct Cmd {
@@ -28,8 +28,8 @@ void QSPI_init()
 
 	// Disable and reset QUADSPI
 	QUADSPI->CR = 0;
-	RCC->AHB2RSTSETR = RCC_AHB6RSTSETR_QSPIRST;
-	RCC->AHB2RSTCLRR = RCC_AHB6RSTCLRR_QSPIRST;
+	RCC->AHB6RSTSETR = RCC_AHB6RSTSETR_QSPIRST;
+	RCC->AHB6RSTCLRR = RCC_AHB6RSTCLRR_QSPIRST;
 
 	// Prescale 3 = /4 --> 67MHz
 	// FIFO Threshold = 2 of 16
