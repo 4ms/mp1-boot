@@ -9,7 +9,6 @@ ENTRY(_Reset);
 
 __STACK_START = 0x30000000;
 __HEAP_SIZE = 0x0;
-boot_mode_table_addr = 0x30000004;
 
 SECTIONS {
     .text : {

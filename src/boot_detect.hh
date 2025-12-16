@@ -1,9 +1,8 @@
 #pragma once
+#include "boot_mode_table.hh"
 #include "print.hh"
 #include <cstdint>
 #include <string_view>
-
-extern uint32_t boot_mode_table_addr[];
 
 namespace BootDetect
 {
@@ -55,7 +54,6 @@ constexpr std::string_view bootmethod_string(BootMethod method)
 // - boot instance = bit 31:16
 // - boot device = bit 15:0
 //
-static constexpr uint32_t BOOTROM_PARAM_ADDR = 0x2FFC0078;
 static constexpr uint32_t BOOTROM_MODE_MASK = 0x0000FFFF;
 static constexpr uint32_t BOOTROM_MODE_SHIFT = 0;
 static constexpr uint32_t BOOTROM_INSTANCE_MASK = 0xFFFF0000;
@@ -64,28 +62,6 @@ static constexpr uint32_t BOOT_TYPE_MASK = 0xF0;
 static constexpr uint32_t BOOT_TYPE_SHIFT = 4;
 static constexpr uint32_t BOOT_INSTANCE_MASK = 0x0F;
 static constexpr uint32_t BOOT_INSTANCE_SHIFT = 0;
-
-inline uint32_t read_raw_bootrom_itf()
-{
-	print("&boot_mode_table_addr = 0x", Hex{(uint32_t)boot_mode_table_addr}, "\n");
-
-	if ((uint32_t)boot_mode_table_addr == 0) {
-		print("Boot mode table address not defined in linker script. Presuming SD Card boot\n");
-		return BOOT_SDCARD << BOOTROM_MODE_SHIFT;
-	}
-
-	auto table_addr = boot_mode_table_addr[0];
-	print("boot_mode_table_addr = 0x", Hex{table_addr}, "\n");
-
-	if (table_addr == 0) {
-		print("Boot mode table was not set by startup.s. Presuming SD Card boot\n");
-		return BOOT_SDCARD << BOOTROM_MODE_SHIFT;
-	}
-
-	auto val = *reinterpret_cast<uint32_t *>(table_addr);
-	print("boot_mode value = 0x", Hex{val}, "\n");
-	return val;
-}
 
 inline BootMethod read_boot_method()
 {
