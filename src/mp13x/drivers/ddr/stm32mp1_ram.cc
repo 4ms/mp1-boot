@@ -11,6 +11,8 @@
 #else /* DDR_TYPE_DDR3_4Gb */
 #endif
 
+#include "print.hh"
+
 void stm32mp1_ddr_setup()
 {
 	DDR_InitTypeDef hddr;
@@ -19,8 +21,8 @@ void stm32mp1_ddr_setup()
 	hddr.zdata = 0;
 	hddr.clear_bkp = false;
 
-	if (HAL_DDR_Init(&hddr) != HAL_OK) {
-		asm("bkpt");
+	if (auto res = HAL_DDR_Init(&hddr) != HAL_OK) {
+		print("DDR Init error: ", Hex{res}, "\n");
 	}
 }
 
