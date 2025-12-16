@@ -1,7 +1,10 @@
 #pragma once
 #include "boot_detect.hh"
 #include <cstdint>
-#include <string_view>
+
+// Not being used by fsbl
+// Might be an interesting way to dump more info about the boot process
+// See mp13x_rom_trace_analyzer.py script
 
 namespace BootDetect
 {
@@ -10,7 +13,7 @@ static constexpr uint32_t BOOTROM_TRACE_BEGIN = 0x3001638;
 static constexpr uint32_t BOOTROM_TRACE_END = 0x3002638;
 static constexpr uint32_t START_WORD = 0xFFDDBB00;
 
-inline BootMethod read_boot_method()
+inline BootMethod scan_boot_method()
 {
 	// Scan for:
 	// 0x30000011 : "SD_FsblsFound"

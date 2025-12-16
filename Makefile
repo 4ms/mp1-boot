@@ -13,7 +13,7 @@ LINKSCR := linkscript-mp13x.ld
 SERIESDIR := ${SRCDIR}/mp13x
 HALDIR := $(EXTLIBDIR)/STM32MP13x_HAL_Driver
 else
-LINKSCR := linkscript.ld
+LINKSCR := linkscript-mp15x.ld
 SERIESDIR := ${SRCDIR}/mp15x
 HALDIR := $(EXTLIBDIR)/STM32MP1xx_HAL_Driver
 endif

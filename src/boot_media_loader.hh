@@ -1,6 +1,6 @@
 #pragma once
 #include "boot_ddr.hh"
-#include "boot_detect_addr.hh"
+#include "boot_detect.hh"
 #include "boot_image_def.hh"
 #include "boot_nor.hh"
 #include "boot_sd.hh"
