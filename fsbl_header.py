@@ -14,6 +14,9 @@ else:
 
 
 if arch == "stm32mp15x":
+
+    payload = bytearray(payload[0x100:])
+
     header = struct.pack("<ccccQQQQQQQQIIIIIIIIIIQQQQQQQQ83xb",
         bytes('S', "ascii"), bytes('T', "ascii"), bytes('M', "ascii"), bytes('2', "ascii"), # Header magic
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,                                     # ECDSA signature, unsigned here
