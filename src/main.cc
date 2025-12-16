@@ -3,14 +3,13 @@
 #include "boot_media_loader.hh"
 #include "delay.h"
 #include "drivers/clocks.hh"
+#include "drivers/ddr/stm32mp1_ram.h"
 #include "drivers/leds.hh"
 #include "drivers/pmic.hh"
 #include "drivers/ram_tests.hh"
 #include "drivers/uart.hh"
 #include "print.hh"
 #include "systeminit.h"
-
-#include "drivers/ddr/stm32mp1_ram.h"
 
 void main()
 {

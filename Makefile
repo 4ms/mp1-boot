@@ -18,7 +18,7 @@ SERIESDIR := ${SRCDIR}/mp15x
 HALDIR := $(EXTLIBDIR)/STM32MP1xx_HAL_Driver
 endif
 
-SD_DISK_STEM ?= /dev/disk4s
+SD_DISK_STEM ?= 
 
 SOURCES = $(SERIESDIR)/startup.s \
 		  $(SRCDIR)/main.cc \
@@ -31,23 +31,23 @@ SOURCES = $(SERIESDIR)/startup.s \
 		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
 		  $(SRCDIR)/drivers/norflash/qspi_norflash_read.c \
 		  $(SRCDIR)/gpt/gpt.cc \
-		  $(SERIESDIR)/systeminit.c \
 		  $(HALDIR)/Src/stm32mp1xx_ll_usart.c \
 		  $(HALDIR)/Src/stm32mp1xx_ll_rcc.c \
 		  $(HALDIR)/Src/stm32mp1xx_hal.c \
 		  $(HALDIR)/Src/stm32mp1xx_ll_sdmmc.c \
 		  $(HALDIR)/Src/stm32mp1xx_hal_sd.c \
+		  $(SERIESDIR)/systeminit.c \
 		  $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
 
 
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
 		   -I$(SRCDIR)/board_conf \
-		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(SRCDIR)/uboot-port/include \
 		   -I$(SRCDIR)/uboot-port/arch/arm/include \
-		   -I$(SERIESDIR) \
 		   -I$(HALDIR)/Inc \
+		   -I$(SERIESDIR) \
+		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include
 
 ifeq ($(SERIES),stm32mp13x)
