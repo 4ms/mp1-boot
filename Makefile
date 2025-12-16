@@ -19,7 +19,7 @@ endif
 
 SD_DISK_STEM ?= /dev/disk4s
 
-SOURCES = $(SRCDIR)/startup.s \
+SOURCES = $(SERIESDIR)/startup.s \
 		  $(SRCDIR)/main.cc \
 		  $(SRCDIR)/libc_stub.c \
 		  $(SRCDIR)/libcpp_stub.cc \
