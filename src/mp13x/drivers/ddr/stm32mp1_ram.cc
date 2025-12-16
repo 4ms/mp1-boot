@@ -21,8 +21,8 @@ void stm32mp1_ddr_setup()
 	hddr.zdata = 0;
 	hddr.clear_bkp = false;
 
-	if (auto res = HAL_DDR_Init(&hddr) != HAL_OK) {
-		print("DDR Init error: ", Hex{res}, "\n");
+	if (auto res = HAL_DDR_Init(&hddr); res > 0) {
+		print("DDR Init error: 0x", Hex{res}, "\n");
 	}
 }
 

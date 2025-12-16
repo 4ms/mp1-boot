@@ -2020,12 +2020,12 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   else
   {
     /*  Unsupported DDR type */
-    return HAL_ERROR | 0x180;
+    return 0x180;
   }
 
   if (iret != 0)
   {
-    return HAL_ERROR | 0x170;
+    return 0x170;
   }
 
   /* Check DDR PHY pads retention */
@@ -2064,7 +2064,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   /* 1.2. start CLOCK */
   if (ddr_clk_enable(static_ddr_config.info.speed) != 0)
   {
-    return HAL_ERROR | 0x160;
+    return 0x160;
   }
 
   /* 1.3. deassert reset */
@@ -2088,7 +2088,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = set_reg(REG_REG, (uint32_t)&static_ddr_config.c_reg);
   if (ret != HAL_OK)
   {
-    return ret | 0x150;
+    return 0x150;
   }
 
   /* DDR3 = don't set DLLOFF for init mode */
@@ -2102,12 +2102,12 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = set_reg(REG_TIMING, (uint32_t)&static_ddr_config.c_timing);
   if (ret != HAL_OK)
   {
-    return ret | 0x140;
+    return 0x140;
   }
   ret = set_reg(REG_MAP, (uint32_t)&static_ddr_config.c_map);
   if (ret != HAL_OK)
   {
-    return ret | 0x130;
+    return 0x130;
   }
 
   /* Keep the controller in self-refresh mode */
@@ -2123,7 +2123,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = set_reg(REG_PERF, (uint32_t)&static_ddr_config.c_perf);
   if (ret != HAL_OK)
   {
-    return ret | 0x120;
+    return 0x120;
   }
 
   /*  2. deassert reset signal core_ddrc_rstn, aresetn and presetn */
@@ -2138,12 +2138,12 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = set_reg(REGPHY_REG, (uint32_t)&static_ddr_config.p_reg);
   if (ret != HAL_OK)
   {
-    return ret | 0x110;
+    return 0x110;
   }
   ret = set_reg(REGPHY_TIMING, (uint32_t)&static_ddr_config.p_timing);
   if (ret != HAL_OK)
   {
-    return ret | 0x100;
+    return 0x100;
   }
 
   /* DDR3 = don't set DLLOFF for init mode */
@@ -2161,7 +2161,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = ddrphy_idone_wait();
   if (ret != HAL_OK)
   {
-    return ret | 0xF0;
+    return 0xF0;
   }
 
   /*
@@ -2191,7 +2191,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = HAL_DDR_PHY_Init(pir);
   if (ret != HAL_OK)
   {
-    return ret | 0xE0;
+    return 0xE0;
   }
 
   if (iddr->self_refresh)
@@ -2199,7 +2199,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
     ret = self_refresh_zcal(iddr->zdata);
     if (ret != HAL_OK)
     {
-      return ret | 0xD0;
+      return 0xD0;
     }
   }
 
@@ -2214,7 +2214,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = wait_sw_done_ack();
   if (ret != HAL_OK)
   {
-    return ret | 0xC0;
+    return 0xC0;
   }
 
   /*
@@ -2233,7 +2233,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = wait_operating_mode(DDRCTRL_STAT_OPERATING_MODE_NORMAL);
   if (ret != HAL_OK)
   {
-    return ret | 0xB0;
+    return 0xB0;
   }
 
   /* Switch to DLL OFF mode */
@@ -2242,7 +2242,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
     ret = ddr3_dll_off();
     if (ret != HAL_OK)
     {
-      return ret | 0xA0;
+      return 0xA0;
     }
   }
 
@@ -2260,7 +2260,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = HAL_DDR_Refresh_Disable();
   if (ret != HAL_OK)
   {
-    return ret | 0x90;
+    return 0x90;
   }
 
   /*
@@ -2283,7 +2283,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = HAL_DDR_PHY_Init(pir);
   if (ret != HAL_OK)
   {
-    return ret | 0x80;
+    return 0x80;
   }
 
   /* 11. monitor PUB PGSR.IDONE to poll cpmpletion of training
@@ -2292,7 +2292,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   ret = ddrphy_idone_wait();
   if (ret != HAL_OK)
   {
-    return ret | 0x70;
+    return 0x70;
   }
 
   /* Refresh compensation: forcing refresh command */
@@ -2301,7 +2301,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
     ret = refresh_compensation(time);
     if (ret != HAL_OK)
     {
-      return ret | 0x60;
+      return 0x60;
     }
   }
 
@@ -2313,7 +2313,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
                                 static_ddr_config.c_reg.PWRCTL);
   if (ret != HAL_OK)
   {
-    return ret | 0x50;
+    return 0x50;
   }
 
 
@@ -2337,13 +2337,13 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
     uret = ddr_test_rw_access();
     if (uret != 0U)
     {
-      return HAL_ERROR | 0x200;
+      return 0x200;
     }
 
     /* Restore area overwritten by training */
     if (!restore_ddr_training_area())
     {
-      return HAL_ERROR | 0x210;
+      return 0x210;
     }
   }
   else
@@ -2351,19 +2351,19 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
     uret = ddr_test_data_bus();
     if (uret != 0U)
     {
-      return HAL_ERROR | 0x30;
+      return  0x30;
     }
 
     uret = ddr_test_addr_bus();
     if (uret != 0U)
     {
-      return (HAL_StatusTypeDef)(uret);//HAL_ERROR;
+      return uret;
     }
 
     uret = ddr_check_size();
     if (uret < static_ddr_config.info.size)
     {
-      return HAL_ERROR | 0x10;
+      return 0x10;
     }
   }
 
@@ -2371,7 +2371,7 @@ uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
   if (HAL_DDR_SR_SetMode(ddr_sr_read_mode()) != HAL_OK)
   {
     /* Unable to switch to the predefined self-refresh mode */
-    return HAL_ERROR | 0x20;
+    return 0x20;
   }
 
 #ifndef DCACHE_OFF
