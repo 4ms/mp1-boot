@@ -25,6 +25,9 @@ _Reset:
 Reset_Handler:
 	cpsid   if 										// Mask Interrupts
 
+	ldr r4, =boot_mode								// Store boot info from BOOTROM
+	str r0, [r4]									// into designated address in SRAM
+
 	mrc     p15, 0, r0, c1, c0, 0					// Read System Control register (SCTLR)
 	bic     r0, r0, #(0x1 << 12) 					// Clear I bit 12 to disable I Cache
 	bic     r0, r0, #(0x1 <<  2) 					// Clear C bit  2 to disable D Cache

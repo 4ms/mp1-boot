@@ -9,15 +9,9 @@ ENTRY(_Reset);
 
 __STACK_START = 0x30000000;
 __HEAP_SIZE = 0x0;
+_boot_mode = 0x30000004;
 
 SECTIONS {
-    /* 0x100 bytes at the start reserved for header */
-    /* .header : { */
-    /*     FILL(0xFF); */
-    /*     BYTE(0xFF); */
-    /*     . = 0x100; */
-    /* } >SYSRAM */
-
     .text : {
         *(.vector_table)
         *(.text)
@@ -102,6 +96,7 @@ SECTIONS {
 
 	_fiq_stack_end = _irq_stack_start;
 	_fiq_stack_start = _fiq_stack_end - 0x100;
+
 
   /* Remove information from the compiler libraries */
   /DISCARD/ :
