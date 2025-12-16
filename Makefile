@@ -3,7 +3,7 @@ BINARYNAME = fsbl
 SERIES ?= stm32mp15x
 
 OPTFLAG = -O2
-build/obj/obj/third-party/STM32MP13x_HAL_Driver/Src/stm32mp13xx_hal_ddr.o: OPTFLAG = -O0
+# build/obj/obj/third-party/STM32MP13x_HAL_Driver/Src/stm32mp13xx_hal_ddr.o: OPTFLAG = -O0
 
 SRCDIR = src
 EXTLIBDIR = third-party
