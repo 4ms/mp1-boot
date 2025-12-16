@@ -7,6 +7,7 @@ namespace Board
 {
 using RedLED = Led<GPIO::D, PinNum::_8, LedActive::Low>;
 using GreenLED = Led<GPIO::B, PinNum::_3, LedActive::High>; // Debug2
+
 using RedLED2 = RedLED;
 using GreenLED2 = GreenLED;
 
@@ -36,8 +37,8 @@ constexpr bool HasSTPMIC = false;
 constexpr I2C_Config I2C_config{};
 } // namespace PMIC
 
-constexpr uint32_t HSE_Clock_Hz = 24000000;
-constexpr uint32_t MPU_MHz = 1000;
+constexpr uint32_t HSE_Clock_Hz = 24'000'000;
+constexpr uint32_t MPU_MHz = 650;
 constexpr auto ClockType = SystemClocks::HSEClockSource::Resonator;
 
 } // namespace Board
