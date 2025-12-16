@@ -1696,7 +1696,7 @@ static uint32_t ddr_test_addr_bus(void)
 
     if (READ_REG(*(volatile uint32_t *)DDR_BASE_ADDR) != DDR_PATTERN)
     {
-      return DDR_BASE_ADDR;
+      return DDR_BASE_ADDR + (uint32_t)testoffset + 1;
     }
 
     for (offset = sizeof(uint32_t); (offset & addressmask) != 0U;
@@ -1706,7 +1706,7 @@ static uint32_t ddr_test_addr_bus(void)
            != DDR_PATTERN)
           && (offset != testoffset))
       {
-        return (uint32_t)(DDR_BASE_ADDR + offset);
+        return (uint32_t)(DDR_BASE_ADDR + offset + 2);
       }
     }
 
@@ -1957,7 +1957,7 @@ static HAL_DDR_SelfRefreshModeTypeDef ddr_sr_read_mode(void)
   * @param  iddr DDR initialisation structure
   * @retval None.
   */
-HAL_StatusTypeDef HAL_DDR_Init(DDR_InitTypeDef *iddr)
+uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr)
 {
   HAL_StatusTypeDef ret;
   int32_t iret;
@@ -2357,7 +2357,7 @@ HAL_StatusTypeDef HAL_DDR_Init(DDR_InitTypeDef *iddr)
     uret = ddr_test_addr_bus();
     if (uret != 0U)
     {
-      return HAL_ERROR;
+      return (HAL_StatusTypeDef)(uret);//HAL_ERROR;
     }
 
     uret = ddr_check_size();

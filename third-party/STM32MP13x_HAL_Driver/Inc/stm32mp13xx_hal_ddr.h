@@ -123,7 +123,7 @@ typedef struct
   * @{
   */
 
-HAL_StatusTypeDef HAL_DDR_Init(DDR_InitTypeDef *iddr);
+uint32_t HAL_DDR_Init(DDR_InitTypeDef *iddr);
 HAL_StatusTypeDef HAL_DDR_SR_Entry(uint32_t *zq0cr0_zdata);
 HAL_StatusTypeDef HAL_DDR_SR_Exit(void);
 HAL_StatusTypeDef HAL_DDR_SR_SetMode(HAL_DDR_SelfRefreshModeTypeDef mode);
