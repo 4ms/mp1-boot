@@ -1650,6 +1650,17 @@ static uint32_t ddr_test_data_bus(void)
   return 0U;
 }
 
+//   Row address: A14:0
+//   Bank Address BA2:0
+//   Col address A9:0 
+//        ROW        BNK    COL     
+//   11111
+//   432109876543210 210 9876543210 
+// 28^ 
+
+
+// A14 flips 0xC000'0000 to 0xD000'0000, so A14 is phys addr bit (1<<28)
+// A13 is bit 27 (0xC800'), A12 is bit 26 (0xC400'), A11 is bit 25 (0xC200'), A10 is bit 24 (0xC100')
 /*******************************************************************************
   * This function tests the DDR address bus wiring.
   * This is inspired from the Data Bus Test algorithm written by Michael Barr
@@ -1696,7 +1707,7 @@ static uint32_t ddr_test_addr_bus(void)
 
     if (READ_REG(*(volatile uint32_t *)DDR_BASE_ADDR) != DDR_PATTERN)
     {
-      return DDR_BASE_ADDR + (uint32_t)testoffset + 1;
+      return DDR_BASE_ADDR + (uint32_t)testoffset + 1; //bit 0 indicates "stuck low or shorted"
     }
 
     for (offset = sizeof(uint32_t); (offset & addressmask) != 0U;
@@ -1706,7 +1717,7 @@ static uint32_t ddr_test_addr_bus(void)
            != DDR_PATTERN)
           && (offset != testoffset))
       {
-        return (uint32_t)(DDR_BASE_ADDR + offset + 2);
+        return (uint32_t)(DDR_BASE_ADDR + offset + 2); //bit 1 indicates "stuck low or shorted"
       }
     }
 
