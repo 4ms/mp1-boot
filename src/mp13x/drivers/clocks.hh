@@ -1,6 +1,5 @@
 #pragma once
 #include "drivers/rcc.hh"
-#include "stm32mp13xx_hal_rcc.h"
 
 struct SystemClocks {
 	enum class HSEClockSource { AnalogOsc, DigitalOsc, Resonator };
