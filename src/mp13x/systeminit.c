@@ -49,13 +49,23 @@ void security_init()
 
 	// Configure TZC to allow DDR region0 r/w non secure for all IDs
 	TZC->GATE_KEEPER = 0;
+	TZC->ACTION = 1;				  // issue DECERR on bus
 	TZC->REG_ID_ACCESSO = 0xFFFFFFFF; // Allow DDR Region0 R/W  non secure for all IDs
 	TZC->REG_ATTRIBUTESO = 0xC0000001;
 	TZC->GATE_KEEPER |= 1; // Enable the access in secure Mode  // filter 0 request close
 
 	// Enable ETZPC & BACKUP SRAM for security
 	__HAL_RCC_ETZPC_CLK_ENABLE();
-	//   LL_ETZPC_Set_All_PeriphProtection(ETZPC, LL_ETZPC_PERIPH_PROTECTION_READ_WRITE_NONSECURE);
+	uint32_t prtn = 3; // READ_WRITE_NONSECURE
+	prtn = (prtn << 2) | prtn;
+	prtn = (prtn << 4) | prtn;
+	prtn = (prtn << 8) | prtn;
+	prtn = (prtn << 16) | prtn;
+	ETZPC->DECPROT0 = prtn;
+	ETZPC->DECPROT1 = prtn;
+	ETZPC->DECPROT2 = prtn;
+	ETZPC->DECPROT3 = prtn;
+
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
 
 	// Unlock debugger
