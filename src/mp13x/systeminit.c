@@ -10,6 +10,13 @@ void SystemInit(void)
 	// Invalidate entire Unified TLB
 	__set_TLBIALL(0);
 
+	EXTI_C1->IMR1 = 0;
+	EXTI_C1->IMR2 = 0;
+	EXTI_C1->IMR3 = 0;
+	EXTI_C1->EMR1 = 0;
+	EXTI_C1->EMR2 = 0;
+	EXTI_C1->EMR3 = 0;
+
 	// Invalidate entire branch predictor array
 	__set_BPIALL(0);
 	__DSB();
@@ -48,6 +55,7 @@ void security_init()
 
 	// Enable ETZPC & BACKUP SRAM for security
 	__HAL_RCC_ETZPC_CLK_ENABLE();
+	//   LL_ETZPC_Set_All_PeriphProtection(ETZPC, LL_ETZPC_PERIPH_PROTECTION_READ_WRITE_NONSECURE);
 	__HAL_RCC_BKPSRAM_CLK_ENABLE();
 
 	// Unlock debugger
