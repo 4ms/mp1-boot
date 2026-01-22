@@ -32,16 +32,25 @@ struct BootDdrLoader : BootLoader {
 		static_assert(offsetof(TAMP_TypeDef, BKP6R) == 0x118);
 
 		*HeaderAddress = 0xFFFFFFFF;
-#ifdef NO_DDR
+#ifdef LOAD_BINARY
 		print("Please load executable binary into an address in SRAM.\n");
 		print("Then write that address to the TAMP_BKP6 register at 0x", Hex{(uint32_t)HeaderAddress});
 		print("\nSystem will wait until TAMP_BKP6 register is changed, and then jump execution to the value.\n");
 		while (*HeaderAddress == 0xFFFFFFFF)
 			;
 
+		print("Jumping to entry point: 0x", Hex{*HeaderAddress}, "\n");
+
 		typedef void __attribute__((noreturn)) (*image_entry_noargs_t)();
 		auto image_entry = reinterpret_cast<image_entry_noargs_t>(*HeaderAddress);
-		print("Jumping to entry point: 0x", Hex{*HeaderAddress}, "\n");
+
+		__set_BPIALL(0);
+		__DSB();
+		__ISB();
+		__set_ICIALLU(0);
+		__DSB();
+		__ISB();
+
 		image_entry();
 
 #else

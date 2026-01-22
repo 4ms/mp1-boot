@@ -113,10 +113,15 @@ CFLAGS = -g2 \
 		 $(EXTRACFLAGS)\
 
 ifeq ("$(NO_DDR)","1")
-CFLAGS += -DNO_DDR=1
+	CFLAGS += -DNO_DDR=1
 endif
+
 ifeq ("$(NO_SDMMC)","1")
-CFLAGS += -DNO_SDMMC=1
+	CFLAGS += -DNO_SDMMC=1
+endif
+
+ifeq ("$(LOAD_BINARY)","1")
+	CFLAGS += -DLOAD_BINARY=1
 endif
 
 CXXFLAGS = $(CFLAGS) \
