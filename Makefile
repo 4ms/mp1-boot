@@ -25,7 +25,6 @@ SOURCES = $(SERIESDIR)/startup.s \
 		  $(SRCDIR)/libc_stub.c \
 		  $(SRCDIR)/libcpp_stub.cc \
 		  $(SRCDIR)/print.cc \
-		  $(SRCDIR)/drivers/ram_tests.cc \
 		  $(SRCDIR)/uboot-port/common/memsize.c \
 		  $(SRCDIR)/uboot-port/lib/crc32.c \
 		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
@@ -35,29 +34,33 @@ SOURCES = $(SERIESDIR)/startup.s \
 		  $(HALDIR)/Src/stm32mp1xx_hal.c \
 		  $(SERIESDIR)/systeminit.c
 
-ifneq ("$(NO_DDR)","1")
-SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
+# RCC helper for mp13x (reduces binary size vs. hal_rcc.c)
+ifeq ($(SERIES),stm32mp13x)
+SOURCES += $(SERIESDIR)/drivers/rcc_helper.c
 endif
 
+# Build or Omit DDR RAM sources
+ifneq ("$(NO_DDR)","1")
+SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
+SOURCES += $(SRCDIR)/drivers/ram_tests.cc
+
+  # MP13x DDR RAM sources:
+  ifeq ($(SERIES),stm32mp13x)
+    SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_ddr.c
+	
+  # MP15x sources:
+  else
+    SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ddr.cc
+  endif
+endif
+
+# Build or omit SDMMC sources
 ifneq ("$(NO_SDMMC)","1")
 SOURCES += $(HALDIR)/Src/stm32mp1xx_ll_sdmmc.c
 SOURCES += $(HALDIR)/Src/stm32mp1xx_hal_sd.c
 SOURCES += $(SRCDIR)/gpt/gpt.cc
 endif
 
-ifeq ($(SERIES),stm32mp13x)
-ifneq ("$(NO_DDR)","1")
-	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_ddr.c
-endif
-ifneq ("$(NO_SDMMC)","1")
-	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc.c
-	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc_ex.c # Required only for HAL_SD_InitCard to get SDMMC clock speed
-endif
-else
-ifneq ("$(NO_DDR)","1")
-	SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ddr.cc
-endif
-endif
 
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
