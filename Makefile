@@ -30,15 +30,34 @@ SOURCES = $(SERIESDIR)/startup.s \
 		  $(SRCDIR)/uboot-port/lib/crc32.c \
 		  $(SRCDIR)/drivers/norflash/qspi_ll.c \
 		  $(SRCDIR)/drivers/norflash/qspi_norflash_read.c \
-		  $(SRCDIR)/gpt/gpt.cc \
 		  $(HALDIR)/Src/stm32mp1xx_ll_usart.c \
 		  $(HALDIR)/Src/stm32mp1xx_ll_rcc.c \
 		  $(HALDIR)/Src/stm32mp1xx_hal.c \
-		  $(HALDIR)/Src/stm32mp1xx_ll_sdmmc.c \
-		  $(HALDIR)/Src/stm32mp1xx_hal_sd.c \
-		  $(SERIESDIR)/systeminit.c \
-		  $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
+		  $(SERIESDIR)/systeminit.c
 
+ifneq ("$(NO_DDR)","1")
+SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ram.cc
+endif
+
+ifneq ("$(NO_SDMMC)","1")
+SOURCES += $(HALDIR)/Src/stm32mp1xx_ll_sdmmc.c
+SOURCES += $(HALDIR)/Src/stm32mp1xx_hal_sd.c
+SOURCES += $(SRCDIR)/gpt/gpt.cc
+endif
+
+ifeq ($(SERIES),stm32mp13x)
+ifneq ("$(NO_DDR)","1")
+	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_ddr.c
+endif
+ifneq ("$(NO_SDMMC)","1")
+	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc.c
+	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc_ex.c # Required only for HAL_SD_InitCard to get SDMMC clock speed
+endif
+else
+ifneq ("$(NO_DDR)","1")
+	SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ddr.cc
+endif
+endif
 
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
@@ -50,13 +69,6 @@ INCLUDES = -I. \
 		   -I$(EXTLIBDIR)/CMSIS/Core_A/Include \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include
 
-ifeq ($(SERIES),stm32mp13x)
-	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_ddr.c
-	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc.c
-	SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_rcc_ex.c # Required only for HAL_SD_InitCard to get SDMMC clock speed
-else
-	SOURCES += $(SERIESDIR)/drivers/ddr/stm32mp1_ddr.cc
-endif
 
 
 
@@ -86,6 +98,7 @@ endif
 
 AFLAGS = $(MCU)
 
+
 CFLAGS = -g2 \
 		 -fno-common \
 		 $(ARCH_CFLAGS) \
@@ -95,6 +108,13 @@ CFLAGS = -g2 \
 		 -nostartfiles \
 		 -ffreestanding \
 		 $(EXTRACFLAGS)\
+
+ifeq ("$(NO_DDR)","1")
+CFLAGS += -DNO_DDR=1
+endif
+ifeq ("$(NO_SDMMC)","1")
+CFLAGS += -DNO_SDMMC=1
+endif
 
 CXXFLAGS = $(CFLAGS) \
 		-std=c++20 \
@@ -164,12 +184,12 @@ $(OBJDIR)/%.o: %.s
 $(OBJDIR)/%.o: %.c $(OBJDIR)/%.d
 	@mkdir -p $(dir $@)
 	$(info Building $< at $(OPTFLAG))
-	@$(CC) -c $(DEPFLAGS) $(OPTFLAG) $(CFLAGS) $< -o $@
+	$(CC) -c $(DEPFLAGS) $(OPTFLAG) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: %.c[cp]* $(OBJDIR)/%.d
 	@mkdir -p $(dir $@)
 	$(info Building $< at $(OPTFLAG))
-	@$(CXX) -c $(DEPFLAGS) $(OPTFLAG) $(CXXFLAGS) $< -o $@
+	$(CXX) -c $(DEPFLAGS) $(OPTFLAG) $(CXXFLAGS) $< -o $@
 
 $(ELF): $(OBJECTS) $(LINKSCR)
 	$(info Linking with $(LINKSCR)...)
