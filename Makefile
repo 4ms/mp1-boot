@@ -113,15 +113,18 @@ CFLAGS = -g2 \
 		 $(EXTRACFLAGS)\
 
 ifeq ("$(NO_DDR)","1")
-	CFLAGS += -DNO_DDR=1
+$(info NO_DDR is set: not building DDR init drivers)
+CFLAGS += -DNO_DDR=1
 endif
 
 ifeq ("$(NO_SDMMC)","1")
-	CFLAGS += -DNO_SDMMC=1
+$(info NO_SDMMC is set: not building sdmmc drivers)
+CFLAGS += -DNO_SDMMC=1
 endif
 
 ifeq ("$(LOAD_BINARY)","1")
-	CFLAGS += -DLOAD_BINARY=1
+$(info LOAD_BINARY is set: not using .uimg format)
+CFLAGS += -DLOAD_BINARY=1
 endif
 
 CXXFLAGS = $(CFLAGS) \
@@ -192,12 +195,12 @@ $(OBJDIR)/%.o: %.s
 $(OBJDIR)/%.o: %.c $(OBJDIR)/%.d
 	@mkdir -p $(dir $@)
 	$(info Building $< at $(OPTFLAG))
-	$(CC) -c $(DEPFLAGS) $(OPTFLAG) $(CFLAGS) $< -o $@
+	@$(CC) -c $(DEPFLAGS) $(OPTFLAG) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: %.c[cp]* $(OBJDIR)/%.d
 	@mkdir -p $(dir $@)
 	$(info Building $< at $(OPTFLAG))
-	$(CXX) -c $(DEPFLAGS) $(OPTFLAG) $(CXXFLAGS) $< -o $@
+	@$(CXX) -c $(DEPFLAGS) $(OPTFLAG) $(CXXFLAGS) $< -o $@
 
 $(ELF): $(OBJECTS) $(LINKSCR)
 	$(info Linking with $(LINKSCR)...)
