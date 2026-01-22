@@ -3,7 +3,11 @@
 #include "boot_detect.hh"
 #include "boot_image_def.hh"
 #include "boot_nor.hh"
+
+#ifndef NO_SDMMC
 #include "boot_sd.hh"
+#endif
+
 #include "compiler.h"
 #include "mach/stm32.h"
 #include "print_messages.hh"
@@ -208,10 +212,20 @@ private:
 
 	std::optional<uint32_t> _entry_point{};
 
-	using BootLoaderV = std::variant<BootDdrLoader, BootNorLoader, BootSDLoader>;
+	BootLoader *_loader = nullptr;
+#ifdef NO_SDMMC
+	using BootLoaderV = std::variant<BootDdrLoader, BootNorLoader>;
 	std::aligned_storage<sizeof(BootLoaderV), alignof(BootLoaderV)>::type loader_storage;
 
-	BootLoader *_loader = nullptr;
+	BootLoader *_get_boot_loader(BootDetect::BootMethod bootmethod)
+	{
+		return bootmethod == BootDetect::BOOT_NOR ? new (&loader_storage) BootNorLoader :
+			   bootmethod == BootDetect::BOOT_DDR ? new (&loader_storage) BootDdrLoader :
+													static_cast<BootLoader *>(nullptr);
+	}
+#else
+	using BootLoaderV = std::variant<BootDdrLoader, BootNorLoader, BootSDLoader>;
+	std::aligned_storage<sizeof(BootLoaderV), alignof(BootLoaderV)>::type loader_storage;
 
 	BootLoader *_get_boot_loader(BootDetect::BootMethod bootmethod)
 	{
@@ -220,4 +234,5 @@ private:
 			   bootmethod == BootDetect::BOOT_DDR	 ? new (&loader_storage) BootDdrLoader :
 													   static_cast<BootLoader *>(nullptr);
 	}
+#endif
 };

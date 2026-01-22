@@ -35,11 +35,18 @@ void main()
 			panic("Could not setup PMIC DDR voltages\n");
 	}
 
+#ifndef NO_DDR
 	print("Initializing RAM\n");
 	stm32mp1_ddr_setup();
 
-	print("Testing RAM.\n");
+	print("Testing RAM\n");
 	RamTests::run_all(DRAM_MEM_BASE, stm32mp1_ddr_get_size());
+#else
+	print("DDR RAM disabled in build\n");
+#endif
+#ifdef NO_SDMMC
+	print("Loading app from SD Card disabled in build\n");
+#endif
 
 	auto boot_method = BootDetect::read_boot_method();
 	print("Booted from ", BootDetect::bootmethod_string(boot_method).data(), "\n");
