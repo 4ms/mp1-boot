@@ -47,14 +47,15 @@ bool NorFlashWriter::write(uint32_t nor_addr, std::span<const uint8_t> bytes)
 	auto end_block = (nor_addr + bytes.size() - 1) >> 12;
 	if (start_block != end_block) {
 		auto bytes_in_first_block = ((start_block + 1) << 12) - nor_addr;
-		debug("Write spans blocks. Writing to ", Hex{nor_addr}, " ", bytes_in_first_block, " bytes\n");
+		debug("Write spans blocks ", start_block, "-", end_block, "\n");
+		debug("Writing to 0x", Hex{nor_addr}, " ", bytes_in_first_block, " bytes\n");
 		auto ok = flash.write(bytes.data(), nor_addr, bytes_in_first_block);
 		if (!ok) {
-			pr_err("Failed to write to flash address ", Hex{nor_addr}, "\n");
+			pr_err("Failed to write to flash address 0x", Hex{nor_addr}, "\n");
 			return false;
 		}
 
-		nor_addr = (start_block + 1) >> 12;
+		nor_addr = end_block << 12;
 		bytes = bytes.subspan(bytes_in_first_block);
 	}
 
@@ -67,12 +68,12 @@ bool NorFlashWriter::write(uint32_t nor_addr, std::span<const uint8_t> bytes)
 		}
 	}
 
-	debug("Writing to ", Hex{nor_addr}, " ", bytes.size(), " bytes\n");
+	debug("Writing to 0x", Hex{nor_addr}, " ", bytes.size(), " bytes\n");
 
 	auto ok = flash.write(bytes.data(), nor_addr, bytes.size());
 
 	if (!ok) {
-		pr_err("Failed to write to flash address ", Hex{nor_addr}, "\n");
+		pr_err("Failed to write to flash address 0x", Hex{nor_addr}, "\n");
 		return false;
 	}
 
