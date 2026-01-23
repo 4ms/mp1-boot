@@ -18,7 +18,6 @@ inline uint32_t read_raw_bootrom_itf()
 		return 1;
 	}
 
-	auto val = *reinterpret_cast<uint32_t *>(table_addr);
-	print("boot_mode value = 0x", Hex{val}, "\n");
+	auto val = *reinterpret_cast<uint32_t *>(table_addr); // 0x10001
 	return val;
 }

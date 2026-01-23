@@ -1,11 +1,9 @@
-// #include "board_conf.hh"
-#include "mp133_devboard_v0.3_conf.hh"
-
+#include "board_conf.hh"
 #include "drivers//pinconf.hh"
 #include "qspi_flash_driver.hh"
 #include "qspi_flash_registers.h"
 
-#define XSPI_DEBUG_PRINTF
+// #define XSPI_DEBUG_PRINTF
 
 #ifdef XSPI_DEBUG_PRINTF
 #include "print.hh"
