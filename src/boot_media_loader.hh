@@ -111,8 +111,9 @@ private:
 			// Look for entry point in Kernel type images
 			if (type == BootImageDef::IH_TYPE_KERNEL) {
 				if (load_addr >= 0x70000000 && (load_addr + size) <= 0x80000000) {
-					log("Setting entry point to QSPI NOR Flash memory: 0x", Hex{entry_point}, "\n");
-					_entry_point = entry_point;
+					log("Found entry point to QSPI NOR Flash memory: 0x", Hex{entry_point}, "\n");
+					// Clear it so that we don't try to jump there when done loading
+					_entry_point = std::nullopt;
 
 				} else if (entry_point >= load_addr && entry_point < (load_addr + size)) {
 					if (_entry_point.has_value())
