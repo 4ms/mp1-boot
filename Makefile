@@ -62,10 +62,11 @@ SOURCES += $(SRCDIR)/gpt/gpt.cc
 endif
 
 
-ifneq ("$(NORFLASH_WRITER)","")
+ifeq ("$(NORFLASH_WRITER)","1")
 SOURCES += $(SRCDIR)/boot_sd_write_nor.cc
 SOURCES += $(SRCDIR)/drivers/norflash-full/flash_loader.cc
 SOURCES += $(SRCDIR)/drivers/norflash-full/xspi_flash_driver.cc
+SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_xspi.c
 endif
 
 INCLUDES = -I. \
@@ -79,7 +80,7 @@ INCLUDES = -I. \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include
 
 
-ifneq ("$(NORFLASH_WRITER)","")
+ifeq ("$(NORFLASH_WRITER)","1")
 INCLUDES += -I$(SRCDIR)/drivers/norflash-full
 endif
 
@@ -108,7 +109,7 @@ endif
 endif
 endif
 
-ifneq ("$(NORFLASH_WRITER)","")
+ifeq ("$(NORFLASH_WRITER)","1")
 ARCH_CFLAGS += -DNORFLASH_WRITER=1
 endif
 

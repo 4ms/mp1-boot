@@ -1,13 +1,11 @@
 #pragma once
-
 #define QSPI_HandleTypeDef XSPI_HandleTypeDef
 #define QSPI_CommandTypeDef XSPI_RegularCmdTypeDef
 #include "stm32mp13xx_hal_xspi.h"
 
-#include <cstdint>
-// #include "stm32mp13xx.h"
+#include "board_conf.hh"
 #include "qspi_flash_registers.h"
-// #include "qspi_flash_struct.hh"
+#include <cstdint>
 
 namespace mdrivlib
 {
@@ -102,7 +100,7 @@ public:
 	// Attempts a few times to read the ID, returns true if it matches the expected
 	bool check_chip_id(uint32_t expected_id, uint32_t mask);
 
-	uint32_t get_chip_size_bytes() { return 16 * 1024 * 1024; }
+	uint32_t get_chip_size_bytes() { return Board::NORFlash::SizeBytes; }
 
 	// for use in callbacks and IRQ:
 	volatile enum FlashStatus QSPI_status = STATUS_READY;

@@ -1,9 +1,6 @@
 #include "flash_loader.hh"
 #include "print_messages.hh"
 
-namespace MetaModule
-{
-
 FlashLoader::FlashLoader() {}
 
 bool FlashLoader::check_flash_chip()
@@ -11,7 +8,7 @@ bool FlashLoader::check_flash_chip()
 	return flash.check_chip_id(0x180001, 0x00180001); // 182001 or 186001 or 1840EF
 }
 
-bool FlashLoader::write_sectors(uint32_t base_addr, std::span<uint8_t> buffer)
+bool FlashLoader::write_sectors(uint32_t base_addr, std::span<const uint8_t> buffer)
 {
 	constexpr bool verbose_log = false;
 
@@ -46,9 +43,9 @@ bool FlashLoader::write_sectors(uint32_t base_addr, std::span<uint8_t> buffer)
 	return true;
 }
 
-bool FlashLoader::write_sectors(uint32_t base_addr, std::span<char> buffer)
+bool FlashLoader::write_sectors(uint32_t base_addr, std::span<const char> buffer)
 {
-	auto buff_u8 = std::span<uint8_t>{reinterpret_cast<uint8_t *>(buffer.data()), buffer.size()};
+	auto buff_u8 = std::span<const uint8_t>{reinterpret_cast<const uint8_t *>(buffer.data()), buffer.size()};
 	return write_sectors(base_addr, buff_u8);
 }
 
@@ -56,5 +53,3 @@ bool FlashLoader::read_sectors(uint32_t base_addr, std::span<uint8_t> buffer)
 {
 	return flash.read(buffer.data(), base_addr, buffer.size());
 }
-
-} // namespace MetaModule
