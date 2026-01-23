@@ -5,7 +5,8 @@
 extern "C" {
 #endif
 
-void QSPI_init();
+enum QSPIMode { SingleIO, MemMapped };
+void QSPI_init(enum QSPIMode mode);
 uint32_t QSPI_read_SIO(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes);
 uint32_t QSPI_read_MM(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes);
 uint32_t QSPI_read_quad(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes);

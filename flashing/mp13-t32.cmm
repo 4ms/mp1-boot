@@ -6,12 +6,8 @@ PRIVATE &builddir
 &builddir=OS.PPF()
 &builddir=OS.FILE.PATH("&builddir")
 
-PRIVATE &binfile
-&binfile=OS.FILE.JOINPATH("&builddir", "../", "build", "main.uimg")
-&binfile=OS.FILE.REALPATH("&binfile")
-
 PRIVATE &elffile
-&elffile=OS.FILE.JOINPATH("&builddir", "../", "build", "main.elf")
+&elffile=OS.FILE.JOINPATH("&builddir", "../", "build", "fsbl.elf")
 &elffile=OS.FILE.REALPATH("&elffile")
 
 RESet
@@ -24,11 +20,7 @@ Trace.DISable
 SYStem.MemAccess DAP
 SYStem.Up
 
-Data.LOAD.Binary "&binfile" 0xC0000000 /DUALPORT
 Data.LOAD.Elf "&elffile" /CPP /NoCode
-PER.Set.simple AZSD:0x0:0x5C00A118 %Long 0xC0000000
-;Break main
-Go
 
 Trace.METHOD ONCHIP
 ETM.Trace ON

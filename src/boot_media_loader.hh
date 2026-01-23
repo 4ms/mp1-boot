@@ -3,6 +3,7 @@
 #include "boot_detect.hh"
 #include "boot_image_def.hh"
 #include "boot_nor.hh"
+#include "delay.h"
 
 #ifndef NO_SDMMC
 #include "boot_sd.hh"
@@ -66,6 +67,17 @@ public:
 			}
 		}
 
+#ifdef NORFLASH_WRITER
+		Board::BlueLED blue_led;
+		print("Please flip BOOT switches to NOR Flash boot, and reboot\n");
+		while (true) {
+			blue_led.on();
+			udelay(500000);
+			blue_led.off();
+			udelay(500000);
+		}
+#endif
+
 		return true;
 	}
 
@@ -110,7 +122,10 @@ private:
 
 			// Look for entry point in Kernel type images
 			if (type == BootImageDef::IH_TYPE_KERNEL) {
-				if (entry_point >= load_addr && entry_point < (load_addr + size)) {
+				if (load_addr >= 0x70000000 && (load_addr + size) <= 0x80000000) {
+					log("Ignoring entry point 0x", Hex{entry_point}, " for segment to be written to NORFLASH\n");
+
+				} else if (entry_point >= load_addr && entry_point < (load_addr + size)) {
 					if (_entry_point.has_value())
 						pr_err("Error: more than one kernel image with a valid entry point found.\n");
 					else {
@@ -135,7 +150,7 @@ private:
 				}
 			}
 
-			if (valid_addr(load_addr - header_size)) {
+			if (valid_addr(load_addr - header_size) && !is_norflash_addr(load_addr)) {
 				image_info.skip_header = false;
 				image_info.load_addr = load_addr - header_size;
 				image_info.size = size;
@@ -209,8 +224,20 @@ private:
 		if (addr >= STM32_DDR_BASE && addr <= STM32_DDR_END)
 			return true;
 
+		if (is_norflash_addr(addr))
+			return true;
+
 		return false;
-	};
+	}
+
+	bool is_norflash_addr(uint64_t addr)
+	{
+#ifdef NORFLASH_WRITER
+		if (addr >= 0x70000000 && addr <= 0x80000000)
+			return true;
+#endif
+		return false;
+	}
 
 	std::optional<uint32_t> _entry_point{};
 

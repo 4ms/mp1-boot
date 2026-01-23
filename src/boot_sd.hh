@@ -9,6 +9,10 @@
 #include <cstdint>
 #include <span>
 
+#ifdef NORFLASH_WRITER
+#include "boot_sd_write_nor.hh"
+#endif
+
 struct BootSDLoader : BootLoader {
 	BootSDLoader()
 	{
@@ -144,8 +148,10 @@ private:
 			return false;
 		}
 
+		auto load_addr = (uint32_t)data.data();
+
 		debug(" SD read ", data.size(), " bytes from 0x", Hex{address}, "-0x", Hex{address + data.size()});
-		debug(" to 0x", Hex{(uint32_t)data.data()}, "-0x", Hex{(uint32_t)data.data() + data.size()}, "\n");
+		debug(" to 0x", Hex{load_addr}, "-0x", Hex{load_addr + data.size()}, "\n");
 
 		uint32_t aligned_addr = (address / BlockSize) * BlockSize;
 		if (aligned_addr < address) {
@@ -160,8 +166,16 @@ private:
 			debug("  Copying last ", bytes_to_keep, " bytes from tmp to ", Hex{(uint32_t)data.data()}, "\n");
 
 			auto source = std::span<uint8_t>{&tmp[bytes_to_drop], &tmp[512]};
-			for (auto i = 0; auto &d : data.subspan(0, bytes_to_keep))
-				d = source[i++];
+
+#ifdef NORFLASH_WRITER
+			if (load_addr >= 0x6000'0000 && load_addr < 0x9000'0000) {
+				nor_writer.write((uint32_t)data.data(), source);
+			} else
+#endif
+			{
+				for (auto i = 0; auto &d : data.subspan(0, bytes_to_keep))
+					d = source[i++];
+			}
 
 			if (data.size() == bytes_to_keep) {
 				return true;
@@ -191,7 +205,7 @@ private:
 			uint32_t numblocks = bytes_to_read / BlockSize;
 
 			debug("   Reading ", numblocks, " block(s)\n");
-			if (HAL_SD_ReadBlocks(&hsd, read_ptr, block_num, numblocks, timeout) != HAL_OK)
+			if (read_sd_multi_blocks(&hsd, read_ptr, block_num, numblocks, timeout) != HAL_OK)
 				read_error();
 
 			uint32_t bytes_read = numblocks * BlockSize;
@@ -216,13 +230,55 @@ private:
 
 			debug("   Copying first ", bytes_to_copy, " from tmp to ", Hex{uint32_t(read_ptr)}, "\n");
 
-			for (unsigned i = 0; i < bytes_to_copy; i++) {
-				*read_ptr++ = tmp[i];
+#ifdef NORFLASH_WRITER
+			if ((uint32_t)read_ptr >= 0x6000'0000 && (uint32_t)read_ptr < 0x9000'0000) {
+				nor_writer.write((uint32_t)read_ptr, std::span<const uint8_t>{tmp, bytes_to_copy});
+			} else
+#endif
+			{
+				for (unsigned i = 0; i < bytes_to_copy; i++)
+					*read_ptr++ = tmp[i];
 			}
+
 			bytes_to_read -= bytes_to_copy;
 			block_num++;
 		}
 		return true;
+	}
+
+	// Reads entire aligned blocks
+	HAL_StatusTypeDef read_sd_multi_blocks(
+		SD_HandleTypeDef *hsd, uint8_t *read_ptr, uint32_t block_num, uint32_t numblocks, uint32_t timeout)
+	{
+#ifdef NORFLASH_WRITER
+		if ((uint32_t)read_ptr >= 0x6000'0000 && (uint32_t)read_ptr < 0x9000'0000) {
+
+			while (numblocks--) {
+				alignas(4) uint8_t tmp[BlockSize];
+
+				debug("    ", "Reading block #", block_num, " from SD Card to temp memory\n");
+
+				if (auto res = HAL_SD_ReadBlocks(hsd, tmp, block_num, 1, timeout); res == HAL_OK) {
+
+					if (nor_writer.write((uint32_t)read_ptr, tmp)) {
+						debug("Wrote to NOR at 0x", Hex{(uint32_t)read_ptr}, "\n");
+					} else {
+						pr_err("Failed to write SD block #", block_num, " to NOR at 0x", Hex{(uint32_t)read_ptr}, "\n");
+					}
+
+				} else {
+					pr_err("Failed to reading block #", block_num, " from SD Card into temp memory.\n");
+					return res;
+				}
+
+				block_num++;
+				read_ptr += BlockSize;
+			}
+			return HAL_OK;
+
+		} else
+#endif
+			return HAL_SD_ReadBlocks(hsd, read_ptr, block_num, numblocks, timeout);
 	}
 
 	void init_error()
@@ -244,4 +300,8 @@ private:
 	}
 
 	constexpr static uint32_t BlockSize = 512;
+
+#ifdef NORFLASH_WRITER
+	NorFlashWriter nor_writer;
+#endif
 };

@@ -62,6 +62,13 @@ SOURCES += $(SRCDIR)/gpt/gpt.cc
 endif
 
 
+ifeq ("$(NORFLASH_WRITER)","1")
+SOURCES += $(SRCDIR)/boot_sd_write_nor.cc
+SOURCES += $(SRCDIR)/drivers/norflash-full/flash_loader.cc
+SOURCES += $(SRCDIR)/mp13x/drivers/xspi_flash_driver.cc
+SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_xspi.c
+endif
+
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
 		   -I$(SRCDIR)/board_conf \
@@ -73,6 +80,9 @@ INCLUDES = -I. \
 		   -I$(EXTLIBDIR)/CMSIS/Device/ST/STM32MP1xx/Include
 
 
+ifeq ("$(NORFLASH_WRITER)","1")
+INCLUDES += -I$(SRCDIR)/drivers/norflash-full
+endif
 
 
 MCU = -mcpu=cortex-a7 -march=armv7ve -mfpu=neon-vfpv4 -mlittle-endian -mfloat-abi=hard
@@ -97,6 +107,10 @@ ifneq ("$(BOARD_CONF)","")
 	ARCH_CFLAGS += -DBOARD_CONF_PATH=$(BOARD_CONF)
 endif
 endif
+endif
+
+ifeq ("$(NORFLASH_WRITER)","1")
+ARCH_CFLAGS += -DNORFLASH_WRITER=1
 endif
 
 AFLAGS = $(MCU)
@@ -182,10 +196,10 @@ all: Makefile $(ELF) $(UIMAGENAME) image
 	@:
 
 mp13x:
-	$(MAKE) SERIES=stm32mp13x BOARD_CONF=brainboard-mp13_conf.hh
+	$(MAKE) SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh
 
 mp13x-load:
-	$(MAKE) load SERIES=stm32mp13x BOARD_CONF=brainboard-mp13_conf.hh
+	$(MAKE) SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh load
 
 $(OBJDIR)/%.o: %.s
 	@mkdir -p $(dir $@)
