@@ -29,6 +29,21 @@ namespace NORFlash
 constexpr bool HasNORFlash = true;
 constexpr PinConf d2{GPIO::F, PinNum::_6, PinAF::AF_9};
 constexpr PinConf d3{GPIO::H, PinNum::_8, PinAF::AF_13};
+
+constexpr uint32_t SizeBytes = 16 * 1024 * 1024;
+
+enum AddressBits { AddrBits24 = 24, AddrBits32 = 32 };
+constexpr inline AddressBits address_bits = AddrBits24;
+
+enum ChipID { IS25L, S25FLxxxL, W25Q128JV };
+constexpr inline ChipID chip_id = IS25L;
+
+enum IOMode { SingleSPI, DualSPI, QuadSPI };
+constexpr inline IOMode io_mode = QuadSPI;
+
+enum Bank { Bank1, Bank2 };
+constexpr inline Bank bank = Bank1;
+
 } // namespace NORFlash
 
 namespace PMIC
