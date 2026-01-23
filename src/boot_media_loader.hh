@@ -111,9 +111,7 @@ private:
 			// Look for entry point in Kernel type images
 			if (type == BootImageDef::IH_TYPE_KERNEL) {
 				if (load_addr >= 0x70000000 && (load_addr + size) <= 0x80000000) {
-					log("Found entry point to QSPI NOR Flash memory: 0x", Hex{entry_point}, "\n");
-					// Clear it so that we don't try to jump there when done loading
-					_entry_point = std::nullopt;
+					log("Ignoring entry point 0x", Hex{entry_point}, " for segment to be written to NORFLASH\n");
 
 				} else if (entry_point >= load_addr && entry_point < (load_addr + size)) {
 					if (_entry_point.has_value())
@@ -140,7 +138,7 @@ private:
 				}
 			}
 
-			if (valid_addr(load_addr - header_size) && !is_fsbl_addr(load_addr)) {
+			if (valid_addr(load_addr - header_size) && !is_norflash_addr(load_addr)) {
 				image_info.skip_header = false;
 				image_info.load_addr = load_addr - header_size;
 				image_info.size = size;
@@ -211,21 +209,19 @@ private:
 			return true;
 #endif
 
-#ifdef NORFLASH_WRITER
-		if (addr >= 0x70000000 && addr <= 0x80000000)
-			return true;
-#endif
-
 		if (addr >= STM32_DDR_BASE && addr <= STM32_DDR_END)
+			return true;
+
+		if (is_norflash_addr(addr))
 			return true;
 
 		return false;
 	}
 
-	bool is_fsbl_addr(uint64_t addr)
+	bool is_norflash_addr(uint64_t addr)
 	{
 #ifdef NORFLASH_WRITER
-		if (addr == 0x70000000 || addr == 0x70040000)
+		if (addr >= 0x70000000 && addr <= 0x80000000)
 			return true;
 #endif
 		return false;
