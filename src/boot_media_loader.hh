@@ -3,6 +3,7 @@
 #include "boot_detect.hh"
 #include "boot_image_def.hh"
 #include "boot_nor.hh"
+#include "delay.h"
 
 #ifndef NO_SDMMC
 #include "boot_sd.hh"
@@ -65,6 +66,17 @@ public:
 				break;
 			}
 		}
+
+#ifdef NORFLASH_WRITER
+		Board::BlueLED blue_led;
+		print("Please flip BOOT switches to NOR Flash boot, and reboot\n");
+		while (true) {
+			blue_led.on();
+			udelay(500000);
+			blue_led.off();
+			udelay(500000);
+		}
+#endif
 
 		return true;
 	}
