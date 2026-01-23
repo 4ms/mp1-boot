@@ -1,4 +1,4 @@
-BINARYNAME = fsbl
+BINARYNAME ?= fsbl
 
 SERIES ?= stm32mp15x
 
@@ -189,7 +189,7 @@ BIN 	= $(BUILDDIR)/$(BINARYNAME).bin
 
 OBJECTS   = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(basename $(SOURCES))))
 DEPS   	  = $(addprefix $(OBJDIR)/, $(addsuffix .d, $(basename $(SOURCES))))
-BUILDDIR = build
+BUILDDIR ?= build
 OBJDIR = $(BUILDDIR)/obj/obj
 
 all: Makefile $(ELF) $(UIMAGENAME) image
