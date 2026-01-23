@@ -112,6 +112,11 @@ QSpiFlash::QSpiFlash()
 
 void QSpiFlash::GPIO_init_IO0_IO1()
 {
+	Board::NORFlash::clk.init(PinMode::Alt);
+	Board::NORFlash::cs.init(PinMode::Alt);
+	Board::NORFlash::d0.init(PinMode::Alt);
+	Board::NORFlash::d1.init(PinMode::Alt);
+
 	// Set /HOLD and /WP pins high to disable holding and write protection, until we enter QPI mode
 	if (Board::NORFlash::d2.gpio != GPIO::Unused) {
 		Board::NORFlash::d2.init(PinMode::Output);

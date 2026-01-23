@@ -27,8 +27,12 @@ constexpr PinConf UartTX{GPIO::H, PinNum::_2, PinAF::AF_8};
 namespace NORFlash
 {
 constexpr bool HasNORFlash = true;
+constexpr PinConf clk{GPIO::F, PinNum::_10, PinAF::AF_9};
+constexpr PinConf cs{GPIO::B, PinNum::_2, PinAF::AF_9};
+constexpr PinConf d0{GPIO::F, PinNum::_8, PinAF::AF_10};
+constexpr PinConf d1{GPIO::F, PinNum::_9, PinAF::AF_10};
 constexpr PinConf d2{GPIO::F, PinNum::_6, PinAF::AF_9};
-constexpr PinConf d3{GPIO::H, PinNum::_8, PinAF::AF_13};
+constexpr PinConf d3{GPIO::H, PinNum::_7, PinAF::AF_13};
 
 constexpr uint32_t SizeBytes = 16 * 1024 * 1024;
 
