@@ -28,7 +28,7 @@ namespace NORFlash
 {
 constexpr bool HasNORFlash = true;
 constexpr PinConf d2{GPIO::F, PinNum::_6, PinAF::AF_9};
-constexpr PinConf d3{GPIO::H, PinNum::_8, PinAF::AF_13};
+constexpr PinConf d3{GPIO::H, PinNum::_7, PinAF::AF_13};
 } // namespace NORFlash
 
 namespace PMIC
