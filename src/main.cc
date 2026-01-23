@@ -84,7 +84,7 @@ void main()
 	}
 
 	// Should not reach here, but in case we do, blink LED rapidly
-	print("FAILED!\n");
+	print("Failed to jump to an app!\n");
 	constexpr uint32_t dlytime = 50000;
 	while (true) {
 		red_led.on();
