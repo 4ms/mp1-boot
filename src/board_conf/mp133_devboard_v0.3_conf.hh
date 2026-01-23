@@ -40,7 +40,7 @@ enum AddressBits { AddrBits24 = 24, AddrBits32 = 32 };
 constexpr inline AddressBits address_bits = AddrBits24;
 
 enum ChipID { IS25L, S25FLxxxL, W25Q128JV };
-constexpr inline ChipID chip_id = IS25L;
+constexpr inline ChipID chip_id = W25Q128JV;
 
 enum IOMode { SingleSPI, DualSPI, QuadSPI };
 constexpr inline IOMode io_mode = QuadSPI;
