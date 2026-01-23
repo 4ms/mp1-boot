@@ -66,13 +66,6 @@ QSpiFlash::QSpiFlash()
 	// Initialize chip pins in single IO mode
 	GPIO_init_IO0_IO1();
 
-	// InterruptControl::set_irq_priority(QUADSPI_IRQn, defs.IRQ_pri, defs.IRQ_subpri);
-	// InterruptManager::register_isr(QUADSPI_IRQn, [hal_handle_ptr = &handle]() {
-	// 	// Todo: use our own handler, so can get rid of the static instance_ and extern "C" functions
-	// 	HAL_XSPI_IRQHandler(hal_handle_ptr);
-	// });
-	// InterruptControl::enable_irq(QUADSPI_IRQn);
-
 	__HAL_RCC_QSPI_FORCE_RESET();
 	__HAL_RCC_QSPI_RELEASE_RESET();
 
@@ -217,7 +210,7 @@ bool QSpiFlash::test_sector(uint8_t sector_num)
 	uint8_t test_buffer[QSPI_SECTOR_SIZE];
 	uint32_t test_addr = get_sector_addr(sector_num);
 
-	read(test_buffer, test_addr, QSPI_SECTOR_SIZE, EXECUTE_FOREGROUND);
+	read(test_buffer, test_addr, QSPI_SECTOR_SIZE);
 
 	for (i = 0; i < QSPI_SECTOR_SIZE; i++)
 		test_buffer[i] = test_encode_num(i, sector_num);
@@ -225,7 +218,7 @@ bool QSpiFlash::test_sector(uint8_t sector_num)
 	while (!is_ready())
 		;
 
-	if (!erase(SECTOR, test_addr, EXECUTE_FOREGROUND))
+	if (!erase(SECTOR, test_addr))
 		return false;
 
 	while (!is_ready())
@@ -233,8 +226,7 @@ bool QSpiFlash::test_sector(uint8_t sector_num)
 
 	for (i = 0; i < (QSPI_SECTOR_SIZE / QSPI_PAGE_SIZE); i++) {
 		// Benchmark: ~380us/page
-		if (!write_page(
-				&(test_buffer[i * QSPI_PAGE_SIZE]), test_addr + i * QSPI_PAGE_SIZE, QSPI_PAGE_SIZE, EXECUTE_FOREGROUND))
+		if (!write_page(&(test_buffer[i * QSPI_PAGE_SIZE]), test_addr + i * QSPI_PAGE_SIZE, QSPI_PAGE_SIZE))
 			return false;
 		while (!is_ready())
 			;
@@ -243,7 +235,7 @@ bool QSpiFlash::test_sector(uint8_t sector_num)
 	for (i = 0; i < QSPI_SECTOR_SIZE; i++)
 		test_buffer[i] = 0;
 
-	if (!read(test_buffer, test_addr, QSPI_SECTOR_SIZE, EXECUTE_FOREGROUND))
+	if (!read(test_buffer, test_addr, QSPI_SECTOR_SIZE))
 		return false;
 
 	while (!is_ready())
@@ -262,7 +254,7 @@ uint8_t QSpiFlash::test_encode_num(uint32_t num, uint32_t sector_num)
 	return (((num * 9) + (num >> 7)) + sector_num) & 0xFF;
 }
 
-bool QSpiFlash::erase(uint32_t size, uint32_t base_addr, UseInterruptFlags use_interrupt)
+bool QSpiFlash::erase(uint32_t size, uint32_t base_addr)
 {
 	uint8_t status;
 	uint32_t timeout;
@@ -300,10 +292,7 @@ bool QSpiFlash::erase(uint32_t size, uint32_t base_addr, UseInterruptFlags use_i
 	if (HAL_XSPI_Command(&handle, &s_command, 200 /*HAL_XSPI_TIMEOUT_DEFAULT_VALUE*/) != HAL_OK)
 		return false;
 
-	if (use_interrupt == EXECUTE_BACKGROUND)
-		status = auto_polling_mem_ready_it();
-	else
-		status = auto_polling_mem_ready(timeout);
+	status = auto_polling_mem_ready(timeout);
 
 	if (status != HAL_OK)
 		return false;
@@ -376,10 +365,7 @@ bool QSpiFlash::write(const uint8_t *pData, uint32_t write_addr, uint32_t num_by
 // Setting use_interrupt to 1 means HAL_QSPI_TxCpltCallback() interrupt will be called when TX is
 // done, but you must still check the chip status before accessing it again.
 //
-bool QSpiFlash::write_page(const uint8_t *pData,
-						   uint32_t write_addr,
-						   uint32_t num_bytes,
-						   UseInterruptFlags use_interrupt)
+bool QSpiFlash::write_page(const uint8_t *pData, uint32_t write_addr, uint32_t num_bytes)
 {
 	// Cannot write more than a page
 	if (num_bytes > QSPI_PAGE_SIZE)
@@ -411,32 +397,18 @@ bool QSpiFlash::write_page(const uint8_t *pData,
 	if (HAL_XSPI_Command(&handle, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
 		return false;
 
-	if (use_interrupt == EXECUTE_BACKGROUND) {
-		QSPI_status = STATUS_TXING;
+	QSPI_status = STATUS_TXING;
+	if (HAL_XSPI_Transmit(&handle, const_cast<uint8_t *>(pData), HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+		return false;
 
-		if (HAL_XSPI_Transmit_IT(&handle, const_cast<uint8_t *>(pData)) != HAL_OK)
-			return false;
-
-		while (!done_TXing()) {
-			;
-		}
-
-		// Set-up auto polling, which periodically queries the chip in the background
-		auto_polling_mem_ready_it();
-	} else {
-		QSPI_status = STATUS_TXING;
-		if (HAL_XSPI_Transmit(&handle, const_cast<uint8_t *>(pData), HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-			return false;
-
-		if (auto_polling_mem_ready(HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-			return false;
-		QSPI_status = STATUS_READY;
-	}
+	if (auto_polling_mem_ready(HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+		return false;
+	QSPI_status = STATUS_READY;
 
 	return true;
 }
 
-bool QSpiFlash::read(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes, UseInterruptFlags use_interrupt)
+bool QSpiFlash::read(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes)
 {
 	uint8_t status;
 
@@ -469,14 +441,8 @@ bool QSpiFlash::read(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes, Use
 	if (HAL_XSPI_Command(&handle, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
 		return HAL_ERROR;
 
-	if (use_interrupt == EXECUTE_BACKGROUND) {
-		QSPI_status = STATUS_RXING;
-
-		status = HAL_XSPI_Receive_IT(&handle, pData);
-	} else {
-		status = HAL_XSPI_Receive(&handle, pData, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
-		QSPI_status = STATUS_READY;
-	}
+	status = HAL_XSPI_Receive(&handle, pData, HAL_XSPI_TIMEOUT_DEFAULT_VALUE);
+	QSPI_status = STATUS_READY;
 
 	if (status != HAL_OK)
 		return false;

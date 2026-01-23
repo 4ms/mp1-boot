@@ -41,8 +41,6 @@ public:
 
 	enum FlashStatus { STATUS_READY, STATUS_WIP, STATUS_RXING, STATUS_RX_COMPLETE, STATUS_TXING, STATUS_TX_COMPLETE };
 
-	enum UseInterruptFlags { EXECUTE_FOREGROUND, EXECUTE_BACKGROUND };
-
 private:
 	QSPI_HandleTypeDef handle;
 	QSPI_CommandTypeDef s_command;
@@ -77,22 +75,12 @@ public:
 
 	HAL_StatusTypeDef Reset();
 
-	bool
-	read(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes, UseInterruptFlags use_interrupt = EXECUTE_FOREGROUND);
-	bool read_background(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes)
-	{
-		return read(pData, read_addr, num_bytes, EXECUTE_BACKGROUND);
-	}
+	bool read(uint8_t *pData, uint32_t read_addr, uint32_t num_bytes);
 
 	bool write(const uint8_t *pData, uint32_t write_addr, uint32_t num_bytes);
-	bool write_page(const uint8_t *pData,
-					uint32_t write_addr,
-					uint32_t num_bytes,
-					UseInterruptFlags use_interrupt = EXECUTE_FOREGROUND);
+	bool write_page(const uint8_t *pData, uint32_t write_addr, uint32_t num_bytes);
 
-	bool erase(uint32_t size, uint32_t base_addr, UseInterruptFlags use_interrupt = EXECUTE_FOREGROUND);
-	bool erase_background(ErasableSizes size, uint32_t base_addr) { return erase(size, base_addr, EXECUTE_FOREGROUND); }
-	bool erase_block_background(uint32_t base_addr) { return erase(BLOCK_32K, base_addr, EXECUTE_BACKGROUND); }
+	bool erase(uint32_t size, uint32_t base_addr);
 
 	bool read_config(uint32_t *data);
 	bool read_chip_id(uint32_t *chip_id_ptr);
