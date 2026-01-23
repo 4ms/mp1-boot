@@ -110,7 +110,11 @@ private:
 
 			// Look for entry point in Kernel type images
 			if (type == BootImageDef::IH_TYPE_KERNEL) {
-				if (entry_point >= load_addr && entry_point < (load_addr + size)) {
+				if (load_addr >= 0x60000000 && (load_addr + size) <= 0x90000000) {
+					log("Setting entry point to FMC or QSPI memory: 0x", Hex{entry_point}, "\n");
+					_entry_point = entry_point;
+
+				} else if (entry_point >= load_addr && entry_point < (load_addr + size)) {
 					if (_entry_point.has_value())
 						pr_err("Error: more than one kernel image with a valid entry point found.\n");
 					else {
@@ -195,14 +199,21 @@ private:
 	bool valid_addr(uint64_t addr)
 	{
 #ifdef STM32MP13
-		// TODO: other sectors on MP13?
+		if (addr >= 0x2FFE0000 && addr <= 0x30008000)
+			return true;
+
 #else
 		if (addr >= RETRAM_BASE && addr <= (RETRAM_BASE + STM32MP15x_RETRAM_SIZE))
 			return true;
-#endif
 
 		if (addr >= SRAM_BASE && addr <= (SRAM_BASE + STM32MP15x_SRAM_SIZE))
 			return true;
+#endif
+
+#ifdef NORFLASH_WRITER
+		if (addr >= 0x60000000 && addr <= 0x90000000)
+			return true;
+#endif
 
 		if (addr >= STM32_DDR_BASE && addr <= STM32_DDR_END)
 			return true;

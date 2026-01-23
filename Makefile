@@ -62,6 +62,10 @@ SOURCES += $(SRCDIR)/gpt/gpt.cc
 endif
 
 
+ifneq ("$(NORFLASH_WRITER)","")
+SOURCES += $(SRCDIR)/boot_sd_write_nor.cc
+endif
+
 INCLUDES = -I. \
 		   -I$(SRCDIR) \
 		   -I$(SRCDIR)/board_conf \
@@ -97,6 +101,10 @@ ifneq ("$(BOARD_CONF)","")
 	ARCH_CFLAGS += -DBOARD_CONF_PATH=$(BOARD_CONF)
 endif
 endif
+endif
+
+ifneq ("$(NORFLASH_WRITER)","")
+ARCH_CFLAGS += -DNORFLASH_WRITER=1
 endif
 
 AFLAGS = $(MCU)
@@ -182,10 +190,10 @@ all: Makefile $(ELF) $(UIMAGENAME) image
 	@:
 
 mp13x:
-	$(MAKE) SERIES=stm32mp13x BOARD_CONF=brainboard-mp13_conf.hh
+	$(MAKE) SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh NORFLASH_WRITER=1
 
 mp13x-load:
-	$(MAKE) load SERIES=stm32mp13x BOARD_CONF=brainboard-mp13_conf.hh
+	$(MAKE) load SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh NORFLASH_WRITER=1
 
 $(OBJDIR)/%.o: %.s
 	@mkdir -p $(dir $@)
