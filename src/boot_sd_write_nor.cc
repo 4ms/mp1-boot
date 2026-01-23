@@ -9,7 +9,7 @@ NorFlashWriter::NorFlashWriter()
 	Board::NORFlash::d2.init(PinMode::Alt);
 	Board::NORFlash::d3.init(PinMode::Alt);
 
-	QSPI_init();
+	QSPI_init(QSPIMode::SingleIO);
 }
 
 bool NorFlashWriter::write(uint32_t nor_addr, std::span<const uint8_t> bytes)

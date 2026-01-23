@@ -22,7 +22,7 @@
 
 #define QSPI_DUMMY_CYCLES_READ 0
 
-void QSPI_init(QSPIMode mode)
+void QSPI_init(enum QSPIMode mode)
 {
 	// Select ACLK 266MHz
 	RCC->QSPICKSELR = 0;
@@ -41,8 +41,7 @@ void QSPI_init(QSPIMode mode)
 	QUADSPI->DCR = (23 << QUADSPI_DCR_FSIZE_Pos) | (2 << QUADSPI_DCR_CSHT_Pos);
 
 	// Enable MM mode (or not)
-	auto modebit =
-		mode == QSPIMode::MemMapped ? QSPI_FUNCTIONAL_MODE_MEMORY_MAPPED : QSPI_FUNCTIONAL_MODE_INDIRECT_READ;
+	enum QSPIMode modebit = mode == MemMapped ? QSPI_FUNCTIONAL_MODE_MEMORY_MAPPED : QSPI_FUNCTIONAL_MODE_INDIRECT_READ;
 
 	const uint32_t dummy_cycles = 6;
 	LL_QSPI_SetCommConfig(QSPI_SIOO_INST_EVERY_CMD | QSPI_INSTRUCTION_1_LINE | QSPI_DATA_4_LINES |
