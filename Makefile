@@ -196,10 +196,10 @@ all: Makefile $(ELF) $(UIMAGENAME) image
 	@:
 
 mp13x:
-	$(MAKE) SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh NORFLASH_WRITER=1
+	$(MAKE) SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh
 
 mp13x-load:
-	$(MAKE) load SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh NORFLASH_WRITER=1
+	$(MAKE) SERIES=stm32mp13x BOARD_CONF=mp133_devboard_v0.3_conf.hh load
 
 $(OBJDIR)/%.o: %.s
 	@mkdir -p $(dir $@)
