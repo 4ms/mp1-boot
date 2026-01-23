@@ -65,7 +65,7 @@ endif
 ifeq ("$(NORFLASH_WRITER)","1")
 SOURCES += $(SRCDIR)/boot_sd_write_nor.cc
 SOURCES += $(SRCDIR)/drivers/norflash-full/flash_loader.cc
-SOURCES += $(SRCDIR)/drivers/norflash-full/xspi_flash_driver.cc
+SOURCES += $(SRCDIR)/mp13x/drivers/xspi_flash_driver.cc
 SOURCES += $(HALDIR)/Src/stm32mp13xx_hal_xspi.c
 endif
 
