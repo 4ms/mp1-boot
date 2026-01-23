@@ -5,11 +5,11 @@
 #include "qspi_flash_driver.hh"
 #include "qspi_flash_registers.h"
 
-// #define XSPI_DEBUG_PRINTF
+#define XSPI_DEBUG_PRINTF
 
 #ifdef XSPI_DEBUG_PRINTF
-#include <cstdio>
-#define xspi_printf printf
+#include "print.hh"
+#define xspi_printf print
 #else
 #define xspi_printf(...)
 #endif
@@ -79,14 +79,14 @@ QSpiFlash::QSpiFlash()
 
 	[[maybe_unused]] auto res = HAL_XSPI_Init(&handle);
 	if (res != HAL_OK)
-		xspi_printf("Failed to init QSPI: %d\n", res);
+		xspi_printf("Failed to init QSPI: ", res, "\n");
 
 	init_command(&s_command);
 
 	QSPI_status = STATUS_READY; // NOLINT
 
 	if ([[maybe_unused]] auto res = Reset())
-		xspi_printf("Failed to reset QSPI: %d\n", res);
+		xspi_printf("Failed to reset QSPI: ", res, "\n");
 
 	if (Board::NORFlash::io_mode == Board::NORFlash::QuadSPI) {
 		// Now that chip is in QSPI mode, IO2 and IO3 can be initialized
@@ -96,10 +96,10 @@ QSpiFlash::QSpiFlash()
 	}
 
 	if ([[maybe_unused]] auto res = auto_polling_mem_ready(HAL_XSPI_TIMEOUT_DEFAULT_VALUE))
-		xspi_printf("Failed to get autopolling ready for QSPI: %d\n", res);
+		xspi_printf("Failed to get autopolling ready for QSPI: ", res, "\n");
 
 	if ([[maybe_unused]] auto res = write_enable())
-		xspi_printf("Failed to write enable QSPI: %d\n", res);
+		xspi_printf("Failed to write enable QSPI: ", res, "\n");
 
 #ifdef XSPI_DO_TESTS
 	xspi_printf("Running QSPI tests...\n");
