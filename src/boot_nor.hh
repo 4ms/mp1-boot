@@ -13,7 +13,7 @@ struct BootNorLoader : BootLoader {
 		Board::NORFlash::d2.init(PinMode::Alt);
 		Board::NORFlash::d3.init(PinMode::Alt);
 
-		QSPI_init(QSPIMode::MemMapped);
+		QSPI_init();
 	}
 
 	BootImageDef::image_header read_image_header(uint32_t header_addr) override
