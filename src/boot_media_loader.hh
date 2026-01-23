@@ -110,8 +110,8 @@ private:
 
 			// Look for entry point in Kernel type images
 			if (type == BootImageDef::IH_TYPE_KERNEL) {
-				if (load_addr >= 0x60000000 && (load_addr + size) <= 0x90000000) {
-					log("Setting entry point to FMC or QSPI memory: 0x", Hex{entry_point}, "\n");
+				if (load_addr >= 0x70000000 && (load_addr + size) <= 0x80000000) {
+					log("Setting entry point to QSPI NOR Flash memory: 0x", Hex{entry_point}, "\n");
 					_entry_point = entry_point;
 
 				} else if (entry_point >= load_addr && entry_point < (load_addr + size)) {
@@ -139,7 +139,7 @@ private:
 				}
 			}
 
-			if (valid_addr(load_addr - header_size)) {
+			if (valid_addr(load_addr - header_size) && !is_fsbl_addr(load_addr)) {
 				image_info.skip_header = false;
 				image_info.load_addr = load_addr - header_size;
 				image_info.size = size;
@@ -211,7 +211,7 @@ private:
 #endif
 
 #ifdef NORFLASH_WRITER
-		if (addr >= 0x60000000 && addr <= 0x90000000)
+		if (addr >= 0x70000000 && addr <= 0x80000000)
 			return true;
 #endif
 
@@ -219,7 +219,16 @@ private:
 			return true;
 
 		return false;
-	};
+	}
+
+	bool is_fsbl_addr(uint64_t addr)
+	{
+#ifdef NORFLASH_WRITER
+		if (addr == 0x70000000 || addr == 0x70040000)
+			return true;
+#endif
+		return false;
+	}
 
 	std::optional<uint32_t> _entry_point{};
 
