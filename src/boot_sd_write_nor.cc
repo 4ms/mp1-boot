@@ -1,8 +1,16 @@
 #include "boot_sd_write_nor.hh"
+#include "board_conf.hh"
+#include "drivers/norflash/qspi_norflash_read.h"
 #include "print.hh"
 #include "print_messages.hh"
 
-NorFlashWriter::NorFlashWriter() {}
+NorFlashWriter::NorFlashWriter()
+{
+	Board::NORFlash::d2.init(PinMode::Alt);
+	Board::NORFlash::d3.init(PinMode::Alt);
+
+	QSPI_init();
+}
 
 bool NorFlashWriter::write(uint32_t nor_addr, std::span<const uint8_t> bytes)
 {
