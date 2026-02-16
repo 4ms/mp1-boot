@@ -2,12 +2,19 @@
 
 #if defined DDR_TYPE_DDR3_4Gb
 #include "stm32mp13xx-ddr3-4Gb.h"
+
+#elif defined DDR_TYPE_DDR3_1Gb
+#include "stm32mp13xx-ddr3-1Gb.h"
+
 #elif defined DDR_TYPE_DDR3_8Gb
 #include "stm32mp13xx-ddr3-8Gb.h"
+
 #elif defined DDR_TYPE_LPDDR2_4Gb
 #include "stm32mp13xx-lpddr2-4Gb.h"
+
 #elif defined DDR_TYPE_LPDDR3_4Gb
 #include "stm32mp13xx-lpddr3-4Gb.h"
+
 #else /* DDR_TYPE_DDR3_4Gb */
 #endif
 
