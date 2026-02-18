@@ -27,6 +27,11 @@ constexpr bool UseBootSelect = false;
 constexpr bool UseFreezePin = false;
 constexpr PinConf FreezePin{GPIO::Unused, PinNum::_0};
 
+namespace SDMMC
+{
+constexpr int DataWidth = 4;
+}
+
 namespace NORFlash
 {
 constexpr bool HasNORFlash = false;

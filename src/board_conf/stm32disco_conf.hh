@@ -34,6 +34,11 @@ constexpr uint32_t ConsoleUART = UART4_BASE;
 constexpr PinConf UartRX{GPIO::B, PinNum::_2, PinAF::AF_8};
 constexpr PinConf UartTX{GPIO::G, PinNum::_11, PinAF::AF_6};
 
+namespace SDMMC
+{
+constexpr int DataWidth = 4;
+}
+
 namespace NORFlash
 {
 constexpr bool HasNORFlash = false;
