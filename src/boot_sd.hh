@@ -1,4 +1,5 @@
 #pragma once
+#include "board_conf.hh"
 #include "boot_image_def.hh"
 #include "boot_loader.hh"
 #include "drivers/pinconf.hh"
@@ -22,16 +23,21 @@ struct BootSDLoader : BootLoader {
 		hsd.Instance = SDMMC1;
 		hsd.Init.ClockEdge = SDMMC_CLOCK_EDGE_RISING;
 		hsd.Init.ClockPowerSave = SDMMC_CLOCK_POWER_SAVE_DISABLE;
-		hsd.Init.BusWide = SDMMC_BUS_WIDE_4B;
+		if constexpr (Board::SDMMC::DataWidth == 1)
+			hsd.Init.BusWide = SDMMC_BUS_WIDE_1B;
+		else
+			hsd.Init.BusWide = SDMMC_BUS_WIDE_4B;
 		hsd.Init.HardwareFlowControl = SDMMC_HARDWARE_FLOW_CONTROL_DISABLE;
 		hsd.Init.ClockDiv = 2; // 64MHz/2 / 2 = 16MHz, seems to be the max OSD32-BRK can handle reliably
 
 		// These pins are not board-specific, they are required by BOOTROM
 		// for booting with SDMMC1
 		// D1 - D3 are not used by BOOTROM, so need to be init by FSBL
-		PinConf{GPIO::C, PinNum::_9, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
-		PinConf{GPIO::C, PinNum::_10, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
-		PinConf{GPIO::C, PinNum::_11, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+		if constexpr (Board::SDMMC::DataWidth > 1) {
+			PinConf{GPIO::C, PinNum::_9, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+			PinConf{GPIO::C, PinNum::_10, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+			PinConf{GPIO::C, PinNum::_11, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
+		}
 
 		// D0, CK, CMD are used by BOOTROM and should already be init. We re-init them just in case...
 		PinConf{GPIO::C, PinNum::_8, PinAF::AF_12}.init(PinMode::Alt, PinPull::Up);
@@ -60,7 +66,7 @@ struct BootSDLoader : BootLoader {
 
 	bool load_image(uint32_t image_addr, uint32_t load_addr, uint32_t size) override
 	{
-		debug("SD: loading image at 0x", image_addr, " to 0x", load_addr, "-0x", load_addr + size, "\n");
+		debug("SD: loading image at 0x", Hex{image_addr}, " to 0x", Hex{load_addr}, "-0x", Hex{load_addr + size}, "\n");
 
 		auto load_dst = std::span<uint8_t>{reinterpret_cast<uint8_t *>(load_addr), size};
 
