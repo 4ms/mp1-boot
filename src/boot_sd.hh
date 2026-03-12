@@ -101,7 +101,7 @@ struct BootSDLoader : BootLoader {
 		}
 		if (image_block_num == InvalidPartitionNum) {
 			pr_err("No valid GPT header found\n");
-			return {};
+			return 0xFFFFFFFF;
 		}
 
 		debug("GPT partition header says partition ", image_part_num, " is at block ", image_block_num, "\n");

@@ -42,6 +42,8 @@ public:
 		}
 
 		auto current_header_addr = _loader->get_first_header_addr(target);
+		if (current_header_addr == 0xFFFFFFFF)
+			return false;
 
 		while (true) {
 			log("\nReading 0x", Hex{current_header_addr}, " to look for a uimg header\n");
