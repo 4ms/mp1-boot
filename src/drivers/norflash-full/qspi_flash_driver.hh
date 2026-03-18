@@ -1,7 +1,12 @@
 #pragma once
+
+#ifdef STM32MP13x
 #define QSPI_HandleTypeDef XSPI_HandleTypeDef
 #define QSPI_CommandTypeDef XSPI_RegularCmdTypeDef
 #include "stm32mp13xx_hal_xspi.h"
+#else
+#include "stm32mp1xx_hal_qspi.h"
+#endif
 
 #include "board_conf.hh"
 #include "qspi_flash_registers.h"
