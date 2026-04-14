@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef STM32MP13x
+#ifdef STM32MP13
 #define QSPI_HandleTypeDef XSPI_HandleTypeDef
 #define QSPI_CommandTypeDef XSPI_RegularCmdTypeDef
 #include "stm32mp13xx_hal_xspi.h"
