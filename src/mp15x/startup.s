@@ -35,7 +35,7 @@ Reset_Handler:
 	isb
 													// Configure ACTLR
 	mrc     p15, 0, r0, c1, c0, 1 					// Read CP15 Auxiliary Control Register
-	orr     r0, r0, #(1 <<  1) 						// Enable L2 prefetch hint 
+	orr     r0, r0, #(1 <<  6) 						// Enable SMP
 	mcr     p15, 0, r0, c1, c0, 1 					// Write CP15 Auxiliary Control Register
 
 													// Set Vector Base Address Register (VBAR) to point to this application's vector table
