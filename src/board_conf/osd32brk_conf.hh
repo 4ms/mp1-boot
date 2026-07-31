@@ -19,7 +19,8 @@ constexpr PinConf UartRX{GPIO::B, PinNum::_2, PinAF::AF_8};
 constexpr PinConf UartTX{GPIO::G, PinNum::_11, PinAF::AF_6};
 
 // Header C, pin 30 on OSD32MP1-BRK, can be shorted to neighboring GND pin
-constexpr PinConf BootSelectPin{GPIO::B, PinNum::_6};
+constexpr PinConf BootSelectPin{GPIO::B, PinNum::_6, PinAF::AFNone, PinPolarity::Inverted};
+constexpr PinPull BootSelectPinPull = PinPull::Up; // Pin is shorted to GND when active
 constexpr bool UseBootSelect = false;
 
 // Freeze mode: halts booting after initializing everything

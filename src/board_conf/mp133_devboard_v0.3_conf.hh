@@ -14,7 +14,8 @@ using GreenLED2 = GreenLED;
 using OrangeLED = RedLED2;
 using BlueLED = GreenLED;
 
-constexpr PinConf BootSelectPin{GPIO::G, PinNum::_0, PinAF::AFNone, PinPolarity::Inverted}; // DFU boot button
+constexpr PinConf BootSelectPin{GPIO::G, PinNum::_0, PinAF::AFNone, PinPolarity::Normal}; // DFU boot button
+constexpr PinPull BootSelectPinPull = PinPull::Down; // Button pulls to V+ when pressed
 constexpr bool UseBootSelect = true;
 
 constexpr bool UseFreezePin = true;

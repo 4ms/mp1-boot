@@ -23,7 +23,8 @@ using GreenLED2 = BlueLED; // For compatibility with OSD32BRK board
 
 // Button USER2 (also activates RedLED)
 constexpr bool UseBootSelect = false;
-constexpr PinConf BootSelectPin{GPIO::A, PinNum::_13};
+constexpr PinConf BootSelectPin{GPIO::A, PinNum::_13, PinAF::AFNone, PinPolarity::Inverted};
+constexpr PinPull BootSelectPinPull = PinPull::Up; // Button pulls to GND when pressed
 
 // Freeze mode: halts booting after initializing everything
 // so you can load firmware via SWD/JTAG

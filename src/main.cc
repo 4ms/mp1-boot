@@ -65,10 +65,23 @@ void main()
 
 	// Check Boot Select pin
 	if constexpr (Board::UseBootSelect) {
-		Board::BootSelectPin.init(PinMode::Input, PinPull::Up);
-		// delay to allow pull-up to settle
+		// Legacy conf files don't have the BootSelectPinPull field, so we get a compiler error on purpose.
+		// The polarity has changed: it used to be !BootSelectPin.read() but now it's BootSelectPin.read().
+		// If you get a compile error here, you must update your config:
+		//  - Add BootSelectPinPull to your conf.
+		//    - Set to Up, Down, or None depending on what your board needs
+		//  - Explicitly set PinPolarity in BootSelectPin:
+		//    - PinPolarity::Normal if the button pulls to V+ when pressed
+		//    - PinPolarity::Inverted if the button pulls to gnd when pressed
+		Board::BootSelectPin.init(PinMode::Input, Board::BootSelectPinPull);
+
 		udelay(1000);
-		if (!Board::BootSelectPin.read()) {
+		uint32_t debounce = 0;
+		for (auto i = 0; i < 10000; i++) {
+			debounce += Board::BootSelectPin.read();
+			udelay(10);
+		}
+		if (debounce > 8000) {
 			image_type = BootLoader::LoadTarget::SSBL;
 			print("Boot Select pin detected active: Loading alt image...\n");
 		}
