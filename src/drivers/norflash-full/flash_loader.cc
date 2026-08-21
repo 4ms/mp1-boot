@@ -1,12 +1,8 @@
 #include "flash_loader.hh"
 #include "print_messages.hh"
 
-FlashLoader::FlashLoader() {}
-
-bool FlashLoader::check_flash_chip()
-{
-	return flash.check_chip_id(0x180001, 0x00180001); // 182001 or 186001 or 1840EF
-}
+FlashLoader::FlashLoader()
+{}
 
 bool FlashLoader::write_sectors(uint32_t base_addr, std::span<const uint8_t> buffer)
 {
