@@ -5,7 +5,8 @@
 
 #include "qspi_flash_driver.hh"
 
-NorFlashWriter::NorFlashWriter() {}
+NorFlashWriter::NorFlashWriter()
+{}
 
 // Singleton, lazy-constructed
 mdrivlib::QSpiFlash &flash_loader()
@@ -48,10 +49,28 @@ bool NorFlashWriter::write(uint32_t nor_addr, std::span<const uint8_t> bytes)
 	if (start_block != end_block) {
 		auto bytes_in_first_block = ((start_block + 1) << 12) - nor_addr;
 		debug("Write spans blocks ", start_block, "-", end_block, "\n");
-		debug("Writing to 0x", Hex{nor_addr}, " ", bytes_in_first_block, " bytes\n");
+
+		if ((nor_addr & 0xFFF) == 0) {
+			log("Erasing 4k block at 0x", Hex{nor_addr}, " [split]\n");
+
+			if (!flash.erase(4096, nor_addr)) {
+				pr_err("ERROR: Flash failed to erase block [split]\n");
+				return false;
+			}
+		}
+
+		debug("Writing to 0x", Hex{nor_addr}, " ", bytes_in_first_block, " bytes [split]\n");
 		auto ok = flash.write(bytes.data(), nor_addr, bytes_in_first_block);
+
 		if (!ok) {
 			pr_err("Failed to write to flash address 0x", Hex{nor_addr}, "\n");
+			return false;
+		}
+
+		ok = verify(nor_addr, {bytes.data(), bytes_in_first_block});
+
+		if (!ok) {
+			pr_err("Failed to verify to flash address 0x", Hex{nor_addr}, "\n");
 			return false;
 		}
 
@@ -77,6 +96,38 @@ bool NorFlashWriter::write(uint32_t nor_addr, std::span<const uint8_t> bytes)
 		return false;
 	}
 
+	ok = verify(nor_addr, bytes);
+
+	if (!ok) {
+		pr_err("Failed to verify to flash address 0x", Hex{nor_addr}, "\n");
+		return false;
+	}
+
 	debug("Wrote OK\n");
 	return true;
+}
+
+bool NorFlashWriter::verify(uint32_t nor_addr, std::span<const uint8_t> bytes)
+{
+	static std::array<uint8_t, 4096> verify;
+
+	for (auto &v : verify) {
+		v = 0xAA;
+	}
+
+	auto ok = flash_loader().read(verify.data(), nor_addr, verify.size());
+	if (!ok) {
+		pr_err("Failed to read back flash address 0x", Hex{nor_addr}, "\n");
+		return false;
+	}
+
+	for (auto i = 0u; i < bytes.size(); i++) {
+		if (verify[i] != bytes[i]) {
+			ok = false;
+			debug("Verify failed: wrote 0x", Hex{bytes[i]});
+			debug(" read back 0x", Hex{verify[i]}, " at flash address 0x", Hex{nor_addr + i}, "\n");
+		}
+	}
+
+	return ok;
 }
