@@ -60,6 +60,7 @@ private:
 	HAL_StatusTypeDef auto_polling_mem_ready(uint32_t Timeout);
 	HAL_StatusTypeDef auto_polling_mem_ready_it();
 	HAL_StatusTypeDef enter_memory_QPI();
+	HAL_StatusTypeDef winbond_set_quad_enable();
 	void init_command(QSPI_CommandTypeDef *s_command);
 
 	bool done_TXing() { return QSPI_status == STATUS_TX_COMPLETE; }

@@ -49,6 +49,8 @@
 /* Register Operations */
 #define READ_STATUS_REG_CMD 0x05
 #define WRITE_STATUS_REG_CMD 0x01
+#define W25Q_READ_STATUS_REG2_CMD 0x35
+#define W25Q_WRITE_STATUS_REG2_CMD 0x31
 #define READ_FUNCTION_REG_CMD 0x48
 #define WRITE_FUNCTION_REG_CMD 0x42
 #define READ_INFO_ROW 0x62
@@ -80,3 +82,6 @@
 #define QSPI_SR_PRBOTTOM ((uint8_t)0x20) /*!< Protected memory area defined by BLOCKPR starts from top or bottom */
 #define QSPI_SR_QUADEN ((uint8_t)0x40)	 /*!< Quad IO mode enabled if =1 */
 #define QSPI_SR_SRWREN ((uint8_t)0x80)	 /*!< Status register write enable/disable */
+
+/* Winbond W25Qxx Status Register-2 */
+#define W25Q_SR2_QE ((uint8_t)0x02) /*!< Quad Enable: =0 -> IO2/IO3 act as /WP and /HOLD (factory default on -IM/-JM parts) */

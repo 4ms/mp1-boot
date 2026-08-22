@@ -86,6 +86,13 @@ QSpiFlash::QSpiFlash()
 	if ([[maybe_unused]] auto res = Reset())
 		xspi_printf("Failed to reset QSPI: ", res, "\n");
 
+	if (Board::NORFlash::chip_id == Board::NORFlash::W25Q128JV) {
+		// Set non-volatile QE bit to disable /HOLD and /WP pins, or else BOOTROM will fail to read.
+		// Only needed on the -IM/-JM parts (-IQ/-JQ parts have it set by default).
+		if ([[maybe_unused]] auto res = winbond_set_quad_enable())
+			xspi_printf("Failed to set Winbond QE bit: ", res, "\n");
+	}
+
 	if (Board::NORFlash::io_mode == Board::NORFlash::QuadSPI) {
 		// Now that chip is in QSPI mode, IO2 and IO3 can be initialized
 		if (Board::NORFlash::chip_id == Board::NORFlash::IS25L)
@@ -586,6 +593,83 @@ HAL_StatusTypeDef QSpiFlash::enter_memory_QPI()
 	ConfigCmd = s_command;
 	if (HAL_XSPI_AutoPolling(&handle, &s_config, HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
 		return HAL_ERROR;
+
+	return HAL_OK;
+}
+
+/**
+ * @brief	Sets the Quad Enable (QE) bit in Status Register-2 on Winbond W25Qxx chips, if not already set.
+ *			This is a non-volatile write, so it persists across power cycles. On -IQ/-JQ parts QE defaults
+ *			to 1 and nothing is written.
+ * @retval HAL_OK if QE is set (or was already set)
+ */
+HAL_StatusTypeDef QSpiFlash::winbond_set_quad_enable()
+{
+	auto read_sr2 = [this](uint8_t &sr2) -> HAL_StatusTypeDef {
+		s_command.InstructionMode = XSPI_INSTRUCTION_1_LINE;
+		s_command.Instruction = W25Q_READ_STATUS_REG2_CMD;
+		s_command.AddressMode = XSPI_ADDRESS_NONE;
+		s_command.AlternateByteMode = XSPI_ALT_BYTES_NONE;
+		s_command.DataMode = XSPI_DATA_1_LINE;
+		s_command.DummyCycles = 0;
+		s_command.DTRMode = XSPI_DTR_MODE_DISABLE;
+		s_command.DelayHoldHalfCycle = XSPI_DHHC_ANALOG_DELAY;
+		s_command.SIOOMode = XSPI_SIOO_INST_EVERY_CMD;
+		s_command.DataLength = 1;
+		s_command.IOSelect = HAL_XSPI_SELECT_IO_3_0;
+
+		if (HAL_XSPI_Command(&handle, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+			return HAL_ERROR;
+
+		if (HAL_XSPI_Receive(&handle, &sr2, HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+			return HAL_ERROR;
+
+		return HAL_OK;
+	};
+
+	uint8_t sr2 = 0;
+	if (read_sr2(sr2) != HAL_OK)
+		return HAL_ERROR;
+
+	if (sr2 & W25Q_SR2_QE) {
+		xspi_printf("Winbond QE bit already set (SR2=0x", Hex{sr2}, ")\n");
+		return HAL_OK;
+	}
+
+	xspi_printf("Winbond QE bit not set (SR2=0x", Hex{sr2}, "), setting it\n");
+
+	// Write Enable (0x06), not Volatile SR Write Enable (0x50): we want QE to be non-volatile
+	if (write_enable() != HAL_OK)
+		return HAL_ERROR;
+
+	sr2 |= W25Q_SR2_QE;
+
+	s_command.InstructionMode = XSPI_INSTRUCTION_1_LINE;
+	s_command.Instruction = W25Q_WRITE_STATUS_REG2_CMD;
+	s_command.AddressMode = XSPI_ADDRESS_NONE;
+	s_command.AlternateByteMode = XSPI_ALT_BYTES_NONE;
+	s_command.DataMode = XSPI_DATA_1_LINE;
+	s_command.DummyCycles = 0;
+	s_command.DataLength = 1;
+
+	if (HAL_XSPI_Command(&handle, &s_command, HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+		return HAL_ERROR;
+
+	if (HAL_XSPI_Transmit(&handle, &sr2, HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+		return HAL_ERROR;
+
+	// tW (write status register time) is up to 15ms
+	if (auto_polling_mem_ready(HAL_XSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+		return HAL_ERROR;
+
+	// Verify
+	if (read_sr2(sr2) != HAL_OK)
+		return HAL_ERROR;
+
+	if (!(sr2 & W25Q_SR2_QE)) {
+		xspi_printf("Winbond QE bit failed to set (SR2=0x", Hex{sr2}, ")\n");
+		return HAL_ERROR;
+	}
 
 	return HAL_OK;
 }
