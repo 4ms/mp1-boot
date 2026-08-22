@@ -47,10 +47,12 @@ QSpiFlash::QSpiFlash()
 																			   XSPI_DATA_1_LINE}
 	, quad_write_cmd{Board::NORFlash::chip_id == Board::NORFlash::ChipID::IS25L		? IS25LQ0x0B_QUAD_IN_FAST_PROG_CMD :
 					 Board::NORFlash::chip_id == Board::NORFlash::ChipID::W25Q128JV ? W25Q128JV_QUAD_IN_FAST_PROG_CMD :
+					 Board::NORFlash::chip_id == Board::NORFlash::ChipID::W25Q16JV	? W25Q128JV_QUAD_IN_FAST_PROG_CMD :
 																					  S25FLxxxL_QUAD_IN_FAST_PROG_CMD}
 	, quad_read_dummy_cycles{
 		  Board::NORFlash::chip_id == Board::NORFlash::ChipID::IS25L	 ? IS25LQ0x0B_QSPI_DUMMY_CYCLES_READ_QUAD_IO :
 		  Board::NORFlash::chip_id == Board::NORFlash::ChipID::W25Q128JV ? W25Q128JV_QSPI_DUMMY_CYCLES_READ_QUAD_IO :
+		  Board::NORFlash::chip_id == Board::NORFlash::ChipID::W25Q16JV	 ? W25Q128JV_QSPI_DUMMY_CYCLES_READ_QUAD_IO :
 																		   S25FLxxxL_QSPI_DUMMY_CYCLES_READ_QUAD_IO}
 {
 	instance_ = this;
@@ -86,7 +88,8 @@ QSpiFlash::QSpiFlash()
 	if ([[maybe_unused]] auto res = Reset())
 		xspi_printf("Failed to reset QSPI: ", res, "\n");
 
-	if (Board::NORFlash::chip_id == Board::NORFlash::W25Q128JV) {
+	if (Board::NORFlash::chip_id == Board::NORFlash::W25Q128JV || Board::NORFlash::chip_id == Board::NORFlash::W25Q16JV)
+	{
 		// Set non-volatile QE bit to disable /HOLD and /WP pins, or else BOOTROM will fail to read.
 		// Only needed on the -IM/-JM parts (-IQ/-JQ parts have it set by default).
 		if ([[maybe_unused]] auto res = winbond_set_quad_enable())
