@@ -67,11 +67,11 @@ QSpiFlash::QSpiFlash()
 	__HAL_RCC_QSPI_FORCE_RESET();
 	__HAL_RCC_QSPI_RELEASE_RESET();
 
-	handle.Init.ClockPrescaler = 3;
+	handle.Init.ClockPrescaler = 7;
 	handle.Init.FifoThresholdByte = 4;							// was 1
 	handle.Init.SampleShifting = XSPI_SAMPLE_SHIFTING_NONE;		// was HALF_CYCLE
 	handle.Init.MemorySize = Board::NORFlash::address_bits - 1; // 23 here, is 25 in ST example
-	handle.Init.ChipSelectHighTimeCycle = 1;
+	handle.Init.ChipSelectHighTimeCycle = 8; // 1 is too fast after an erase: 8 guarentees required >= 50ns
 	handle.Init.ClockMode = XSPI_CLOCK_MODE_0;
 	handle.Init.MemoryMode = HAL_XSPI_SINGLE_MEM;
 
